@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sparkles, Star, Wind, Clock, Heart, Droplets } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
-import GlowOrb from "@/components/GlowOrb";
+import PerfumeFlacon from "@/components/PerfumeFlacon";
 import { availableNotes, concentrations, type Note, type Concentration } from "@/data/scentNotes";
 
 interface SelectedNote extends Note {
@@ -45,6 +45,20 @@ const ScentLabPage = () => {
     (new Set(selected.map((s) => s.layer)).size / 3) * 40
   ));
 
+  // Blend the selected note colors into a liquid color
+  const liquidColor = useMemo(() => {
+    if (selected.length === 0) return "hsl(185, 80%, 55%)";
+    // Average the hues weighted by position
+    const hues = selected.map((s) => {
+      const match = s.color.match(/hsl\((\d+)/);
+      return match ? parseInt(match[1]) : 185;
+    });
+    const avgHue = Math.round(hues.reduce((a, b) => a + b, 0) / hues.length);
+    return `hsl(${avgHue}, 65%, 45%)`;
+  }, [selected]);
+
+  const fillPercent = selected.length / MAX_TOTAL;
+
   const notesForLayer = availableNotes.filter((n) => n.layer === activeLayer);
 
   return (
@@ -66,7 +80,7 @@ const ScentLabPage = () => {
           </p>
         </motion.div>
 
-        {/* Concentration selector - always visible */}
+        {/* Concentration selector */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,15 +107,14 @@ const ScentLabPage = () => {
           ))}
         </motion.div>
 
-        {/* Main grid - stacks on mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px_1fr] gap-4 sm:gap-6 lg:gap-8 items-start">
+        {/* Main grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px_1fr] gap-4 sm:gap-6 lg:gap-8 items-start">
           {/* Note Palette */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            {/* Layer tabs */}
             <div className="flex gap-1.5 sm:gap-2 mb-4 sm:mb-6">
               {layers.map((l) => (
                 <button
@@ -118,7 +131,7 @@ const ScentLabPage = () => {
               ))}
             </div>
 
-            <ScrollArea className="h-[280px] sm:h-[360px] lg:h-[420px]">
+            <ScrollArea className="h-[280px] sm:h-[360px] lg:h-[480px]">
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-2 pr-3">
                 {notesForLayer.map((note) => {
                   const isSelected = selected.find((s) => s.id === note.id);
@@ -143,35 +156,33 @@ const ScentLabPage = () => {
             </ScrollArea>
           </motion.div>
 
-          {/* Central Orb - smaller on mobile, reordered */}
+          {/* Central Flacon */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
             className="flex flex-col items-center order-first lg:order-none"
           >
-            <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-4 sm:mb-6">
-              <GlowOrb className="w-full h-full" />
-              {selected.map((s, i) => {
-                const angle = (i / Math.max(selected.length, 1)) * 360;
-                const radius = 40;
-                return (
-                  <motion.div
-                    key={s.id}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      x: Math.cos((angle * Math.PI) / 180) * radius,
-                      y: Math.sin((angle * Math.PI) / 180) * radius,
-                    }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-base sm:text-xl"
-                    style={{ filter: `drop-shadow(0 0 6px ${s.color})` }}
-                  >
-                    {s.emoji}
-                  </motion.div>
-                );
-              })}
+            <PerfumeFlacon
+              fillPercent={fillPercent}
+              liquidColor={liquidColor}
+              className="w-40 h-52 sm:w-48 sm:h-64 lg:w-56 lg:h-72 mb-4 sm:mb-6"
+            />
+
+            {/* Note emojis orbiting the bottle */}
+            <div className="flex flex-wrap justify-center gap-1 mb-4">
+              {selected.map((s) => (
+                <motion.span
+                  key={s.id}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  className="text-sm sm:text-base"
+                  style={{ filter: `drop-shadow(0 0 4px ${s.color})` }}
+                >
+                  {s.emoji}
+                </motion.span>
+              ))}
             </div>
 
             {/* Stats */}

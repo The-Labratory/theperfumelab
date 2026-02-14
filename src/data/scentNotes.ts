@@ -7,7 +7,7 @@ export interface Note {
 }
 
 export const availableNotes: Note[] = [
-  // ══════════════════════ TOP NOTES (24) ══════════════════════
+  // ══════════════════════ TOP NOTES (32) ══════════════════════
   { id: "bergamot", name: "Bergamot", emoji: "🍊", layer: "top", color: "hsl(35 90% 55%)" },
   { id: "lemon-zest", name: "Lemon Zest", emoji: "🍋", layer: "top", color: "hsl(50 90% 55%)" },
   { id: "pink-pepper", name: "Pink Pepper", emoji: "🌶️", layer: "top", color: "hsl(350 70% 55%)" },
@@ -32,8 +32,16 @@ export const availableNotes: Note[] = [
   { id: "basil", name: "Basil", emoji: "🌿", layer: "top", color: "hsl(130 50% 35%)" },
   { id: "watermelon", name: "Watermelon", emoji: "🍉", layer: "top", color: "hsl(350 65% 50%)" },
   { id: "fig-leaf", name: "Fig Leaf", emoji: "🍃", layer: "top", color: "hsl(95 45% 40%)" },
+  { id: "black-pepper", name: "Black Pepper", emoji: "⚫", layer: "top", color: "hsl(0 0% 20%)" },
+  { id: "elemi", name: "Elemi", emoji: "💧", layer: "top", color: "hsl(140 35% 55%)" },
+  { id: "star-anise", name: "Star Anise", emoji: "⭐", layer: "top", color: "hsl(30 50% 35%)" },
+  { id: "lychee", name: "Lychee", emoji: "🍑", layer: "top", color: "hsl(340 50% 65%)" },
+  { id: "tangerine", name: "Tangerine", emoji: "🍊", layer: "top", color: "hsl(28 95% 55%)" },
+  { id: "green-tea", name: "Green Tea", emoji: "🍵", layer: "top", color: "hsl(120 30% 50%)" },
+  { id: "ozonic", name: "Ozonic", emoji: "🌬️", layer: "top", color: "hsl(200 50% 70%)" },
+  { id: "sea-salt", name: "Sea Salt", emoji: "🧂", layer: "top", color: "hsl(195 20% 75%)" },
 
-  // ══════════════════════ HEART NOTES (24) ══════════════════════
+  // ══════════════════════ HEART NOTES (32) ══════════════════════
   { id: "rose", name: "Rose", emoji: "🌹", layer: "heart", color: "hsl(340 70% 55%)" },
   { id: "jasmine", name: "Jasmine", emoji: "🌼", layer: "heart", color: "hsl(45 80% 70%)" },
   { id: "iris", name: "Iris", emoji: "💜", layer: "heart", color: "hsl(265 60% 55%)" },
@@ -58,8 +66,16 @@ export const availableNotes: Note[] = [
   { id: "raspberry", name: "Raspberry", emoji: "🫐", layer: "heart", color: "hsl(335 65% 45%)" },
   { id: "clove", name: "Clove", emoji: "🫚", layer: "heart", color: "hsl(15 55% 30%)" },
   { id: "honey", name: "Honey", emoji: "🍯", layer: "heart", color: "hsl(40 80% 50%)" },
+  { id: "gardenia", name: "Gardenia", emoji: "🌸", layer: "heart", color: "hsl(60 40% 80%)" },
+  { id: "plum", name: "Plum", emoji: "🍑", layer: "heart", color: "hsl(300 40% 35%)" },
+  { id: "sichuan-pepper", name: "Sichuan Pepper", emoji: "🌶️", layer: "heart", color: "hsl(5 60% 45%)" },
+  { id: "rose-absolute", name: "Rose Absolute", emoji: "🌹", layer: "heart", color: "hsl(345 75% 45%)" },
+  { id: "jasmine-sambac", name: "Jasmine Sambac", emoji: "🌼", layer: "heart", color: "hsl(50 70% 60%)" },
+  { id: "mimosa", name: "Mimosa", emoji: "🌕", layer: "heart", color: "hsl(48 70% 55%)" },
+  { id: "osmanthus", name: "Osmanthus", emoji: "🧡", layer: "heart", color: "hsl(25 65% 55%)" },
+  { id: "davana", name: "Davana", emoji: "🌾", layer: "heart", color: "hsl(35 50% 40%)" },
 
-  // ══════════════════════ BASE NOTES (24) ══════════════════════
+  // ══════════════════════ BASE NOTES (32) ══════════════════════
   { id: "vanilla", name: "Vanilla", emoji: "🍦", layer: "base", color: "hsl(35 70% 65%)" },
   { id: "sandalwood", name: "Sandalwood", emoji: "🪵", layer: "base", color: "hsl(25 50% 40%)" },
   { id: "musk", name: "White Musk", emoji: "🤍", layer: "base", color: "hsl(0 0% 80%)" },
@@ -84,6 +100,14 @@ export const availableNotes: Note[] = [
   { id: "caramel", name: "Caramel", emoji: "🍮", layer: "base", color: "hsl(30 70% 40%)" },
   { id: "tobacco", name: "Tobacco", emoji: "🍂", layer: "base", color: "hsl(25 45% 28%)" },
   { id: "suede", name: "Suede", emoji: "🤎", layer: "base", color: "hsl(20 30% 40%)" },
+  { id: "birch-tar", name: "Birch Tar", emoji: "🪵", layer: "base", color: "hsl(15 25% 22%)" },
+  { id: "castoreum", name: "Castoreum", emoji: "🦫", layer: "base", color: "hsl(18 35% 28%)" },
+  { id: "frankincense", name: "Frankincense", emoji: "🕯️", layer: "base", color: "hsl(40 35% 45%)" },
+  { id: "copal", name: "Copal", emoji: "💛", layer: "base", color: "hsl(42 60% 45%)" },
+  { id: "oak-moss", name: "Oak Moss", emoji: "🌿", layer: "base", color: "hsl(100 25% 30%)" },
+  { id: "iris-butter", name: "Iris Butter", emoji: "💎", layer: "base", color: "hsl(250 30% 60%)" },
+  { id: "teak-wood", name: "Teak Wood", emoji: "🌳", layer: "base", color: "hsl(22 40% 30%)" },
+  { id: "musk-deer", name: "Musk Absolute", emoji: "🦌", layer: "base", color: "hsl(15 20% 35%)" },
 ];
 
 export interface Concentration {
