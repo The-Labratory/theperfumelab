@@ -23,18 +23,18 @@ type CustomerType = "solo" | "b2b";
 // Anchor: 100ml parfum = 79.99€ (original) → 59.99€ (sale)
 // Scale down proportionally for smaller volumes & lower concentrations
 const PRICE_MATRIX: Record<string, { original: number; sale: number; variantId: string }> = {
-  "10-parfum":  { original: 14.99, sale: 10.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
-  "10-edp":     { original: 12.99, sale: 9.99,  variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "10-edt":     { original: 10.99, sale: 7.99,  variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "30-parfum":  { original: 34.99, sale: 25.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
-  "30-edp":     { original: 29.99, sale: 22.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "30-edt":     { original: 24.99, sale: 18.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "50-parfum":  { original: 49.99, sale: 37.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
-  "50-edp":     { original: 44.99, sale: 34.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "50-edt":     { original: 39.99, sale: 29.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "100-parfum": { original: 79.99, sale: 59.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
-  "100-edp":    { original: 69.99, sale: 54.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
-  "100-edt":    { original: 59.99, sale: 44.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
+  "10-parfum":  { original: 29.98, sale: 21.98, variantId: "gid://shopify/ProductVariant/46594629894482" },
+  "10-edp":     { original: 25.98, sale: 19.98, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "10-edt":     { original: 21.98, sale: 15.98, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "30-parfum":  { original: 69.98, sale: 51.98, variantId: "gid://shopify/ProductVariant/46594629894482" },
+  "30-edp":     { original: 59.98, sale: 45.98, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "30-edt":     { original: 49.98, sale: 37.98, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "50-parfum":  { original: 99.98, sale: 75.98, variantId: "gid://shopify/ProductVariant/46594629894482" },
+  "50-edp":     { original: 89.98, sale: 69.98, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "50-edt":     { original: 79.98, sale: 59.98, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "100-parfum": { original: 159.98, sale: 119.98, variantId: "gid://shopify/ProductVariant/46594665939282" },
+  "100-edp":    { original: 139.98, sale: 109.98, variantId: "gid://shopify/ProductVariant/46594665939282" },
+  "100-edt":    { original: 119.98, sale: 89.98, variantId: "gid://shopify/ProductVariant/46594665939282" },
 };
 
 const B2B_DISCOUNT = 50; // 50% flat discount for B2B
