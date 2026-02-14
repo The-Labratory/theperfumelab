@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Droplets, Menu, X } from "lucide-react";
+import { CartDrawer } from "@/components/CartDrawer";
 
 const navItems = [
   { path: "/", label: "Home" },
   { path: "/worlds", label: "Worlds" },
   { path: "/lab", label: "Scent Lab" },
+  { path: "/store", label: "Store" },
   { path: "/onboarding", label: "Discover DNA" },
 ];
 
@@ -36,7 +38,7 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`relative px-4 py-2 text-sm font-body font-medium tracking-wide transition-colors ${
+                className={`relative px-3 lg:px-4 py-2 text-sm font-body font-medium tracking-wide transition-colors ${
                   isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -51,15 +53,18 @@ const Navbar = () => {
               </Link>
             );
           })}
+          <div className="ml-2">
+            <CartDrawer />
+          </div>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden text-foreground p-2"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile right side */}
+        <div className="flex md:hidden items-center gap-2">
+          <CartDrawer />
+          <button className="text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
