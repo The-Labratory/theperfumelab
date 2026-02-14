@@ -54,9 +54,9 @@ const InstallPage = () => {
           </div>
 
           <div className="space-y-3">
-            <h1 className="font-display text-3xl font-bold">Install SCENTRA</h1>
+            <h1 className="font-display text-3xl font-bold">Install The Perfume Lab</h1>
             <p className="text-muted-foreground font-body leading-relaxed">
-              Add SCENTRA to your home screen for instant access to your fragrance atelier — works offline, loads instantly.
+              Add The Perfume Lab to your home screen for instant access to your fragrance atelier — works offline, loads instantly.
             </p>
           </div>
 

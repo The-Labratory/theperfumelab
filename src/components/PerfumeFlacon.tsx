@@ -158,7 +158,7 @@ const PerfumeFlacon = ({ fillPercent, noteColors, className = "" }: PerfumeFlaco
 
         {/* Label */}
         <rect x="70" y="265" width="60" height="16" rx="3" fill="hsl(0, 0%, 10%)" opacity="0.6" />
-        <text x="100" y="276" textAnchor="middle" fontSize="7" fill="hsl(0, 0%, 70%)" fontFamily="Orbitron, sans-serif" letterSpacing="2">SCENTRA</text>
+        <text x="100" y="276" textAnchor="middle" fontSize="5" fill="hsl(0, 0%, 70%)" fontFamily="Orbitron, sans-serif" letterSpacing="1.5">THE PERFUME LAB</text>
       </svg>
 
       {clampedFill > 0 && (

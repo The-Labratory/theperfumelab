@@ -19,7 +19,7 @@ serve(async (req) => {
     if (mode === "gift") {
       // Gifting mode: generate blend suggestion
       const { personality, occasion, mood } = notes; // reusing notes field for gift data
-      systemPrompt = `You are SCENTRA's Master Perfumer AI. You suggest custom fragrance blends for gifts.
+      systemPrompt = `You are The Perfume Lab's Master Perfumer AI. You suggest custom fragrance blends for gifts.
 You must respond with valid JSON only, no markdown. Format:
 {
   "blendName": "Creative Name",
@@ -34,7 +34,7 @@ Suggest 5-7 notes across all three layers. Be creative and luxurious.`;
       userPrompt = `Create a gift fragrance for someone with a ${personality} personality, for a ${occasion} occasion, with a ${mood} mood.`;
     } else {
       // Perfumer assistant mode: analyze blend
-      systemPrompt = `You are SCENTRA's Master Perfumer AI assistant. You analyze fragrance blends and give expert advice.
+      systemPrompt = `You are The Perfume Lab's Master Perfumer AI assistant. You analyze fragrance blends and give expert advice.
 Keep responses under 80 words. Be poetic but precise. Use fragrance terminology.
 If the blend is unbalanced, suggest specific fixes. If it's good, praise it.
 Always address the user as "Alchemist".`;
