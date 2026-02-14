@@ -1,23 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
-import worldVerdant from "@/assets/world-verdant.jpg";
-import worldAzure from "@/assets/world-azure.jpg";
-import worldEmber from "@/assets/world-ember.jpg";
-import worldBloom from "@/assets/world-bloom.jpg";
-import worldNocturne from "@/assets/world-nocturne.jpg";
-import worldSolar from "@/assets/world-solar.jpg";
-
-const worlds = [
-  { name: "The Verdant Realm", type: "Green / Herbal", emoji: "🌲", image: worldVerdant, unlocked: true },
-  { name: "The Azure Depths", type: "Aquatic / Fresh", emoji: "🌊", image: worldAzure, unlocked: true },
-  { name: "Ember Dominion", type: "Spicy / Woody", emoji: "🔥", image: worldEmber, unlocked: true },
-  { name: "Bloom Sanctum", type: "Floral", emoji: "🌸", image: worldBloom, unlocked: false },
-  { name: "Nocturne District", type: "Oriental / Gourmand", emoji: "🌙", image: worldNocturne, unlocked: false },
-  { name: "Solar Citadel", type: "Citrus", emoji: "🍋", image: worldSolar, unlocked: false },
-];
+import { worlds } from "@/data/worldsData";
 
 const WorldsPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -44,6 +33,7 @@ const WorldsPage = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
+              onClick={() => navigate(`/worlds/${world.id}`)}
               className={`relative group rounded-2xl overflow-hidden cursor-pointer ${
                 !world.unlocked ? "opacity-60" : ""
               }`}
