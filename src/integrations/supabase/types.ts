@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      partner_applications: {
+        Row: {
+          business_type: string | null
+          company_name: string
+          contact_name: string
+          created_at: string
+          email: string
+          estimated_volume: string | null
+          id: string
+          message: string | null
+          phone: string | null
+          status: string
+          website: string | null
+        }
+        Insert: {
+          business_type?: string | null
+          company_name: string
+          contact_name: string
+          created_at?: string
+          email: string
+          estimated_volume?: string | null
+          id?: string
+          message?: string | null
+          phone?: string | null
+          status?: string
+          website?: string | null
+        }
+        Update: {
+          business_type?: string | null
+          company_name?: string
+          contact_name?: string
+          created_at?: string
+          email?: string
+          estimated_volume?: string | null
+          id?: string
+          message?: string | null
+          phone?: string | null
+          status?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      saved_blends: {
+        Row: {
+          blend_number: number
+          concentration: string
+          created_at: string
+          harmony_score: number | null
+          id: string
+          name: string | null
+          scent_notes: Json
+          story_text: string | null
+          total_price: number | null
+          user_id: string | null
+          volume: number
+        }
+        Insert: {
+          blend_number?: number
+          concentration: string
+          created_at?: string
+          harmony_score?: number | null
+          id?: string
+          name?: string | null
+          scent_notes?: Json
+          story_text?: string | null
+          total_price?: number | null
+          user_id?: string | null
+          volume: number
+        }
+        Update: {
+          blend_number?: number
+          concentration?: string
+          created_at?: string
+          harmony_score?: number | null
+          id?: string
+          name?: string | null
+          scent_notes?: Json
+          story_text?: string | null
+          total_price?: number | null
+          user_id?: string | null
+          volume?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

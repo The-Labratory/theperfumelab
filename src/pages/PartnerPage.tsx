@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const BENEFITS = [
-  { icon: Tag, title: "50% Partner Discount", description: "All orders at half price — the more you order, the more you save." },
-  { icon: Package, title: "Custom Private Label", description: "White-label packaging with your brand identity on every bottle." },
-  { icon: ShoppingCart, title: "Order Management", description: "Dedicated dashboard to track, reorder, and manage all your B2B orders." },
-  { icon: Users, title: "Priority Support", description: "Direct line to our fragrance experts for formulation and logistics." },
+  { icon: Tag, title: "Partner Pricing", description: "Exclusive rates reserved for our approved partners. No tiers, no complexity." },
+  { icon: Package, title: "Bespoke Labelling", description: "Your identity on every bottle — designed with the same care as the fragrance within." },
+  { icon: ShoppingCart, title: "Order Portal", description: "A dedicated space to manage, reorder, and track every composition." },
+  { icon: Users, title: "Direct Atelier Access", description: "Work directly with our perfumers on formulation, sourcing, and logistics." },
 ];
 
 interface PartnerFormData {
@@ -41,15 +42,34 @@ const PartnerPage = () => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.companyName || !form.contactName || !form.email) {
-      toast.error("Please fill in all required fields");
+      toast.error("Please complete all required fields.");
       return;
     }
-    // For now, just show success — can be wired to backend later
-    setSubmitted(true);
-    toast.success("Application submitted!", { description: "We'll review your application and get back to you within 48 hours." });
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from("partner_applications").insert({
+        company_name: form.companyName,
+        contact_name: form.contactName,
+        email: form.email,
+        phone: form.phone || null,
+        website: form.website || null,
+        business_type: form.businessType || null,
+        estimated_volume: form.estimatedVolume || null,
+        message: form.message || null,
+      });
+      if (error) throw error;
+      setSubmitted(true);
+      toast.success("Application received.", { description: "Our team will be in touch within 48 hours." });
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,14 +86,14 @@ const PartnerPage = () => {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Users className="w-4 h-4 text-primary" />
-            <span className="text-xs font-display tracking-wider text-primary">B2B PARTNERSHIP PROGRAM</span>
+            <span className="text-xs font-display tracking-wider text-primary">PRIVATE PARTNERSHIP</span>
           </div>
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-black tracking-wider gradient-text mb-4">
-            Become a Partner
+            A Private Perfumery Experience
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground font-body max-w-2xl mx-auto">
-            Join The Perfume Lab's wholesale program. Get exclusive pricing, 
-            private-label options, and a dedicated portal to manage all your orders.
+            We work with a select number of partners who share our commitment to craftsmanship.
+            Each collaboration is individually considered.
           </p>
         </motion.div>
 
@@ -112,7 +132,7 @@ const PartnerPage = () => {
               Partner Pricing
             </h2>
             <p className="text-sm text-muted-foreground font-body">
-              Flat 50% discount on all custom fragrances — no minimum tiers, no complexity.
+              All custom compositions at partner rates. Produced weekly in our atelier.
             </p>
           </div>
           <div className="grid sm:grid-cols-3 gap-4">
@@ -294,10 +314,10 @@ const PartnerPage = () => {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={isSubmitting}
                   className="w-full glow-primary font-display tracking-wider text-sm"
                 >
-                  <Send className="w-4 h-4 mr-2" /> Submit Application
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  {isSubmitting ? "Submitting…" : <><Send className="w-4 h-4 mr-2" /> Submit Application<ArrowRight className="w-4 h-4 ml-2" /></>}
                 </Button>
               </motion.form>
             )}
@@ -308,7 +328,7 @@ const PartnerPage = () => {
       {/* Footer */}
       <footer className="relative z-10 border-t border-border py-8 px-6 text-center">
         <p className="text-xs text-muted-foreground font-body tracking-wide">
-          © 2026 The Perfume Lab — Your scent, your world.
+          © 2026 The Perfume Lab — Each composition is blended individually in our atelier.
         </p>
       </footer>
     </div>

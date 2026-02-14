@@ -10,18 +10,18 @@ import heroOrb from "@/assets/hero-orb.jpg";
 const features = [
 {
   icon: Sparkles,
-  title: "Discover Your Scent DNA",
-  description: "Enter a story-driven origin experience to uncover your unique fragrance personality."
+  title: "Your Scent Identity",
+  description: "A guided journey to uncover your unique fragrance archetype and personal signature."
 },
 {
   icon: Globe,
-  title: "Explore Scent Worlds",
-  description: "Journey through six immersive realms — from enchanted forests to neon night cities."
+  title: "Six Fragrance Worlds",
+  description: "Curated olfactory realms — each with its own palette, mood, and raw materials."
 },
 {
   icon: Beaker,
-  title: "The Scent Lab",
-  description: "Blend notes with precision sliders. Watch your creation come alive in real-time."
+  title: "The Atelier",
+  description: "Compose with precision. Every blend is produced by hand in small weekly batches."
 }];
 
 
@@ -46,10 +46,10 @@ const Index = () => {
             transition={{ duration: 0.8 }}>
 
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-2">
-              <span className="gradient-text">Perfumer Lab </span>
+              <span className="gradient-text">The Perfume Lab</span>
             </h1>
             <p className="font-display text-sm md:text-base tracking-[0.3em] text-primary/80 mb-8 uppercase">
-              Design · Blend · Evolve
+              A Private Perfumery Experience
             </p>
           </motion.div>
 
@@ -59,8 +59,8 @@ const Index = () => {
             transition={{ delay: 0.3, duration: 0.7 }}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body">
 
-            Become a Scent Alchemist. Craft custom fragrances by exploring worlds, 
-            mastering combinations, and unlocking rare ingredients.
+            Each composition is blended individually in our atelier.
+            No two formulas are ever identical.
           </motion.p>
 
           <motion.div
@@ -118,7 +118,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="relative z-10 border-t border-border py-8 px-6 text-center">
         <p className="text-xs text-muted-foreground font-body tracking-wide">
-          © 2026 The Perfume Lab — Your scent, your world.
+          © 2026 The Perfume Lab — Each composition is blended individually in our atelier.
         </p>
       </footer>
     </div>);
