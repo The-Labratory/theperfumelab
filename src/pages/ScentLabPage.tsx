@@ -20,11 +20,14 @@ interface SelectedNote extends Note {
 
 const MAX_PER_LAYER = 3;
 const MAX_TOTAL = 9;
+const VOLUME_OPTIONS = [10, 30, 50, 100] as const;
+const MAX_VOLUME = 100;
 
 const ScentLabPage = () => {
   const [selected, setSelected] = useState<SelectedNote[]>([]);
   const [activeLayer, setActiveLayer] = useState<"top" | "heart" | "base">("top");
   const [concentration, setConcentration] = useState<Concentration>(concentrations[0]);
+  const [volume, setVolume] = useState<number>(50);
   const [showCheckout, setShowCheckout] = useState(false);
 
   const layers = ["top", "heart", "base"] as const;
@@ -51,7 +54,7 @@ const ScentLabPage = () => {
   ));
 
   const noteColors = useMemo(() => selected.map((s) => s.color), [selected]);
-  const fillPercent = selected.length / MAX_TOTAL;
+  const fillPercent = volume / MAX_VOLUME;
 
   const notesForLayer = availableNotes.filter((n) => n.layer === activeLayer);
 
@@ -97,6 +100,29 @@ const ScentLabPage = () => {
               <span className="text-[10px] sm:text-xs font-display tracking-wide block text-foreground">{c.name}</span>
               <span className="text-[10px] text-primary font-display block">{c.percentage}</span>
               <span className="text-[9px] sm:text-[10px] text-muted-foreground font-body block">{c.longevity}</span>
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Volume selector */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="flex gap-2 sm:gap-3 mb-6 sm:mb-8 max-w-lg mx-auto"
+        >
+          {VOLUME_OPTIONS.map((v) => (
+            <button
+              key={v}
+              onClick={() => setVolume(v)}
+              className={`flex-1 rounded-xl p-2.5 sm:p-3 text-center transition-all ${
+                volume === v
+                  ? "bg-primary/10 border border-primary/40 shadow-[0_0_12px_hsl(185_80%_55%/0.15)]"
+                  : "glass-surface hover:border-primary/20"
+              }`}
+            >
+              <span className="font-display text-sm sm:text-base text-foreground block">{v}</span>
+              <span className="text-[9px] sm:text-[10px] text-muted-foreground font-body block">ml</span>
             </button>
           ))}
         </motion.div>
@@ -160,6 +186,7 @@ const ScentLabPage = () => {
             <PerfumeFlacon
               fillPercent={fillPercent}
               noteColors={noteColors}
+              volumeMl={volume}
               className="w-40 h-52 sm:w-48 sm:h-64 lg:w-56 lg:h-72 mb-4 sm:mb-6"
             />
 
