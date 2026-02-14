@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 
 interface PerfumeFlaconProps {
   fillPercent: number;
-  noteColors: string[]; // array of HSL color strings from selected notes
+  noteColors: string[];
+  volumeMl?: number;
   className?: string;
 }
 
@@ -13,7 +14,7 @@ function parseHSL(color: string): [number, number, number] {
   return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
 }
 
-const PerfumeFlacon = ({ fillPercent, noteColors, className = "" }: PerfumeFlaconProps) => {
+const PerfumeFlacon = ({ fillPercent, noteColors, volumeMl, className = "" }: PerfumeFlaconProps) => {
   const clampedFill = Math.max(0, Math.min(1, fillPercent));
   const bodyHeight = 170;
   const liquidTop = 260 - bodyHeight * clampedFill;
@@ -159,6 +160,13 @@ const PerfumeFlacon = ({ fillPercent, noteColors, className = "" }: PerfumeFlaco
         {/* Label */}
         <rect x="70" y="265" width="60" height="16" rx="3" fill="hsl(0, 0%, 10%)" opacity="0.6" />
         <text x="100" y="276" textAnchor="middle" fontSize="5" fill="hsl(0, 0%, 70%)" fontFamily="Orbitron, sans-serif" letterSpacing="1.5">THE PERFUME LAB</text>
+
+        {/* Volume label */}
+        {volumeMl !== undefined && (
+          <text x="100" y="180" textAnchor="middle" fontSize="18" fill="hsl(0, 0%, 85%)" fontFamily="Orbitron, sans-serif" opacity="0.5" letterSpacing="1">
+            {volumeMl}ml
+          </text>
+        )}
       </svg>
 
       {clampedFill > 0 && (
