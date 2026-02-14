@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sparkles, Wind, Clock, Heart, Droplets } from "lucide-react";
+import { Sparkles, Wind, Clock, Heart, Droplets, Save } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import PerfumeFlacon from "@/components/PerfumeFlacon";
@@ -12,6 +12,8 @@ import HarmonyMeter from "@/components/HarmonyMeter";
 import PerfumeStory from "@/components/PerfumeStory";
 import AIPerfumer from "@/components/AIPerfumer";
 import { availableNotes, concentrations, type Note, type Concentration } from "@/data/scentNotes";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface SelectedNote extends Note {
   intensity: number;
@@ -29,6 +31,8 @@ const ScentLabPage = () => {
   const [concentration, setConcentration] = useState<Concentration>(concentrations[0]);
   const [volume, setVolume] = useState<number>(50);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedBlendNumber, setSavedBlendNumber] = useState<number | null>(null);
 
   const layers = ["top", "heart", "base"] as const;
   const layerLabels = { top: "Top Notes", heart: "Heart Notes", base: "Base Notes" };
@@ -331,13 +335,42 @@ const ScentLabPage = () => {
             </ScrollArea>
 
             {selected.length > 0 && !showCheckout && (
-              <Button
-                onClick={() => setShowCheckout(true)}
-                className="w-full mt-3 sm:mt-4 glow-primary font-display tracking-wider text-xs sm:text-sm"
-                size="lg"
-              >
-                <Sparkles className="w-4 h-4 mr-2" /> Finalize & Order
-              </Button>
+              <div className="space-y-2 mt-3 sm:mt-4">
+                <Button
+                  onClick={async () => {
+                    setIsSaving(true);
+                    try {
+                      const { data, error } = await supabase.from("saved_blends").insert({
+                        scent_notes: selected.map(s => ({ id: s.id, name: s.name, layer: s.layer, emoji: s.emoji, color: s.color, intensity: s.intensity, warmth: s.warmth })),
+                        concentration: concentration.id,
+                        volume,
+                        harmony_score: harmonyScore,
+                        name: selected.map(s => s.name).join(" · "),
+                      }).select("blend_number").single();
+                      if (error) throw error;
+                      setSavedBlendNumber(data.blend_number);
+                      toast.success(`Blend No. ${String(data.blend_number).padStart(4, "0")} saved.`);
+                    } catch {
+                      toast.error("Could not save blend.");
+                    } finally {
+                      setIsSaving(false);
+                    }
+                  }}
+                  variant="outline"
+                  disabled={isSaving}
+                  className="w-full font-display tracking-wider text-xs sm:text-sm"
+                  size="lg"
+                >
+                  <Save className="w-4 h-4 mr-2" /> {isSaving ? "Saving…" : savedBlendNumber ? `Saved — No. ${String(savedBlendNumber).padStart(4, "0")}` : "Save Blend"}
+                </Button>
+                <Button
+                  onClick={() => setShowCheckout(true)}
+                  className="w-full glow-primary font-display tracking-wider text-xs sm:text-sm"
+                  size="lg"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" /> Finalize & Order
+                </Button>
+              </div>
             )}
 
             <AnimatePresence>
