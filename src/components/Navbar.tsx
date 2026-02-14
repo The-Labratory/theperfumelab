@@ -9,6 +9,7 @@ const navItems = [
   { path: "/worlds", label: "Worlds" },
   { path: "/lab", label: "Perfumer Lab" },
   { path: "/collection", label: "Collection" },
+  { path: "/gifting", label: "Gifting" },
   { path: "/store", label: "Store" },
   { path: "/dna", label: "Scent DNA" },
 ];
