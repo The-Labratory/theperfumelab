@@ -7,6 +7,7 @@ import { Sparkles, Star, Wind, Clock, Heart, Droplets } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import PerfumeFlacon from "@/components/PerfumeFlacon";
+import CreationCheckout from "@/components/CreationCheckout";
 import { availableNotes, concentrations, type Note, type Concentration } from "@/data/scentNotes";
 
 interface SelectedNote extends Note {
@@ -21,6 +22,7 @@ const ScentLabPage = () => {
   const [selected, setSelected] = useState<SelectedNote[]>([]);
   const [activeLayer, setActiveLayer] = useState<"top" | "heart" | "base">("top");
   const [concentration, setConcentration] = useState<Concentration>(concentrations[0]);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const layers = ["top", "heart", "base"] as const;
   const layerLabels = { top: "Top Notes", heart: "Heart Notes", base: "Base Notes" };
@@ -291,11 +293,27 @@ const ScentLabPage = () => {
               </AnimatePresence>
             </ScrollArea>
 
-            {selected.length > 0 && (
-              <Button className="w-full mt-3 sm:mt-4 glow-primary font-display tracking-wider text-xs sm:text-sm" size="lg">
-                <Sparkles className="w-4 h-4 mr-2" /> Save Creation
+            {selected.length > 0 && !showCheckout && (
+              <Button
+                onClick={() => setShowCheckout(true)}
+                className="w-full mt-3 sm:mt-4 glow-primary font-display tracking-wider text-xs sm:text-sm"
+                size="lg"
+              >
+                <Sparkles className="w-4 h-4 mr-2" /> Finalize & Order
               </Button>
             )}
+
+            <AnimatePresence>
+              {showCheckout && selected.length > 0 && (
+                <div className="mt-4">
+                  <CreationCheckout
+                    selected={selected}
+                    concentration={concentration}
+                    onClose={() => setShowCheckout(false)}
+                  />
+                </div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
