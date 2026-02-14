@@ -11,6 +11,8 @@ import ScentLabPage from "./pages/ScentLabPage";
 import StorePage from "./pages/StorePage";
 import ProductPage from "./pages/ProductPage";
 import WorldDetailPage from "./pages/WorldDetailPage";
+import CollectionPage from "./pages/CollectionPage";
+import ScentDNAPage from "./pages/ScentDNAPage";
 import InstallPage from "./pages/InstallPage";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +27,8 @@ const AppContent = () => {
       <Route path="/worlds" element={<WorldsPage />} />
       <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
       <Route path="/lab" element={<ScentLabPage />} />
+      <Route path="/collection" element={<CollectionPage />} />
+      <Route path="/dna" element={<ScentDNAPage />} />
       <Route path="/store" element={<StorePage />} />
       <Route path="/product/:handle" element={<ProductPage />} />
       <Route path="/install" element={<InstallPage />} />

@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sparkles, Star, Wind, Clock, Heart, Droplets } from "lucide-react";
+import { Sparkles, Wind, Clock, Heart, Droplets } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import PerfumeFlacon from "@/components/PerfumeFlacon";
 import CreationCheckout from "@/components/CreationCheckout";
+import HarmonyMeter from "@/components/HarmonyMeter";
+import PerfumeStory from "@/components/PerfumeStory";
 import { availableNotes, concentrations, type Note, type Concentration } from "@/data/scentNotes";
 
 interface SelectedNote extends Note {
@@ -176,14 +178,11 @@ const ScentLabPage = () => {
               ))}
             </div>
 
+            {/* Harmony Meter */}
+            <HarmonyMeter score={harmonyScore} />
+
             {/* Stats */}
-            <div className="glass-surface rounded-xl p-4 sm:p-5 w-full space-y-2.5 sm:space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
-                  <Star className="w-3 h-3" /> Harmony
-                </span>
-                <span className="font-display text-xs sm:text-sm text-primary">{harmonyScore}%</span>
-              </div>
+            <div className="glass-surface rounded-xl p-4 sm:p-5 w-full space-y-2.5 sm:space-y-3 mt-3">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
                   <Droplets className="w-3 h-3" /> Concentration
@@ -213,6 +212,13 @@ const ScentLabPage = () => {
                 </span>
               </div>
             </div>
+
+            {/* Perfume Story */}
+            {selected.length >= 2 && (
+              <div className="mt-3">
+                <PerfumeStory notes={selected} />
+              </div>
+            )}
           </motion.div>
 
           {/* Selected Notes Detail */}
