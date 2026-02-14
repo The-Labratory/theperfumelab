@@ -10,6 +10,7 @@ import WorldsPage from "./pages/WorldsPage";
 import ScentLabPage from "./pages/ScentLabPage";
 import StorePage from "./pages/StorePage";
 import ProductPage from "./pages/ProductPage";
+import WorldDetailPage from "./pages/WorldDetailPage";
 import InstallPage from "./pages/InstallPage";
 import NotFound from "./pages/NotFound";
 
@@ -22,6 +23,7 @@ const AppContent = () => {
       <Route path="/" element={<Index />} />
       <Route path="/onboarding" element={<OnboardingPage />} />
       <Route path="/worlds" element={<WorldsPage />} />
+      <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
       <Route path="/lab" element={<ScentLabPage />} />
       <Route path="/store" element={<StorePage />} />
       <Route path="/product/:handle" element={<ProductPage />} />
