@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Droplets, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { CartDrawer } from "@/components/CartDrawer";
+import lhaririLogo from "@/assets/lhariri-logo.png";
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -26,10 +27,7 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group">
-          <Droplets className="w-5 h-5 sm:w-6 sm:h-6 text-primary group-hover:drop-shadow-[0_0_8px_hsl(185_80%_55%/0.6)] transition-all" />
-          <span className="font-display text-base sm:text-lg font-bold tracking-wider text-foreground">
-            SCENTRA
-          </span>
+          <img src={lhaririLogo} alt="Louis Hariri" className="h-8 sm:h-10 w-auto" />
         </Link>
 
         {/* Desktop nav */}
