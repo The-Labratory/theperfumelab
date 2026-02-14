@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sparkles, Star, Wind, Clock, Heart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -16,21 +17,59 @@ interface Note {
 }
 
 const availableNotes: Note[] = [
-  // Top
+  // Top Notes (16)
   { id: "bergamot", name: "Bergamot", emoji: "🍊", layer: "top", color: "hsl(35 90% 55%)" },
   { id: "lemon", name: "Lemon Zest", emoji: "🍋", layer: "top", color: "hsl(50 90% 55%)" },
   { id: "pink-pepper", name: "Pink Pepper", emoji: "🌶️", layer: "top", color: "hsl(350 70% 55%)" },
   { id: "grapefruit", name: "Grapefruit", emoji: "🍈", layer: "top", color: "hsl(15 80% 55%)" },
-  // Heart
+  { id: "blood-orange", name: "Blood Orange", emoji: "🟠", layer: "top", color: "hsl(20 85% 50%)" },
+  { id: "green-apple", name: "Green Apple", emoji: "🍏", layer: "top", color: "hsl(100 60% 50%)" },
+  { id: "pear", name: "Pear", emoji: "🍐", layer: "top", color: "hsl(80 50% 55%)" },
+  { id: "black-currant", name: "Black Currant", emoji: "🫐", layer: "top", color: "hsl(280 50% 35%)" },
+  { id: "sparkling-citrus", name: "Sparkling Citrus", emoji: "✨", layer: "top", color: "hsl(55 85% 60%)" },
+  { id: "mandarin", name: "Mandarin", emoji: "🍊", layer: "top", color: "hsl(25 90% 55%)" },
+  { id: "cardamom", name: "Cardamom", emoji: "🫚", layer: "top", color: "hsl(40 40% 45%)" },
+  { id: "ginger", name: "Ginger", emoji: "🫚", layer: "top", color: "hsl(38 60% 50%)" },
+  { id: "saffron", name: "Saffron", emoji: "🌾", layer: "top", color: "hsl(30 90% 45%)" },
+  { id: "mint", name: "Mint", emoji: "🌿", layer: "top", color: "hsl(150 60% 45%)" },
+  { id: "eucalyptus", name: "Eucalyptus", emoji: "🍃", layer: "top", color: "hsl(160 40% 50%)" },
+  { id: "aldehydes", name: "Aldehydes", emoji: "💠", layer: "top", color: "hsl(200 30% 70%)" },
+
+  // Heart Notes (16)
   { id: "rose", name: "Rose", emoji: "🌹", layer: "heart", color: "hsl(340 70% 55%)" },
   { id: "jasmine", name: "Jasmine", emoji: "🌼", layer: "heart", color: "hsl(45 80% 70%)" },
   { id: "iris", name: "Iris", emoji: "💜", layer: "heart", color: "hsl(265 60% 55%)" },
   { id: "lavender", name: "Lavender", emoji: "💐", layer: "heart", color: "hsl(265 40% 60%)" },
-  // Base
+  { id: "violet", name: "Violet", emoji: "🪻", layer: "heart", color: "hsl(275 55% 50%)" },
+  { id: "lilac", name: "Lilac", emoji: "🌸", layer: "heart", color: "hsl(280 45% 65%)" },
+  { id: "peony", name: "Peony", emoji: "🌺", layer: "heart", color: "hsl(330 60% 65%)" },
+  { id: "tuberose", name: "Tuberose", emoji: "🤍", layer: "heart", color: "hsl(0 0% 90%)" },
+  { id: "white-florals", name: "White Florals", emoji: "🕊️", layer: "heart", color: "hsl(40 30% 85%)" },
+  { id: "coffee", name: "Coffee", emoji: "☕", layer: "heart", color: "hsl(25 60% 25%)" },
+  { id: "cinnamon", name: "Cinnamon", emoji: "🫕", layer: "heart", color: "hsl(15 70% 40%)" },
+  { id: "nutmeg", name: "Nutmeg", emoji: "🥜", layer: "heart", color: "hsl(30 50% 40%)" },
+  { id: "geranium", name: "Geranium", emoji: "🌷", layer: "heart", color: "hsl(350 50% 55%)" },
+  { id: "magnolia", name: "Magnolia", emoji: "🌸", layer: "heart", color: "hsl(320 40% 75%)" },
+  { id: "orange-blossom", name: "Orange Blossom", emoji: "🌼", layer: "heart", color: "hsl(30 70% 65%)" },
+  { id: "ylang-ylang", name: "Ylang-Ylang", emoji: "🌻", layer: "heart", color: "hsl(50 65% 55%)" },
+
+  // Base Notes (16)
   { id: "vanilla", name: "Vanilla", emoji: "🍦", layer: "base", color: "hsl(35 70% 65%)" },
   { id: "sandalwood", name: "Sandalwood", emoji: "🪵", layer: "base", color: "hsl(25 50% 40%)" },
   { id: "musk", name: "White Musk", emoji: "🤍", layer: "base", color: "hsl(0 0% 80%)" },
   { id: "amber", name: "Amber", emoji: "🔶", layer: "base", color: "hsl(35 90% 45%)" },
+  { id: "patchouli", name: "Patchouli", emoji: "🌿", layer: "base", color: "hsl(120 30% 30%)" },
+  { id: "cedarwood", name: "Cedarwood", emoji: "🌲", layer: "base", color: "hsl(20 40% 35%)" },
+  { id: "vetiver", name: "Vetiver", emoji: "🌾", layer: "base", color: "hsl(90 30% 35%)" },
+  { id: "oud", name: "Oud", emoji: "🏺", layer: "base", color: "hsl(15 50% 25%)" },
+  { id: "tonka-bean", name: "Tonka Bean", emoji: "🫘", layer: "base", color: "hsl(30 55% 35%)" },
+  { id: "benzoin", name: "Benzoin", emoji: "🍯", layer: "base", color: "hsl(35 65% 40%)" },
+  { id: "cashmere-wood", name: "Cashmere Wood", emoji: "🧶", layer: "base", color: "hsl(20 25% 50%)" },
+  { id: "dark-cherry", name: "Dark Cherry", emoji: "🍒", layer: "base", color: "hsl(350 60% 35%)" },
+  { id: "almond", name: "Almond", emoji: "🌰", layer: "base", color: "hsl(30 40% 50%)" },
+  { id: "cocoa", name: "Cocoa", emoji: "🍫", layer: "base", color: "hsl(15 50% 25%)" },
+  { id: "leather", name: "Leather", emoji: "🧳", layer: "base", color: "hsl(20 35% 30%)" },
+  { id: "smoky-incense", name: "Smoky Incense", emoji: "🕯️", layer: "base", color: "hsl(0 10% 35%)" },
 ];
 
 interface SelectedNote extends Note {
@@ -48,7 +87,7 @@ const ScentLabPage = () => {
 
   const addNote = (note: Note) => {
     if (selected.find((s) => s.id === note.id)) return;
-    if (selected.filter((s) => s.layer === note.layer).length >= 2) return;
+    if (selected.filter((s) => s.layer === note.layer).length >= 3) return;
     setSelected([...selected, { ...note, intensity: 50, warmth: 50 }]);
   };
 
@@ -61,7 +100,7 @@ const ScentLabPage = () => {
   };
 
   const harmonyScore = Math.min(100, Math.round(
-    (selected.length / 6) * 60 +
+    (selected.length / 9) * 60 +
     (new Set(selected.map((s) => s.layer)).size / 3) * 40
   ));
 
@@ -111,27 +150,29 @@ const ScentLabPage = () => {
               ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              {notesForLayer.map((note) => {
-                const isSelected = selected.find((s) => s.id === note.id);
-                return (
-                  <motion.button
-                    key={note.id}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => (isSelected ? removeNote(note.id) : addNote(note))}
-                    className={`glass-surface rounded-xl p-4 text-center transition-all ${
-                      isSelected
-                        ? "border-primary/50 bg-primary/5"
-                        : "hover:border-primary/20"
-                    }`}
-                  >
-                    <span className="text-2xl block mb-1">{note.emoji}</span>
-                    <span className="text-xs font-body text-foreground">{note.name}</span>
-                  </motion.button>
-                );
-              })}
-            </div>
+            <ScrollArea className="h-[420px]">
+              <div className="grid grid-cols-4 gap-2 pr-3">
+                {notesForLayer.map((note) => {
+                  const isSelected = selected.find((s) => s.id === note.id);
+                  return (
+                    <motion.button
+                      key={note.id}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => (isSelected ? removeNote(note.id) : addNote(note))}
+                      className={`glass-surface rounded-xl p-3 text-center transition-all ${
+                        isSelected
+                          ? "border-primary/50 bg-primary/5"
+                          : "hover:border-primary/20"
+                      }`}
+                    >
+                      <span className="text-xl block mb-1">{note.emoji}</span>
+                      <span className="text-[10px] font-body text-foreground leading-tight block">{note.name}</span>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </ScrollArea>
           </motion.div>
 
           {/* Central Orb */}
@@ -143,7 +184,6 @@ const ScentLabPage = () => {
           >
             <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6">
               <GlowOrb className="w-full h-full" />
-              {/* Note indicators orbiting */}
               {selected.map((s, i) => {
                 const angle = (i / Math.max(selected.length, 1)) * 360;
                 const radius = 45;
@@ -208,7 +248,7 @@ const ScentLabPage = () => {
             transition={{ delay: 0.2 }}
           >
             <h3 className="font-display text-sm tracking-wider text-muted-foreground mb-4">
-              YOUR BLEND ({selected.length}/6)
+              YOUR BLEND ({selected.length}/9)
             </h3>
 
             {selected.length === 0 && (
