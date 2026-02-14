@@ -45,18 +45,7 @@ const ScentLabPage = () => {
     (new Set(selected.map((s) => s.layer)).size / 3) * 40
   ));
 
-  // Blend the selected note colors into a liquid color
-  const liquidColor = useMemo(() => {
-    if (selected.length === 0) return "hsl(185, 80%, 55%)";
-    // Average the hues weighted by position
-    const hues = selected.map((s) => {
-      const match = s.color.match(/hsl\((\d+)/);
-      return match ? parseInt(match[1]) : 185;
-    });
-    const avgHue = Math.round(hues.reduce((a, b) => a + b, 0) / hues.length);
-    return `hsl(${avgHue}, 65%, 45%)`;
-  }, [selected]);
-
+  const noteColors = useMemo(() => selected.map((s) => s.color), [selected]);
   const fillPercent = selected.length / MAX_TOTAL;
 
   const notesForLayer = availableNotes.filter((n) => n.layer === activeLayer);
@@ -165,7 +154,7 @@ const ScentLabPage = () => {
           >
             <PerfumeFlacon
               fillPercent={fillPercent}
-              liquidColor={liquidColor}
+              noteColors={noteColors}
               className="w-40 h-52 sm:w-48 sm:h-64 lg:w-56 lg:h-72 mb-4 sm:mb-6"
             />
 
