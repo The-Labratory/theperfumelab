@@ -10,6 +10,7 @@ import WorldsPage from "./pages/WorldsPage";
 import ScentLabPage from "./pages/ScentLabPage";
 import StorePage from "./pages/StorePage";
 import ProductPage from "./pages/ProductPage";
+import InstallPage from "./pages/InstallPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const AppContent = () => {
       <Route path="/lab" element={<ScentLabPage />} />
       <Route path="/store" element={<StorePage />} />
       <Route path="/product/:handle" element={<ProductPage />} />
+      <Route path="/install" element={<InstallPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
