@@ -8,8 +8,9 @@ const navItems = [
   { path: "/", label: "Home" },
   { path: "/worlds", label: "Worlds" },
   { path: "/lab", label: "Perfumer Lab" },
+  { path: "/collection", label: "Collection" },
   { path: "/store", label: "Store" },
-  { path: "/onboarding", label: "Discover DNA" },
+  { path: "/dna", label: "Scent DNA" },
 ];
 
 const Navbar = () => {
