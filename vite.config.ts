@@ -24,8 +24,8 @@ export default defineConfig(({ mode }) => ({
         navigateFallbackDenylist: [/^\/~oauth/],
       },
       manifest: {
-        name: "SCENTRA — Fragrance Atelier",
-        short_name: "SCENTRA",
+        name: "The Perfume Lab — Fragrance Atelier",
+        short_name: "The Perfume Lab",
         description: "Craft your signature scent. Explore fragrance worlds, build custom compositions, and shop luxury perfumes.",
         theme_color: "#0a0a0f",
         background_color: "#0a0a0f",

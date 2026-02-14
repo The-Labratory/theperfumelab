@@ -118,7 +118,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="relative z-10 border-t border-border py-8 px-6 text-center">
         <p className="text-xs text-muted-foreground font-body tracking-wide">
-          © 2026 SCENTRA — Your scent, your world.
+          © 2026 The Perfume Lab — Your scent, your world.
         </p>
       </footer>
     </div>);
