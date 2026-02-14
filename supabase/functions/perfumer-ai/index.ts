@@ -9,7 +9,35 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { notes, concentration, mode } = await req.json();
+    const body = await req.json();
+    const { notes, concentration, mode } = body;
+
+    // Input validation
+    if (!mode || (mode !== "analyze" && mode !== "gift")) {
+      return new Response(JSON.stringify({ error: "Invalid mode" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (mode === "analyze") {
+      if (!Array.isArray(notes) || notes.length < 1 || notes.length > 20) {
+        return new Response(JSON.stringify({ error: "Invalid notes" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (typeof concentration !== "string" || concentration.length > 50) {
+        return new Response(JSON.stringify({ error: "Invalid concentration" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+    if (mode === "gift") {
+      if (!notes || typeof notes !== "object" || !notes.personality || !notes.occasion || !notes.mood) {
+        return new Response(JSON.stringify({ error: "Invalid gift parameters" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -85,7 +113,7 @@ Provide: 1) Brief assessment of balance 2) One specific suggestion to improve it
     });
   } catch (e) {
     console.error("perfumer-ai error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
+    return new Response(JSON.stringify({ error: "An error occurred processing your request" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
