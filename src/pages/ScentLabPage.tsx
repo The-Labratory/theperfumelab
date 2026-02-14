@@ -10,6 +10,7 @@ import PerfumeFlacon from "@/components/PerfumeFlacon";
 import CreationCheckout from "@/components/CreationCheckout";
 import HarmonyMeter from "@/components/HarmonyMeter";
 import PerfumeStory from "@/components/PerfumeStory";
+import AIPerfumer from "@/components/AIPerfumer";
 import { availableNotes, concentrations, type Note, type Concentration } from "@/data/scentNotes";
 
 interface SelectedNote extends Note {
@@ -219,6 +220,9 @@ const ScentLabPage = () => {
                 <PerfumeStory notes={selected} />
               </div>
             )}
+
+            {/* AI Perfumer */}
+            <AIPerfumer notes={selected} concentration={concentration.name} />
           </motion.div>
 
           {/* Selected Notes Detail */}
