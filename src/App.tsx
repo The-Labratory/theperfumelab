@@ -15,6 +15,7 @@ import CollectionPage from "./pages/CollectionPage";
 import ScentDNAPage from "./pages/ScentDNAPage";
 import GiftingPage from "./pages/GiftingPage";
 import InstallPage from "./pages/InstallPage";
+import PartnerPage from "./pages/PartnerPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const AppContent = () => {
       <Route path="/store" element={<StorePage />} />
       <Route path="/product/:handle" element={<ProductPage />} />
       <Route path="/install" element={<InstallPage />} />
+      <Route path="/partner" element={<PartnerPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
