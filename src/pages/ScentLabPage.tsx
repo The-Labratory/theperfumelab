@@ -3,83 +3,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sparkles, Star, Wind, Clock, Heart } from "lucide-react";
+import { Sparkles, Star, Wind, Clock, Heart, Droplets } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import GlowOrb from "@/components/GlowOrb";
-
-interface Note {
-  id: string;
-  name: string;
-  emoji: string;
-  layer: "top" | "heart" | "base";
-  color: string;
-}
-
-const availableNotes: Note[] = [
-  // Top Notes (16)
-  { id: "bergamot", name: "Bergamot", emoji: "🍊", layer: "top", color: "hsl(35 90% 55%)" },
-  { id: "lemon", name: "Lemon Zest", emoji: "🍋", layer: "top", color: "hsl(50 90% 55%)" },
-  { id: "pink-pepper", name: "Pink Pepper", emoji: "🌶️", layer: "top", color: "hsl(350 70% 55%)" },
-  { id: "grapefruit", name: "Grapefruit", emoji: "🍈", layer: "top", color: "hsl(15 80% 55%)" },
-  { id: "blood-orange", name: "Blood Orange", emoji: "🟠", layer: "top", color: "hsl(20 85% 50%)" },
-  { id: "green-apple", name: "Green Apple", emoji: "🍏", layer: "top", color: "hsl(100 60% 50%)" },
-  { id: "pear", name: "Pear", emoji: "🍐", layer: "top", color: "hsl(80 50% 55%)" },
-  { id: "black-currant", name: "Black Currant", emoji: "🫐", layer: "top", color: "hsl(280 50% 35%)" },
-  { id: "sparkling-citrus", name: "Sparkling Citrus", emoji: "✨", layer: "top", color: "hsl(55 85% 60%)" },
-  { id: "mandarin", name: "Mandarin", emoji: "🍊", layer: "top", color: "hsl(25 90% 55%)" },
-  { id: "cardamom", name: "Cardamom", emoji: "🫚", layer: "top", color: "hsl(40 40% 45%)" },
-  { id: "ginger", name: "Ginger", emoji: "🫚", layer: "top", color: "hsl(38 60% 50%)" },
-  { id: "saffron", name: "Saffron", emoji: "🌾", layer: "top", color: "hsl(30 90% 45%)" },
-  { id: "mint", name: "Mint", emoji: "🌿", layer: "top", color: "hsl(150 60% 45%)" },
-  { id: "eucalyptus", name: "Eucalyptus", emoji: "🍃", layer: "top", color: "hsl(160 40% 50%)" },
-  { id: "aldehydes", name: "Aldehydes", emoji: "💠", layer: "top", color: "hsl(200 30% 70%)" },
-
-  // Heart Notes (16)
-  { id: "rose", name: "Rose", emoji: "🌹", layer: "heart", color: "hsl(340 70% 55%)" },
-  { id: "jasmine", name: "Jasmine", emoji: "🌼", layer: "heart", color: "hsl(45 80% 70%)" },
-  { id: "iris", name: "Iris", emoji: "💜", layer: "heart", color: "hsl(265 60% 55%)" },
-  { id: "lavender", name: "Lavender", emoji: "💐", layer: "heart", color: "hsl(265 40% 60%)" },
-  { id: "violet", name: "Violet", emoji: "🪻", layer: "heart", color: "hsl(275 55% 50%)" },
-  { id: "lilac", name: "Lilac", emoji: "🌸", layer: "heart", color: "hsl(280 45% 65%)" },
-  { id: "peony", name: "Peony", emoji: "🌺", layer: "heart", color: "hsl(330 60% 65%)" },
-  { id: "tuberose", name: "Tuberose", emoji: "🤍", layer: "heart", color: "hsl(0 0% 90%)" },
-  { id: "white-florals", name: "White Florals", emoji: "🕊️", layer: "heart", color: "hsl(40 30% 85%)" },
-  { id: "coffee", name: "Coffee", emoji: "☕", layer: "heart", color: "hsl(25 60% 25%)" },
-  { id: "cinnamon", name: "Cinnamon", emoji: "🫕", layer: "heart", color: "hsl(15 70% 40%)" },
-  { id: "nutmeg", name: "Nutmeg", emoji: "🥜", layer: "heart", color: "hsl(30 50% 40%)" },
-  { id: "geranium", name: "Geranium", emoji: "🌷", layer: "heart", color: "hsl(350 50% 55%)" },
-  { id: "magnolia", name: "Magnolia", emoji: "🌸", layer: "heart", color: "hsl(320 40% 75%)" },
-  { id: "orange-blossom", name: "Orange Blossom", emoji: "🌼", layer: "heart", color: "hsl(30 70% 65%)" },
-  { id: "ylang-ylang", name: "Ylang-Ylang", emoji: "🌻", layer: "heart", color: "hsl(50 65% 55%)" },
-
-  // Base Notes (16)
-  { id: "vanilla", name: "Vanilla", emoji: "🍦", layer: "base", color: "hsl(35 70% 65%)" },
-  { id: "sandalwood", name: "Sandalwood", emoji: "🪵", layer: "base", color: "hsl(25 50% 40%)" },
-  { id: "musk", name: "White Musk", emoji: "🤍", layer: "base", color: "hsl(0 0% 80%)" },
-  { id: "amber", name: "Amber", emoji: "🔶", layer: "base", color: "hsl(35 90% 45%)" },
-  { id: "patchouli", name: "Patchouli", emoji: "🌿", layer: "base", color: "hsl(120 30% 30%)" },
-  { id: "cedarwood", name: "Cedarwood", emoji: "🌲", layer: "base", color: "hsl(20 40% 35%)" },
-  { id: "vetiver", name: "Vetiver", emoji: "🌾", layer: "base", color: "hsl(90 30% 35%)" },
-  { id: "oud", name: "Oud", emoji: "🏺", layer: "base", color: "hsl(15 50% 25%)" },
-  { id: "tonka-bean", name: "Tonka Bean", emoji: "🫘", layer: "base", color: "hsl(30 55% 35%)" },
-  { id: "benzoin", name: "Benzoin", emoji: "🍯", layer: "base", color: "hsl(35 65% 40%)" },
-  { id: "cashmere-wood", name: "Cashmere Wood", emoji: "🧶", layer: "base", color: "hsl(20 25% 50%)" },
-  { id: "dark-cherry", name: "Dark Cherry", emoji: "🍒", layer: "base", color: "hsl(350 60% 35%)" },
-  { id: "almond", name: "Almond", emoji: "🌰", layer: "base", color: "hsl(30 40% 50%)" },
-  { id: "cocoa", name: "Cocoa", emoji: "🍫", layer: "base", color: "hsl(15 50% 25%)" },
-  { id: "leather", name: "Leather", emoji: "🧳", layer: "base", color: "hsl(20 35% 30%)" },
-  { id: "smoky-incense", name: "Smoky Incense", emoji: "🕯️", layer: "base", color: "hsl(0 10% 35%)" },
-];
+import { availableNotes, concentrations, type Note, type Concentration } from "@/data/scentNotes";
 
 interface SelectedNote extends Note {
   intensity: number;
   warmth: number;
 }
 
+const MAX_PER_LAYER = 3;
+const MAX_TOTAL = 9;
+
 const ScentLabPage = () => {
   const [selected, setSelected] = useState<SelectedNote[]>([]);
   const [activeLayer, setActiveLayer] = useState<"top" | "heart" | "base">("top");
+  const [concentration, setConcentration] = useState<Concentration>(concentrations[0]);
 
   const layers = ["top", "heart", "base"] as const;
   const layerLabels = { top: "Top Notes", heart: "Heart Notes", base: "Base Notes" };
@@ -87,7 +28,7 @@ const ScentLabPage = () => {
 
   const addNote = (note: Note) => {
     if (selected.find((s) => s.id === note.id)) return;
-    if (selected.filter((s) => s.layer === note.layer).length >= 3) return;
+    if (selected.filter((s) => s.layer === note.layer).length >= MAX_PER_LAYER) return;
     setSelected([...selected, { ...note, intensity: 50, warmth: 50 }]);
   };
 
@@ -100,33 +41,60 @@ const ScentLabPage = () => {
   };
 
   const harmonyScore = Math.min(100, Math.round(
-    (selected.length / 9) * 60 +
+    (selected.length / MAX_TOTAL) * 60 +
     (new Set(selected.map((s) => s.layer)).size / 3) * 40
   ));
 
   const notesForLayer = availableNotes.filter((n) => n.layer === activeLayer);
-  const selectedForLayer = selected.filter((s) => s.layer === activeLayer);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <ParticleField count={10} />
 
-      <div className="relative z-10 pt-24 pb-16 px-6 max-w-6xl mx-auto">
+      <div className="relative z-10 pt-20 sm:pt-24 pb-12 sm:pb-16 px-3 sm:px-6 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-6 sm:mb-10"
         >
-          <h1 className="font-display text-3xl md:text-4xl font-black tracking-wider gradient-text mb-2">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-black tracking-wider gradient-text mb-1 sm:mb-2">
             SCENT LAB
           </h1>
-          <p className="text-muted-foreground font-body">
-            Craft your signature fragrance. Drag notes into your blend.
+          <p className="text-xs sm:text-sm text-muted-foreground font-body">
+            Craft your signature fragrance
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-[1fr_300px_1fr] gap-8 items-start">
+        {/* Concentration selector - always visible */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex gap-2 sm:gap-3 mb-6 sm:mb-8 max-w-lg mx-auto"
+        >
+          {concentrations.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setConcentration(c)}
+              className={`flex-1 rounded-xl p-2.5 sm:p-3 text-center transition-all ${
+                concentration.id === c.id
+                  ? "bg-primary/10 border border-primary/40 shadow-[0_0_12px_hsl(185_80%_55%/0.15)]"
+                  : "glass-surface hover:border-primary/20"
+              }`}
+            >
+              <Droplets className={`w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-1 ${
+                concentration.id === c.id ? "text-primary" : "text-muted-foreground"
+              }`} />
+              <span className="text-[10px] sm:text-xs font-display tracking-wide block text-foreground">{c.name}</span>
+              <span className="text-[10px] text-primary font-display block">{c.percentage}</span>
+              <span className="text-[9px] sm:text-[10px] text-muted-foreground font-body block">{c.longevity}</span>
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Main grid - stacks on mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px_1fr] gap-4 sm:gap-6 lg:gap-8 items-start">
           {/* Note Palette */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -134,24 +102,24 @@ const ScentLabPage = () => {
             transition={{ delay: 0.2 }}
           >
             {/* Layer tabs */}
-            <div className="flex gap-2 mb-6">
+            <div className="flex gap-1.5 sm:gap-2 mb-4 sm:mb-6">
               {layers.map((l) => (
                 <button
                   key={l}
                   onClick={() => setActiveLayer(l)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-display tracking-wide transition-all ${
+                  className={`flex-1 py-2 rounded-lg text-xs sm:text-sm font-display tracking-wide transition-all ${
                     activeLayer === l
                       ? "bg-primary/10 text-primary border border-primary/30"
                       : "glass-surface text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {layerEmojis[l]} {layerLabels[l]}
+                  <span className="hidden sm:inline">{layerEmojis[l]} </span>{layerLabels[l]}
                 </button>
               ))}
             </div>
 
-            <ScrollArea className="h-[420px]">
-              <div className="grid grid-cols-4 gap-2 pr-3">
+            <ScrollArea className="h-[280px] sm:h-[360px] lg:h-[420px]">
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-2 pr-3">
                 {notesForLayer.map((note) => {
                   const isSelected = selected.find((s) => s.id === note.id);
                   return (
@@ -160,14 +128,14 @@ const ScentLabPage = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => (isSelected ? removeNote(note.id) : addNote(note))}
-                      className={`glass-surface rounded-xl p-3 text-center transition-all ${
+                      className={`glass-surface rounded-lg sm:rounded-xl p-2 sm:p-3 text-center transition-all ${
                         isSelected
                           ? "border-primary/50 bg-primary/5"
                           : "hover:border-primary/20"
                       }`}
                     >
-                      <span className="text-xl block mb-1">{note.emoji}</span>
-                      <span className="text-[10px] font-body text-foreground leading-tight block">{note.name}</span>
+                      <span className="text-lg sm:text-xl block mb-0.5 sm:mb-1">{note.emoji}</span>
+                      <span className="text-[9px] sm:text-[10px] font-body text-foreground leading-tight block">{note.name}</span>
                     </motion.button>
                   );
                 })}
@@ -175,18 +143,18 @@ const ScentLabPage = () => {
             </ScrollArea>
           </motion.div>
 
-          {/* Central Orb */}
+          {/* Central Orb - smaller on mobile, reordered */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center order-first lg:order-none"
           >
-            <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6">
+            <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-4 sm:mb-6">
               <GlowOrb className="w-full h-full" />
               {selected.map((s, i) => {
                 const angle = (i / Math.max(selected.length, 1)) * 360;
-                const radius = 45;
+                const radius = 40;
                 return (
                   <motion.div
                     key={s.id}
@@ -197,7 +165,7 @@ const ScentLabPage = () => {
                       x: Math.cos((angle * Math.PI) / 180) * radius,
                       y: Math.sin((angle * Math.PI) / 180) * radius,
                     }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-base sm:text-xl"
                     style={{ filter: `drop-shadow(0 0 6px ${s.color})` }}
                   >
                     {s.emoji}
@@ -207,34 +175,38 @@ const ScentLabPage = () => {
             </div>
 
             {/* Stats */}
-            <div className="glass-surface rounded-xl p-5 w-full space-y-3">
+            <div className="glass-surface rounded-xl p-4 sm:p-5 w-full space-y-2.5 sm:space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-body flex items-center gap-1">
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
                   <Star className="w-3 h-3" /> Harmony
                 </span>
-                <span className="font-display text-sm text-primary">{harmonyScore}%</span>
+                <span className="font-display text-xs sm:text-sm text-primary">{harmonyScore}%</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-body flex items-center gap-1">
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
+                  <Droplets className="w-3 h-3" /> Concentration
+                </span>
+                <span className="font-display text-xs sm:text-sm text-accent">{concentration.percentage}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
                   <Wind className="w-3 h-3" /> Projection
                 </span>
-                <span className="font-display text-sm text-accent">
+                <span className="font-display text-xs sm:text-sm text-accent">
                   {selected.length > 3 ? "Strong" : selected.length > 1 ? "Moderate" : "Light"}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-body flex items-center gap-1">
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
                   <Clock className="w-3 h-3" /> Longevity
                 </span>
-                <span className="font-display text-sm text-foreground">
-                  {selected.filter((s) => s.layer === "base").length > 0 ? "6-8 hrs" : "2-4 hrs"}
-                </span>
+                <span className="font-display text-xs sm:text-sm text-foreground">{concentration.longevity}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-body flex items-center gap-1">
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-body flex items-center gap-1">
                   <Heart className="w-3 h-3" /> Mood
                 </span>
-                <span className="font-display text-sm text-secondary">
+                <span className="font-display text-xs sm:text-sm text-secondary">
                   {selected.length === 0 ? "—" : selected.some(s => s.layer === "heart") ? "Romantic" : "Energetic"}
                 </span>
               </div>
@@ -247,78 +219,80 @@ const ScentLabPage = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h3 className="font-display text-sm tracking-wider text-muted-foreground mb-4">
-              YOUR BLEND ({selected.length}/9)
+            <h3 className="font-display text-xs sm:text-sm tracking-wider text-muted-foreground mb-3 sm:mb-4">
+              YOUR BLEND ({selected.length}/{MAX_TOTAL})
             </h3>
 
             {selected.length === 0 && (
-              <div className="glass-surface rounded-xl p-8 text-center">
-                <Sparkles className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground font-body">
-                  Select notes from the left to begin your creation
+              <div className="glass-surface rounded-xl p-6 sm:p-8 text-center">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground mx-auto mb-2 sm:mb-3" />
+                <p className="text-xs sm:text-sm text-muted-foreground font-body">
+                  Select notes to begin your creation
                 </p>
               </div>
             )}
 
-            <AnimatePresence>
-              {selected.map((note) => (
-                <motion.div
-                  key={note.id}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="glass-surface rounded-xl p-4 mb-3"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span>{note.emoji}</span>
-                      <span className="text-sm font-body text-foreground">{note.name}</span>
-                      <span className="text-[10px] font-display tracking-wider text-muted-foreground uppercase">
-                        {note.layer}
-                      </span>
+            <ScrollArea className={selected.length > 3 ? "h-[300px] sm:h-[380px]" : ""}>
+              <AnimatePresence>
+                {selected.map((note) => (
+                  <motion.div
+                    key={note.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="glass-surface rounded-xl p-3 sm:p-4 mb-2 sm:mb-3"
+                  >
+                    <div className="flex items-center justify-between mb-2 sm:mb-3">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <span className="text-sm sm:text-base">{note.emoji}</span>
+                        <span className="text-xs sm:text-sm font-body text-foreground">{note.name}</span>
+                        <span className="text-[8px] sm:text-[10px] font-display tracking-wider text-muted-foreground uppercase">
+                          {note.layer}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => removeNote(note.id)}
+                        className="text-xs text-muted-foreground hover:text-destructive transition-colors p-1"
+                      >
+                        ✕
+                      </button>
                     </div>
-                    <button
-                      onClick={() => removeNote(note.id)}
-                      className="text-xs text-muted-foreground hover:text-destructive transition-colors"
-                    >
-                      ✕
-                    </button>
-                  </div>
 
-                  <div className="space-y-2">
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-[10px] text-muted-foreground font-body">Intensity</span>
-                        <span className="text-[10px] text-primary font-display">{note.intensity}%</span>
+                    <div className="space-y-2">
+                      <div>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-body">Intensity</span>
+                          <span className="text-[9px] sm:text-[10px] text-primary font-display">{note.intensity}%</span>
+                        </div>
+                        <Slider
+                          value={[note.intensity]}
+                          onValueChange={([v]) => updateNote(note.id, "intensity", v)}
+                          max={100}
+                          step={1}
+                          className="w-full"
+                        />
                       </div>
-                      <Slider
-                        value={[note.intensity]}
-                        onValueChange={([v]) => updateNote(note.id, "intensity", v)}
-                        max={100}
-                        step={1}
-                        className="w-full"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-[10px] text-muted-foreground font-body">Warmth</span>
-                        <span className="text-[10px] text-accent font-display">{note.warmth}%</span>
+                      <div>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-body">Warmth</span>
+                          <span className="text-[9px] sm:text-[10px] text-accent font-display">{note.warmth}%</span>
+                        </div>
+                        <Slider
+                          value={[note.warmth]}
+                          onValueChange={([v]) => updateNote(note.id, "warmth", v)}
+                          max={100}
+                          step={1}
+                          className="w-full"
+                        />
                       </div>
-                      <Slider
-                        value={[note.warmth]}
-                        onValueChange={([v]) => updateNote(note.id, "warmth", v)}
-                        max={100}
-                        step={1}
-                        className="w-full"
-                      />
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </ScrollArea>
 
             {selected.length > 0 && (
-              <Button className="w-full mt-4 glow-primary font-display tracking-wider text-sm" size="lg">
+              <Button className="w-full mt-3 sm:mt-4 glow-primary font-display tracking-wider text-xs sm:text-sm" size="lg">
                 <Sparkles className="w-4 h-4 mr-2" /> Save Creation
               </Button>
             )}
