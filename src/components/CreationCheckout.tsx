@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Users, User, Package, Sparkles, ChevronDown, Loader2, Tag } from "lucide-react";
+import { ShoppingCart, Users, User, Package, Sparkles, Loader2, Tag } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import type { Note, Concentration } from "@/data/scentNotes";
 import { toast } from "sonner";
@@ -13,72 +13,64 @@ interface SelectedNote extends Note {
 interface CreationCheckoutProps {
   selected: SelectedNote[];
   concentration: Concentration;
+  volume: number;
   onClose: () => void;
 }
 
 type CustomerType = "solo" | "b2b";
-type BottleSize = "50ml" | "100ml";
 
-interface PriceTier {
-  min: number;
-  max: number | null;
-  label: string;
-  discount: number;
-}
-
-const B2B_TIERS: PriceTier[] = [
-  { min: 5, max: 9, label: "5–9 units", discount: 10 },
-  { min: 10, max: 24, label: "10–24 units", discount: 18 },
-  { min: 25, max: 49, label: "25–49 units", discount: 25 },
-  { min: 50, max: null, label: "50+ units", discount: 32 },
-];
-
-// Mapped from actual Shopify "Customized Perfume" variants
-const BASE_PRICES: Record<string, { price: number; variantId: string }> = {
-  "50ml-parfum": { price: 39.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
-  "50ml-edp": { price: 34.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "50ml-edt": { price: 34.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
-  "100ml-parfum": { price: 64.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
-  "100ml-edp": { price: 64.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
-  "100ml-edt": { price: 64.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
+// Pricing matrix: base price per volume/concentration combo
+// Anchor: 100ml parfum = 79.99€ (original) → 59.99€ (sale)
+// Scale down proportionally for smaller volumes & lower concentrations
+const PRICE_MATRIX: Record<string, { original: number; sale: number; variantId: string }> = {
+  "10-parfum":  { original: 14.99, sale: 10.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
+  "10-edp":     { original: 12.99, sale: 9.99,  variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "10-edt":     { original: 10.99, sale: 7.99,  variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "30-parfum":  { original: 34.99, sale: 25.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
+  "30-edp":     { original: 29.99, sale: 22.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "30-edt":     { original: 24.99, sale: 18.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "50-parfum":  { original: 49.99, sale: 37.99, variantId: "gid://shopify/ProductVariant/46594629894482" },
+  "50-edp":     { original: 44.99, sale: 34.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "50-edt":     { original: 39.99, sale: 29.99, variantId: "gid://shopify/ProductVariant/46594632286546" },
+  "100-parfum": { original: 79.99, sale: 59.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
+  "100-edp":    { original: 69.99, sale: 54.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
+  "100-edt":    { original: 59.99, sale: 44.99, variantId: "gid://shopify/ProductVariant/46594665939282" },
 };
 
-function getVariantKey(size: BottleSize, concentration: Concentration): string {
-  return `${size}-${concentration.id}`;
+const B2B_DISCOUNT = 50; // 50% flat discount for B2B
+
+function getPriceKey(volume: number, concentration: Concentration): string {
+  return `${volume}-${concentration.id}`;
 }
 
-function getActiveTier(quantity: number): PriceTier | null {
-  return B2B_TIERS.find((t) => quantity >= t.min && (t.max === null || quantity <= t.max)) ?? null;
-}
-
-const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckoutProps) => {
+const CreationCheckout = ({ selected, concentration, volume, onClose }: CreationCheckoutProps) => {
   const [customerType, setCustomerType] = useState<CustomerType>("solo");
-  const [size, setSize] = useState<BottleSize>("50ml");
   const [quantity, setQuantity] = useState(1);
   const [b2bQuantity, setB2bQuantity] = useState(10);
   const [isAdding, setIsAdding] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
-  const variantKey = getVariantKey(size, concentration);
-  const basePrice = BASE_PRICES[variantKey]?.price ?? 39.99;
-  const variantId = BASE_PRICES[variantKey]?.variantId ?? "";
+  const priceKey = getPriceKey(volume, concentration);
+  const priceEntry = PRICE_MATRIX[priceKey] ?? { original: 59.99, sale: 59.99, variantId: "" };
+  const variantId = priceEntry.variantId;
 
-  const activeTier = customerType === "b2b" ? getActiveTier(b2bQuantity) : null;
-  const discount = activeTier?.discount ?? 0;
   const qty = customerType === "b2b" ? b2bQuantity : quantity;
+  const discount = customerType === "b2b" ? B2B_DISCOUNT : 0;
 
   const unitPrice = useMemo(() => {
-    if (customerType === "b2b" && discount > 0) {
-      return parseFloat((basePrice * (1 - discount / 100)).toFixed(2));
+    const salePrice = priceEntry.sale;
+    if (customerType === "b2b") {
+      return parseFloat((salePrice * (1 - B2B_DISCOUNT / 100)).toFixed(2));
     }
-    return basePrice;
-  }, [basePrice, discount, customerType]);
+    return salePrice;
+  }, [priceEntry.sale, customerType]);
 
   const totalPrice = useMemo(() => parseFloat((unitPrice * qty).toFixed(2)), [unitPrice, qty]);
   const savings = useMemo(() => {
-    if (discount > 0) return parseFloat(((basePrice - unitPrice) * qty).toFixed(2));
-    return 0;
-  }, [basePrice, unitPrice, qty, discount]);
+    const fullPrice = priceEntry.original * qty;
+    const actualPrice = unitPrice * qty;
+    return parseFloat((fullPrice - actualPrice).toFixed(2));
+  }, [priceEntry.original, unitPrice, qty]);
 
   const blendSummary = selected.map((n) => n.name).join(", ");
 
@@ -89,13 +81,12 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
     }
     setIsAdding(true);
     try {
-      // We add the quantity as specified
       await addItem({
         product: {
           node: {
             id: `gid://shopify/Product/8443485782354`,
             title: `Custom Blend: ${blendSummary}`,
-            description: `Custom ${concentration.name} — ${size} — ${selected.length} notes: ${blendSummary}`,
+            description: `Custom ${concentration.name} — ${volume}ml — ${selected.length} notes: ${blendSummary}`,
             handle: "customized-perfume",
             priceRange: { minVariantPrice: { amount: unitPrice.toString(), currencyCode: "EUR" } },
             images: { edges: [] },
@@ -103,24 +94,24 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
               edges: [{
                 node: {
                   id: variantId,
-                  title: `${size} ${concentration.percentage}`,
+                  title: `${volume}ml ${concentration.percentage}`,
                   price: { amount: unitPrice.toString(), currencyCode: "EUR" },
                   availableForSale: true,
-                  selectedOptions: [{ name: "Title", value: `${size} ${concentration.percentage}` }],
+                  selectedOptions: [{ name: "Title", value: `${volume}ml ${concentration.percentage}` }],
                 },
               }],
             },
-            options: [{ name: "Title", values: [`${size} ${concentration.percentage}`] }],
+            options: [{ name: "Title", values: [`${volume}ml ${concentration.percentage}`] }],
           },
         },
         variantId,
-        variantTitle: `${size} ${concentration.percentage}`,
+        variantTitle: `${volume}ml ${concentration.percentage}`,
         price: { amount: unitPrice.toString(), currencyCode: "EUR" },
         quantity: qty,
-        selectedOptions: [{ name: "Title", value: `${size} ${concentration.percentage}` }],
+        selectedOptions: [{ name: "Title", value: `${volume}ml ${concentration.percentage}` }],
       });
       toast.success("Custom blend added to cart!", {
-        description: `${qty}× ${size} ${concentration.name}`,
+        description: `${qty}× ${volume}ml ${concentration.name}`,
       });
       onClose();
     } catch {
@@ -149,7 +140,9 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
       <div className="p-3 rounded-xl bg-muted/30 border border-border">
         <p className="text-[10px] font-display tracking-widest text-muted-foreground mb-1">YOUR COMPOSITION</p>
         <p className="text-xs font-body text-foreground leading-relaxed">{blendSummary}</p>
-        <p className="text-[10px] text-primary font-display mt-1">{concentration.name} • {concentration.percentage} • {concentration.longevity}</p>
+        <p className="text-[10px] text-primary font-display mt-1">
+          {concentration.name} • {concentration.percentage} • {volume}ml • {concentration.longevity}
+        </p>
       </div>
 
       {/* Customer type toggle */}
@@ -170,25 +163,12 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
         ))}
       </div>
 
-      {/* Size selector */}
-      <div>
-        <p className="text-[10px] font-display tracking-widest text-muted-foreground mb-2">BOTTLE SIZE</p>
-        <div className="flex gap-2">
-          {(["50ml", "100ml"] as BottleSize[]).map((s) => (
-            <button
-              key={s}
-              onClick={() => setSize(s)}
-              className={`flex-1 py-3 rounded-xl font-display text-sm tracking-wider transition-all flex items-center justify-center gap-2 ${
-                size === s
-                  ? "bg-primary/10 border border-primary/40 text-primary"
-                  : "glass-surface text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Package className="w-4 h-4" />
-              {s}
-            </button>
-          ))}
-        </div>
+      {/* Volume display */}
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 flex items-center justify-between">
+        <span className="text-xs font-display tracking-wider text-muted-foreground flex items-center gap-2">
+          <Package className="w-4 h-4" /> BOTTLE SIZE
+        </span>
+        <span className="font-display text-sm text-primary">{volume}ml</span>
       </div>
 
       {/* Quantity */}
@@ -220,24 +200,10 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
               onChange={(e) => setB2bQuantity(Math.max(5, parseInt(e.target.value) || 5))}
               className="w-full px-4 py-3 rounded-xl bg-muted/30 border border-border font-display text-foreground text-center text-lg focus:outline-none focus:border-primary/50"
             />
-            {/* B2B tier table */}
-            <div className="space-y-1.5">
-              {B2B_TIERS.map((tier) => {
-                const isActive = activeTier === tier;
-                return (
-                  <div
-                    key={tier.label}
-                    className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-all ${
-                      isActive
-                        ? "bg-primary/10 border border-primary/30 text-primary"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    <span className="font-body">{tier.label}</span>
-                    <span className="font-display">{tier.discount}% off</span>
-                  </div>
-                );
-              })}
+            <div className="p-3 rounded-lg bg-accent/10 border border-accent/20">
+              <p className="text-xs font-display text-accent flex items-center gap-1">
+                <Tag className="w-3 h-3" /> B2B Partner Discount: {B2B_DISCOUNT}% off all orders
+              </p>
             </div>
           </div>
         )}
@@ -246,17 +212,25 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
       {/* Price breakdown */}
       <div className="p-4 rounded-xl bg-muted/20 border border-border space-y-2">
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground font-body">Unit price</span>
-          <span className="text-foreground font-display">€{unitPrice.toFixed(2)}</span>
+          <span className="text-muted-foreground font-body">Original price</span>
+          <span className="text-muted-foreground font-display line-through">€{priceEntry.original.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-xs">
+          <span className="text-muted-foreground font-body">Sale price</span>
+          <span className="text-foreground font-display">€{priceEntry.sale.toFixed(2)}</span>
         </div>
         {discount > 0 && (
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground font-body flex items-center gap-1">
               <Tag className="w-3 h-3" /> B2B discount
             </span>
-            <span className="text-emerald-400 font-display">−{discount}%</span>
+            <span className="text-accent font-display">−{discount}%</span>
           </div>
         )}
+        <div className="flex justify-between text-xs">
+          <span className="text-muted-foreground font-body">Unit price</span>
+          <span className="text-primary font-display">€{unitPrice.toFixed(2)}</span>
+        </div>
         <div className="flex justify-between text-xs">
           <span className="text-muted-foreground font-body">Quantity</span>
           <span className="text-foreground font-display">×{qty}</span>
@@ -266,7 +240,7 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
           <span className="font-display text-lg text-primary">€{totalPrice.toFixed(2)}</span>
         </div>
         {savings > 0 && (
-          <p className="text-[10px] text-emerald-400 font-display text-right">You save €{savings.toFixed(2)}</p>
+          <p className="text-[10px] text-accent font-display text-right">You save €{savings.toFixed(2)}</p>
         )}
       </div>
 
@@ -288,7 +262,7 @@ const CreationCheckout = ({ selected, concentration, onClose }: CreationCheckout
 
       {customerType === "b2b" && (
         <p className="text-[10px] text-muted-foreground font-body text-center">
-          B2B orders above 50 units? Contact us for custom pricing and private-label options.
+          Want to become a partner? <a href="/partner" className="text-primary hover:underline">Apply here</a> to manage your B2B orders.
         </p>
       )}
     </motion.div>

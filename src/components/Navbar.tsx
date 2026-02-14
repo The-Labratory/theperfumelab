@@ -13,6 +13,7 @@ const navItems = [
   { path: "/gifting", label: "Gifting" },
   { path: "/store", label: "Store" },
   { path: "/dna", label: "Scent DNA" },
+  { path: "/partner", label: "Partner" },
 ];
 
 const Navbar = () => {

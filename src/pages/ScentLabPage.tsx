@@ -346,6 +346,7 @@ const ScentLabPage = () => {
                   <CreationCheckout
                     selected={selected}
                     concentration={concentration}
+                    volume={volume}
                     onClose={() => setShowCheckout(false)}
                   />
                 </div>
