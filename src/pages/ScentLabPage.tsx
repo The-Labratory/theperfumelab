@@ -64,7 +64,7 @@ const ScentLabPage = () => {
           className="text-center mb-6 sm:mb-10"
         >
           <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-black tracking-wider gradient-text mb-1 sm:mb-2">
-            SCENT LAB
+            PERFUMER LAB
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground font-body">
             Craft your signature fragrance

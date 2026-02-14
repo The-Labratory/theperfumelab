@@ -7,7 +7,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 const navItems = [
   { path: "/", label: "Home" },
   { path: "/worlds", label: "Worlds" },
-  { path: "/lab", label: "Scent Lab" },
+  { path: "/lab", label: "Perfumer Lab" },
   { path: "/store", label: "Store" },
   { path: "/onboarding", label: "Discover DNA" },
 ];
