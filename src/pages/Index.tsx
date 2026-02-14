@@ -8,22 +8,22 @@ import Navbar from "@/components/Navbar";
 import heroOrb from "@/assets/hero-orb.jpg";
 
 const features = [
-  {
-    icon: Sparkles,
-    title: "Discover Your Scent DNA",
-    description: "Enter a story-driven origin experience to uncover your unique fragrance personality.",
-  },
-  {
-    icon: Globe,
-    title: "Explore Scent Worlds",
-    description: "Journey through six immersive realms — from enchanted forests to neon night cities.",
-  },
-  {
-    icon: Beaker,
-    title: "The Scent Lab",
-    description: "Blend notes with precision sliders. Watch your creation come alive in real-time.",
-  },
-];
+{
+  icon: Sparkles,
+  title: "Discover Your Scent DNA",
+  description: "Enter a story-driven origin experience to uncover your unique fragrance personality."
+},
+{
+  icon: Globe,
+  title: "Explore Scent Worlds",
+  description: "Journey through six immersive realms — from enchanted forests to neon night cities."
+},
+{
+  icon: Beaker,
+  title: "The Scent Lab",
+  description: "Blend notes with precision sliders. Watch your creation come alive in real-time."
+}];
+
 
 const Index = () => {
   return (
@@ -43,10 +43,10 @@ const Index = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+            transition={{ duration: 0.8 }}>
+
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-2">
-              <span className="gradient-text">SCENTRA</span>
+              <span className="gradient-text">Perfumer Lab </span>
             </h1>
             <p className="font-display text-sm md:text-base tracking-[0.3em] text-primary/80 mb-8 uppercase">
               Design · Blend · Evolve
@@ -57,8 +57,8 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.7 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body"
-          >
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body">
+
             Become a Scent Alchemist. Craft custom fragrances by exploring worlds, 
             mastering combinations, and unlocking rare ingredients.
           </motion.p>
@@ -67,8 +67,8 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
+            className="flex flex-col sm:flex-row gap-4 justify-center">
+
             <Button asChild size="lg" className="glow-primary font-display tracking-wider text-sm">
               <Link to="/onboarding">
                 Begin Your Journey <ArrowRight className="ml-2 w-4 h-4" />
@@ -91,17 +91,17 @@ const Index = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="grid md:grid-cols-3 gap-8"
-          >
-            {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="glass-surface rounded-xl p-8 group hover:border-primary/30 transition-colors"
-              >
+            className="grid md:grid-cols-3 gap-8">
+
+            {features.map((f, i) =>
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+              className="glass-surface rounded-xl p-8 group hover:border-primary/30 transition-colors">
+
                 <f.icon className="w-8 h-8 text-primary mb-4 group-hover:drop-shadow-[0_0_12px_hsl(185_80%_55%/0.5)] transition-all" />
                 <h3 className="font-display text-base font-semibold tracking-wide mb-2 text-foreground">
                   {f.title}
@@ -110,7 +110,7 @@ const Index = () => {
                   {f.description}
                 </p>
               </motion.div>
-            ))}
+            )}
           </motion.div>
         </div>
       </section>
@@ -121,8 +121,8 @@ const Index = () => {
           © 2026 SCENTRA — Your scent, your world.
         </p>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
