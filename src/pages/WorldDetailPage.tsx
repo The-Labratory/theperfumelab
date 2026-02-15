@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useProgression } from "@/hooks/useProgression";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Brain, Target, FlaskConical, Swords, Lock, Star, CheckCircle, XCircle, Sparkles, Eye } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -15,6 +16,11 @@ const WorldDetailPage = () => {
   const navigate = useNavigate();
   const world = worlds.find((w) => w.id === worldId);
   const [activeTab, setActiveTab] = useState<Tab>("quizzes");
+  const { markWorldVisited } = useProgression();
+
+  useEffect(() => {
+    if (worldId) markWorldVisited(worldId);
+  }, [worldId, markWorldVisited]);
 
   if (!world) {
     return (

@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useProgression } from "@/hooks/useProgression";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -28,6 +29,7 @@ const MAX_VOLUME = 100;
 
 const ScentLabPage = () => {
   const [selected, setSelected] = useState<SelectedNote[]>([]);
+  const { markBlendCreated } = useProgression();
   const [activeLayer, setActiveLayer] = useState<"top" | "heart" | "base">("top");
   const [concentration, setConcentration] = useState<Concentration>(concentrations[0]);
   const [volume, setVolume] = useState<number>(50);
@@ -350,6 +352,7 @@ const ScentLabPage = () => {
                       }).select("blend_number").single();
                       if (error) throw error;
                       setSavedBlendNumber(data.blend_number);
+                      markBlendCreated();
                       toast.success(`Blend No. ${String(data.blend_number).padStart(4, "0")} saved.`);
                     } catch {
                       toast.error("Could not save blend.");

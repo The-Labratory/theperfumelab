@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useProgression } from "@/hooks/useProgression";
 
 const MAX_FOUNDING = 100;
 
@@ -53,6 +54,7 @@ const LaunchPage = () => {
   const [holdRevealed, setHoldRevealed] = useState(false);
   const holdTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const [viewerCount, setViewerCount] = useState(17);
+  const { markWaitlistJoined } = useProgression();
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -95,6 +97,7 @@ const LaunchPage = () => {
       if (error?.code === "23505") toast.info("You're already on the list.");
       else if (error) throw error;
       setSubmitted(true);
+      markWaitlistJoined();
       if (spotsLeft !== null && spotsLeft > 0) setSpotsLeft(spotsLeft - 1);
     } catch {
       toast.error("Something went wrong.");
