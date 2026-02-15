@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      gifts: {
+        Row: {
+          blend_intensity: string | null
+          blend_mood: string | null
+          blend_name: string | null
+          blend_notes: Json | null
+          blend_story: string | null
+          created_at: string
+          duo_partner_mood: string | null
+          duo_partner_name: string | null
+          duo_partner_personality: string | null
+          gifter_name: string | null
+          id: string
+          is_duo: boolean | null
+          memory: string | null
+          mood: string
+          occasion: string
+          personal_message: string | null
+          personality: string
+          reaction_emoji: string | null
+          reaction_message: string | null
+          recipient_name: string | null
+          relationship_depth: string | null
+          revealed_at: string | null
+          scent_letter: string | null
+          share_code: string
+          zodiac_sign: string | null
+        }
+        Insert: {
+          blend_intensity?: string | null
+          blend_mood?: string | null
+          blend_name?: string | null
+          blend_notes?: Json | null
+          blend_story?: string | null
+          created_at?: string
+          duo_partner_mood?: string | null
+          duo_partner_name?: string | null
+          duo_partner_personality?: string | null
+          gifter_name?: string | null
+          id?: string
+          is_duo?: boolean | null
+          memory?: string | null
+          mood: string
+          occasion: string
+          personal_message?: string | null
+          personality: string
+          reaction_emoji?: string | null
+          reaction_message?: string | null
+          recipient_name?: string | null
+          relationship_depth?: string | null
+          revealed_at?: string | null
+          scent_letter?: string | null
+          share_code?: string
+          zodiac_sign?: string | null
+        }
+        Update: {
+          blend_intensity?: string | null
+          blend_mood?: string | null
+          blend_name?: string | null
+          blend_notes?: Json | null
+          blend_story?: string | null
+          created_at?: string
+          duo_partner_mood?: string | null
+          duo_partner_name?: string | null
+          duo_partner_personality?: string | null
+          gifter_name?: string | null
+          id?: string
+          is_duo?: boolean | null
+          memory?: string | null
+          mood?: string
+          occasion?: string
+          personal_message?: string | null
+          personality?: string
+          reaction_emoji?: string | null
+          reaction_message?: string | null
+          recipient_name?: string | null
+          relationship_depth?: string | null
+          revealed_at?: string | null
+          scent_letter?: string | null
+          share_code?: string
+          zodiac_sign?: string | null
+        }
+        Relationships: []
+      }
       partner_applications: {
         Row: {
           business_type: string | null
