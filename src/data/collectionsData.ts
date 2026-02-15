@@ -41,7 +41,7 @@ export const perfumeCollections: PerfumeCollection[] = [
     mood: "Seductive",
     intensity: "Intense",
     longevity: "12+ hours",
-    price: { "50ml": 89.99, "100ml": 139.99 },
+    price: { "50ml": 179.99, "100ml": 279.99 },
     featured: true,
   },
   {
@@ -67,7 +67,7 @@ export const perfumeCollections: PerfumeCollection[] = [
     mood: "Radiant",
     intensity: "Moderate",
     longevity: "8–10 hours",
-    price: { "50ml": 79.99, "100ml": 124.99 },
+    price: { "50ml": 159.99, "100ml": 249.99 },
     featured: true,
   },
   {
@@ -94,7 +94,7 @@ export const perfumeCollections: PerfumeCollection[] = [
     mood: "Grounding",
     intensity: "Light",
     longevity: "6–8 hours",
-    price: { "50ml": 69.99, "100ml": 109.99 },
+    price: { "50ml": 139.99, "100ml": 219.99 },
   },
   {
     id: "azure-requiem",
@@ -120,7 +120,7 @@ export const perfumeCollections: PerfumeCollection[] = [
     mood: "Serene",
     intensity: "Moderate",
     longevity: "8–10 hours",
-    price: { "50ml": 74.99, "100ml": 119.99 },
+    price: { "50ml": 149.99, "100ml": 239.99 },
     featured: true,
   },
   {
@@ -147,7 +147,7 @@ export const perfumeCollections: PerfumeCollection[] = [
     mood: "Commanding",
     intensity: "Bold",
     longevity: "14+ hours",
-    price: { "50ml": 99.99, "100ml": 159.99 },
+    price: { "50ml": 199.99, "100ml": 319.99 },
   },
   {
     id: "bloom-reverie",
@@ -173,6 +173,6 @@ export const perfumeCollections: PerfumeCollection[] = [
     mood: "Dreamy",
     intensity: "Moderate",
     longevity: "10–12 hours",
-    price: { "50ml": 84.99, "100ml": 134.99 },
+    price: { "50ml": 169.99, "100ml": 269.99 },
   },
 ];
