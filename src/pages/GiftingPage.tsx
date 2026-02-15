@@ -1,74 +1,105 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gift, Heart, Sparkles, Sun, Moon, Zap, Coffee, Loader2, ArrowLeft } from "lucide-react";
+import { Gift, Sparkles, Loader2, ArrowLeft, Users, User, BookHeart, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-
-const personalities = [
-  { id: "romantic", label: "Romantic", emoji: "💕", desc: "Dreamy, sensual, soft" },
-  { id: "bold", label: "Bold", emoji: "🔥", desc: "Confident, intense, powerful" },
-  { id: "elegant", label: "Elegant", emoji: "👑", desc: "Refined, classic, polished" },
-  { id: "adventurous", label: "Adventurous", emoji: "🌍", desc: "Free-spirited, fresh, natural" },
-  { id: "mysterious", label: "Mysterious", emoji: "🌙", desc: "Dark, deep, enigmatic" },
-  { id: "playful", label: "Playful", emoji: "✨", desc: "Light, fun, sweet" },
-];
-
-const occasions = [
-  { id: "birthday", label: "Birthday", emoji: "🎂" },
-  { id: "valentine", label: "Valentine's", emoji: "❤️" },
-  { id: "wedding", label: "Wedding", emoji: "💒" },
-  { id: "corporate", label: "Corporate Gift", emoji: "💼" },
-  { id: "thank-you", label: "Thank You", emoji: "🙏" },
-  { id: "just-because", label: "Just Because", emoji: "🎁" },
-];
-
-const moods = [
-  { id: "warm", label: "Warm & Cozy", icon: Coffee },
-  { id: "fresh", label: "Fresh & Bright", icon: Sun },
-  { id: "seductive", label: "Seductive", icon: Moon },
-  { id: "energizing", label: "Energizing", icon: Zap },
-  { id: "calming", label: "Calming", icon: Heart },
-  { id: "luxurious", label: "Luxurious", icon: Sparkles },
-];
-
-interface GiftBlend {
-  blendName: string;
-  story: string;
-  notes: { name: string; emoji: string; layer: string; reason: string }[];
-  mood: string;
-  intensity: string;
-}
+import GiftResult from "@/components/gifting/GiftResult";
+import PersonalityStep from "@/components/gifting/PersonalityStep";
+import OccasionStep from "@/components/gifting/OccasionStep";
+import MoodStep from "@/components/gifting/MoodStep";
+import MemoryStep from "@/components/gifting/MemoryStep";
+import DetailsStep from "@/components/gifting/DetailsStep";
+import DuoPartnerStep from "@/components/gifting/DuoPartnerStep";
+import { personalities, occasions, moods, zodiacSigns, type GiftBlend } from "@/components/gifting/giftingData";
 
 const GiftingPage = () => {
-  const [step, setStep] = useState(1);
+  const [mode, setMode] = useState<"solo" | "duo" | null>(null);
+  const [step, setStep] = useState(0); // 0 = mode select
   const [personality, setPersonality] = useState("");
   const [occasion, setOccasion] = useState("");
   const [mood, setMood] = useState("");
+  const [memory, setMemory] = useState("");
+  const [gifterName, setGifterName] = useState("");
+  const [recipientName, setRecipientName] = useState("");
+  const [personalMessage, setPersonalMessage] = useState("");
+  const [zodiac, setZodiac] = useState("");
+  const [relationshipDepth, setRelationshipDepth] = useState("friend");
+
+  // Duo partner state
+  const [duoPartnerName, setDuoPartnerName] = useState("");
+  const [duoPartnerPersonality, setDuoPartnerPersonality] = useState("");
+  const [duoPartnerMood, setDuoPartnerMood] = useState("");
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<GiftBlend | null>(null);
+  const [shareCode, setShareCode] = useState("");
 
-  const canGenerate = personality && occasion && mood;
+  const totalSteps = mode === "duo" ? 6 : 5;
 
   const generateBlend = async () => {
     setIsGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke("perfumer-ai", {
-        body: {
-          notes: { personality, occasion, mood },
-          concentration: "Eau de Parfum",
-          mode: "gift",
+      const giftMode = mode === "duo" ? "duo" : "gift";
+      const bodyPayload: any = {
+        notes: {
+          personality,
+          occasion,
+          mood,
+          memory: memory || undefined,
+          zodiac: zodiac || undefined,
+          relationshipDepth,
+          gifterName: gifterName || undefined,
+          recipientName: recipientName || undefined,
         },
+        concentration: "Eau de Parfum",
+        mode: giftMode,
+      };
+      if (mode === "duo") {
+        bodyPayload.notes.duoPartnerName = duoPartnerName || undefined;
+        bodyPayload.notes.duoPartnerPersonality = duoPartnerPersonality;
+        bodyPayload.notes.duoPartnerMood = duoPartnerMood;
+      }
+
+      const { data, error } = await supabase.functions.invoke("perfumer-ai", {
+        body: bodyPayload,
       });
       if (error) throw error;
 
       try {
         const parsed = JSON.parse(data.content);
         setResult(parsed);
-        setStep(4);
+
+        // Save to database
+        const { data: giftRow, error: dbError } = await supabase.from("gifts").insert({
+          personality,
+          occasion,
+          mood,
+          memory: memory || null,
+          gifter_name: gifterName || null,
+          recipient_name: recipientName || null,
+          personal_message: personalMessage || null,
+          zodiac_sign: zodiac || null,
+          relationship_depth: relationshipDepth,
+          is_duo: mode === "duo",
+          duo_partner_name: duoPartnerName || null,
+          duo_partner_personality: duoPartnerPersonality || null,
+          duo_partner_mood: duoPartnerMood || null,
+          blend_name: parsed.blendName,
+          blend_story: parsed.story,
+          blend_notes: parsed.notes,
+          blend_mood: parsed.mood,
+          blend_intensity: parsed.intensity,
+          scent_letter: parsed.scentLetter || null,
+        }).select("share_code").single();
+
+        if (!dbError && giftRow) {
+          setShareCode(giftRow.share_code);
+        }
+
+        setStep(totalSteps + 1);
       } catch {
-        // AI returned non-JSON, try to extract
         toast.error("Could not generate blend. Please try again.");
       }
     } catch (err) {
@@ -79,205 +110,168 @@ const GiftingPage = () => {
     }
   };
 
+  const reset = () => {
+    setMode(null);
+    setStep(0);
+    setResult(null);
+    setShareCode("");
+    setPersonality("");
+    setOccasion("");
+    setMood("");
+    setMemory("");
+    setGifterName("");
+    setRecipientName("");
+    setPersonalMessage("");
+    setZodiac("");
+    setRelationshipDepth("friend");
+    setDuoPartnerName("");
+    setDuoPartnerPersonality("");
+    setDuoPartnerMood("");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <ParticleField count={10} />
 
       <div className="relative z-10 pt-24 pb-16 px-4 sm:px-6 max-w-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
           <Gift className="w-8 h-8 sm:w-10 sm:h-10 text-accent mx-auto mb-3" />
           <h1 className="font-display text-3xl md:text-4xl font-black tracking-wider gradient-text mb-2">
-            GIFTING MODE
+            {mode === "duo" ? "DUO BLEND" : "GIFTING MODE"}
           </h1>
           <p className="text-muted-foreground font-body text-sm sm:text-base">
-            Create the perfect fragrance for someone special
+            {mode === "duo"
+              ? "Two souls, one fragrance — create together in real time"
+              : "Create the perfect fragrance for someone special"}
           </p>
         </motion.div>
 
-        {/* Progress */}
-        <div className="flex items-center justify-center gap-2 mb-8">
-          {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center gap-2">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center font-display text-xs transition-all ${
-                  step >= s
-                    ? "bg-primary text-primary-foreground"
-                    : "glass-surface text-muted-foreground"
-                }`}
-              >
-                {s}
+        {/* Progress bar when in flow */}
+        {step > 0 && step <= totalSteps && (
+          <div className="flex items-center justify-center gap-2 mb-8">
+            {Array.from({ length: totalSteps }, (_, i) => i + 1).map((s) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center font-display text-[10px] transition-all ${
+                  step >= s ? "bg-primary text-primary-foreground" : "glass-surface text-muted-foreground"
+                }`}>
+                  {s}
+                </div>
+                {s < totalSteps && <div className={`w-6 h-0.5 rounded-full transition-all ${step > s ? "bg-primary" : "bg-muted/50"}`} />}
               </div>
-              {s < 3 && <div className={`w-8 h-0.5 rounded-full transition-all ${step > s ? "bg-primary" : "bg-muted/50"}`} />}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <AnimatePresence mode="wait">
-          {/* Step 1: Personality */}
-          {step === 1 && (
-            <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <h2 className="font-display text-sm tracking-widest text-muted-foreground text-center mb-6">
-                THEIR PERSONALITY
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {personalities.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => { setPersonality(p.id); setStep(2); }}
-                    className={`glass-surface rounded-xl p-4 text-center transition-all hover:border-primary/30 ${
-                      personality === p.id ? "border-primary/50 bg-primary/5" : ""
-                    }`}
-                  >
-                    <span className="text-2xl block mb-2">{p.emoji}</span>
-                    <span className="font-display text-xs tracking-wider text-foreground block">{p.label}</span>
-                    <span className="text-[10px] text-muted-foreground font-body block mt-1">{p.desc}</span>
-                  </button>
-                ))}
+          {/* Mode Selection */}
+          {step === 0 && (
+            <motion.div key="mode" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <h2 className="font-display text-sm tracking-widest text-muted-foreground text-center mb-6">CHOOSE YOUR EXPERIENCE</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  onClick={() => { setMode("solo"); setStep(1); }}
+                  className="glass-surface rounded-2xl p-6 text-center transition-all hover:border-primary/30 group"
+                >
+                  <User className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                  <span className="font-display text-sm tracking-wider text-foreground block mb-1">Solo Gift</span>
+                  <span className="text-[11px] text-muted-foreground font-body block">Craft a personal fragrance for someone you love</span>
+                </button>
+                <button
+                  onClick={() => { setMode("duo"); setStep(1); }}
+                  className="glass-surface rounded-2xl p-6 text-center transition-all hover:border-secondary/30 group border-secondary/10"
+                >
+                  <Users className="w-8 h-8 text-secondary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                  <span className="font-display text-sm tracking-wider text-foreground block mb-1">Duo Blend</span>
+                  <span className="text-[11px] text-muted-foreground font-body block">Two people, one harmonized scent — create together</span>
+                </button>
               </div>
             </motion.div>
+          )}
+
+          {/* Step 1: Personality */}
+          {step === 1 && (
+            <PersonalityStep
+              personality={personality}
+              onSelect={(p) => { setPersonality(p); setStep(2); }}
+              onBack={() => setStep(0)}
+              label={mode === "duo" ? "YOUR PERSONALITY" : "THEIR PERSONALITY"}
+            />
           )}
 
           {/* Step 2: Occasion */}
           {step === 2 && (
-            <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <button onClick={() => setStep(1)} className="text-muted-foreground hover:text-foreground text-xs font-body flex items-center gap-1 mb-4">
-                <ArrowLeft className="w-3 h-3" /> Back
-              </button>
-              <h2 className="font-display text-sm tracking-widest text-muted-foreground text-center mb-6">
-                THE OCCASION
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {occasions.map((o) => (
-                  <button
-                    key={o.id}
-                    onClick={() => { setOccasion(o.id); setStep(3); }}
-                    className={`glass-surface rounded-xl p-4 text-center transition-all hover:border-primary/30 ${
-                      occasion === o.id ? "border-primary/50 bg-primary/5" : ""
-                    }`}
-                  >
-                    <span className="text-2xl block mb-2">{o.emoji}</span>
-                    <span className="font-display text-xs tracking-wider text-foreground block">{o.label}</span>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
+            <OccasionStep
+              occasion={occasion}
+              onSelect={(o) => { setOccasion(o); setStep(3); }}
+              onBack={() => setStep(1)}
+            />
           )}
 
           {/* Step 3: Mood */}
           {step === 3 && (
-            <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <button onClick={() => setStep(2)} className="text-muted-foreground hover:text-foreground text-xs font-body flex items-center gap-1 mb-4">
-                <ArrowLeft className="w-3 h-3" /> Back
-              </button>
-              <h2 className="font-display text-sm tracking-widest text-muted-foreground text-center mb-6">
-                THE MOOD
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {moods.map((m) => {
-                  const Icon = m.icon;
-                  return (
-                    <button
-                      key={m.id}
-                      onClick={() => { setMood(m.id); }}
-                      className={`glass-surface rounded-xl p-4 text-center transition-all hover:border-primary/30 ${
-                        mood === m.id ? "border-primary/50 bg-primary/5" : ""
-                      }`}
-                    >
-                      <Icon className={`w-6 h-6 mx-auto mb-2 ${mood === m.id ? "text-primary" : "text-muted-foreground"}`} />
-                      <span className="font-display text-xs tracking-wider text-foreground block">{m.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {mood && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 text-center">
-                  <button
-                    onClick={generateBlend}
-                    disabled={isGenerating}
-                    className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-display text-sm tracking-wider hover:brightness-110 transition-all glow-primary disabled:opacity-50"
-                  >
-                    {isGenerating ? (
-                      <span className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin" /> Creating their perfect scent…
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" /> Generate Gift Blend
-                      </span>
-                    )}
-                  </button>
-                </motion.div>
-              )}
-            </motion.div>
+            <MoodStep
+              mood={mood}
+              onSelect={(m) => { setMood(m); setStep(4); }}
+              onBack={() => setStep(2)}
+            />
           )}
 
-          {/* Step 4: Result */}
-          {step === 4 && result && (
-            <motion.div key="step4" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
-              <button onClick={() => { setStep(1); setResult(null); }} className="text-muted-foreground hover:text-foreground text-xs font-body flex items-center gap-1 mb-4">
-                <ArrowLeft className="w-3 h-3" /> Create another
-              </button>
+          {/* Step 4: Memory (the new emotional step) */}
+          {step === 4 && (
+            <MemoryStep
+              memory={memory}
+              onMemoryChange={setMemory}
+              onNext={() => setStep(mode === "duo" ? 5 : 5)}
+              onBack={() => setStep(3)}
+            />
+          )}
 
-              <div className="glass-surface rounded-2xl p-6 sm:p-8 text-center border border-primary/20 mb-6"
-                style={{ boxShadow: "0 0 40px hsl(var(--primary) / 0.1)" }}
-              >
-                <Gift className="w-8 h-8 text-accent mx-auto mb-3" />
-                <h2 className="font-display text-xl sm:text-2xl font-bold tracking-wider text-foreground mb-1">
-                  {result.blendName}
-                </h2>
-                <p className="text-xs font-display tracking-wider text-primary mb-4">{result.mood} • {result.intensity}</p>
-                <p className="text-xs sm:text-sm font-body text-muted-foreground leading-relaxed italic mb-6">
-                  "{result.story}"
-                </p>
+          {/* Step 5 for duo: Partner preferences */}
+          {step === 5 && mode === "duo" && (
+            <DuoPartnerStep
+              partnerName={duoPartnerName}
+              partnerPersonality={duoPartnerPersonality}
+              partnerMood={duoPartnerMood}
+              onPartnerNameChange={setDuoPartnerName}
+              onPartnerPersonalityChange={setDuoPartnerPersonality}
+              onPartnerMoodChange={setDuoPartnerMood}
+              onNext={() => setStep(6)}
+              onBack={() => setStep(4)}
+            />
+          )}
 
-                {/* Notes */}
-                <div className="space-y-2 text-left">
-                  {(["top", "heart", "base"] as const).map((layer) => {
-                    const layerNotes = result.notes.filter((n) => n.layer === layer);
-                    if (layerNotes.length === 0) return null;
-                    return (
-                      <div key={layer}>
-                        <span className="text-[9px] font-display tracking-widest text-muted-foreground uppercase">{layer}</span>
-                        <div className="flex flex-wrap gap-1.5 mt-1">
-                          {layerNotes.map((n) => (
-                            <div key={n.name} className="glass-surface rounded-lg px-3 py-1.5 group relative">
-                              <span className="text-xs font-body text-foreground">{n.emoji} {n.name}</span>
-                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-card border border-border text-[10px] text-muted-foreground font-body w-48 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-10">
-                                {n.reason}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+          {/* Final step before generate: Details + zodiac + relationship */}
+          {step === (mode === "duo" ? 6 : 5) && (
+            <DetailsStep
+              gifterName={gifterName}
+              recipientName={recipientName}
+              personalMessage={personalMessage}
+              zodiac={zodiac}
+              relationshipDepth={relationshipDepth}
+              onGifterNameChange={setGifterName}
+              onRecipientNameChange={setRecipientName}
+              onPersonalMessageChange={setPersonalMessage}
+              onZodiacChange={setZodiac}
+              onRelationshipDepthChange={setRelationshipDepth}
+              onGenerate={generateBlend}
+              isGenerating={isGenerating}
+              onBack={() => setStep(mode === "duo" ? 5 : 4)}
+              isDuo={mode === "duo"}
+            />
+          )}
 
-              {/* Summary */}
-              <div className="glass-surface rounded-xl p-4 text-center">
-                <p className="text-[10px] font-display tracking-widest text-muted-foreground mb-2">CREATED FOR</p>
-                <div className="flex justify-center gap-3">
-                  <span className="text-xs font-body text-foreground capitalize">
-                    {personalities.find((p) => p.id === personality)?.emoji} {personality}
-                  </span>
-                  <span className="text-muted-foreground">•</span>
-                  <span className="text-xs font-body text-foreground capitalize">
-                    {occasions.find((o) => o.id === occasion)?.emoji} {occasion}
-                  </span>
-                  <span className="text-muted-foreground">•</span>
-                  <span className="text-xs font-body text-foreground capitalize">
-                    {moods.find((m) => m.id === mood)?.label}
-                  </span>
-                </div>
-              </div>
-            </motion.div>
+          {/* Result */}
+          {step === totalSteps + 1 && result && (
+            <GiftResult
+              result={result}
+              personality={personality}
+              occasion={occasion}
+              mood={mood}
+              shareCode={shareCode}
+              isDuo={mode === "duo"}
+              onReset={reset}
+            />
           )}
         </AnimatePresence>
       </div>

@@ -14,6 +14,7 @@ import WorldDetailPage from "./pages/WorldDetailPage";
 import CollectionPage from "./pages/CollectionPage";
 import ScentDNAPage from "./pages/ScentDNAPage";
 import GiftingPage from "./pages/GiftingPage";
+import GiftRevealPage from "./pages/GiftRevealPage";
 import InstallPage from "./pages/InstallPage";
 import PartnerPage from "./pages/PartnerPage";
 import NotFound from "./pages/NotFound";
@@ -32,6 +33,7 @@ const AppContent = () => {
       <Route path="/collection" element={<CollectionPage />} />
       <Route path="/dna" element={<ScentDNAPage />} />
       <Route path="/gifting" element={<GiftingPage />} />
+      <Route path="/gift/:shareCode" element={<GiftRevealPage />} />
       <Route path="/store" element={<StorePage />} />
       <Route path="/product/:handle" element={<ProductPage />} />
       <Route path="/install" element={<InstallPage />} />

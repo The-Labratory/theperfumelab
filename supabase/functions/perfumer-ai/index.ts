@@ -13,11 +13,12 @@ serve(async (req) => {
     const { notes, concentration, mode } = body;
 
     // Input validation
-    if (!mode || (mode !== "analyze" && mode !== "gift")) {
+    if (!mode || !["analyze", "gift", "duo", "seance"].includes(mode)) {
       return new Response(JSON.stringify({ error: "Invalid mode" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
     if (mode === "analyze") {
       if (!Array.isArray(notes) || notes.length < 1 || notes.length > 20) {
         return new Response(JSON.stringify({ error: "Invalid notes" }), {
@@ -30,9 +31,18 @@ serve(async (req) => {
         });
       }
     }
-    if (mode === "gift") {
+
+    if (mode === "gift" || mode === "duo") {
       if (!notes || typeof notes !== "object" || !notes.personality || !notes.occasion || !notes.mood) {
         return new Response(JSON.stringify({ error: "Invalid gift parameters" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
+    if (mode === "seance") {
+      if (!notes || typeof notes !== "object" || !notes.worldName || !notes.answers) {
+        return new Response(JSON.stringify({ error: "Invalid séance parameters" }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
@@ -44,29 +54,88 @@ serve(async (req) => {
     let systemPrompt: string;
     let userPrompt: string;
 
-    if (mode === "gift") {
-      // Gifting mode: generate blend suggestion
-      const { personality, occasion, mood } = notes; // reusing notes field for gift data
+    if (mode === "seance") {
+      const { worldName, worldType, answers } = notes;
+      systemPrompt = `You are an ancient Scent Oracle who channels spirit fragrances from mystical realms. You perform Scent Séances — one-time-only fragrance readings that are deeply personal and never repeated.
+
+You must respond with valid JSON only, no markdown. Format:
+{
+  "spiritName": "A mystical, evocative name for this spirit fragrance",
+  "prophecy": "A 3-4 sentence poetic prophecy about the user's olfactory destiny, written like an ancient oracle speaking",
+  "spiritNotes": [
+    {"name": "Note Name", "emoji": "🌹", "layer": "top|heart|base", "whisper": "A short mystical reason this note appeared"}
+  ],
+  "element": "Fire|Water|Earth|Air|Ether",
+  "aura": "A single evocative color word (e.g. 'Obsidian', 'Gilded', 'Cerulean')",
+  "ritualAdvice": "One sentence of mystical advice about when/how to wear this spirit scent"
+}
+Suggest 5-7 notes across all three layers. Be deeply mystical, poetic, and unique. This fragrance has NEVER existed before and will NEVER exist again.`;
+
+      userPrompt = `Perform a Scent Séance for the ${worldName} realm (${worldType}).
+
+The seeker's responses to the ritual questions:
+1. "What emotion does this world awaken in you?" — "${answers[0]}"
+2. "If this world had a sound, what would it be?" — "${answers[1]}"
+3. "What memory does this world remind you of?" — "${answers[2]}"
+
+Channel a spirit fragrance that has never existed and will never exist again. Make it deeply personal to these specific answers.`;
+    } else if (mode === "duo") {
+      const { personality, occasion, mood, memory, zodiac, relationshipDepth,
+              gifterName, recipientName, duoPartnerPersonality, duoPartnerMood, duoPartnerName } = notes;
+
+      systemPrompt = `You are The Perfume Lab's Master Perfumer AI. You create harmonized "Duo Blends" — a single fragrance that represents the merging of two people's scent identities.
+
+You must respond with valid JSON only, no markdown. Format:
+{
+  "blendName": "A name reflecting the union of two souls",
+  "story": "3-4 sentence story about how these two scent identities merge into one, weaving in any shared memory provided",
+  "notes": [
+    {"name": "Note Name", "emoji": "🌹", "layer": "top|heart|base", "reason": "Why this note represents their union"}
+  ],
+  "mood": "One word mood",
+  "intensity": "Light|Moderate|Bold|Intense",
+  "scentLetter": "A poetic 4-6 line letter addressed to both people, explaining why each note was chosen for THEM specifically, written as if the perfume itself is speaking to them. Reference the shared memory if provided."
+}
+Suggest 6-8 notes. For each person's personality, choose notes that represent them, then find notes that harmonize both into unity.`;
+
+      let prompt = `Create a Duo Blend harmonizing two people:
+Person 1: ${gifterName || "Creator"} — ${personality} personality, wants a ${mood} mood
+Person 2: ${duoPartnerName || "Partner"} — ${duoPartnerPersonality} personality, wants a ${duoPartnerMood} mood
+Occasion: ${occasion}. Relationship: ${relationshipDepth || "friends"}.`;
+      if (memory) prompt += `\nShared memory: "${memory}"`;
+      if (zodiac) prompt += `\nZodiac alignment: ${zodiac}`;
+      userPrompt = prompt;
+    } else if (mode === "gift") {
+      const { personality, occasion, mood, memory, zodiac, relationshipDepth, gifterName, recipientName } = notes;
+
       systemPrompt = `You are The Perfume Lab's Master Perfumer AI. You suggest custom fragrance blends for gifts.
 You must respond with valid JSON only, no markdown. Format:
 {
   "blendName": "Creative Name",
-  "story": "2-3 sentence poetic story about this blend",
+  "story": "3-4 sentence poetic story about this blend${memory ? ", weaving in the shared memory provided" : ""}",
   "notes": [
     {"name": "Note Name", "emoji": "🌹", "layer": "top|heart|base", "reason": "Why this note fits"}
   ],
   "mood": "One word mood",
-  "intensity": "Light|Moderate|Bold|Intense"
+  "intensity": "Light|Moderate|Bold|Intense",
+  "scentLetter": "A poetic 4-6 line letter addressed to the recipient, explaining why each note was chosen for THEM specifically. Written as if the perfume itself is speaking. ${memory ? "Reference the shared memory." : ""}"
 }
-Suggest 5-7 notes across all three layers. Be creative and luxurious.`;
-      userPrompt = `Create a gift fragrance for someone with a ${personality} personality, for a ${occasion} occasion, with a ${mood} mood.`;
+Suggest 5-7 notes across all three layers. Be creative and luxurious.${zodiac ? " Consider their zodiac energy." : ""}`;
+
+      let prompt = `Create a gift fragrance for someone who is ${personality}, for a ${occasion} occasion, with a ${mood} mood.`;
+      if (relationshipDepth) prompt += ` The bond between gifter and recipient: ${relationshipDepth}.`;
+      if (gifterName) prompt += ` From: ${gifterName}.`;
+      if (recipientName) prompt += ` To: ${recipientName}.`;
+      if (memory) prompt += `\nA cherished shared memory: "${memory}"`;
+      if (zodiac) prompt += `\nRecipient's zodiac: ${zodiac}`;
+      userPrompt = prompt;
     } else {
       // Perfumer assistant mode: analyze blend
       systemPrompt = `You are The Perfume Lab's Master Perfumer AI assistant. You analyze fragrance blends and give expert advice.
 Keep responses under 80 words. Be poetic but precise. Use fragrance terminology.
 If the blend is unbalanced, suggest specific fixes. If it's good, praise it.
 Always address the user as "Alchemist".`;
-      
+
       const notesList = notes.map((n: any) => `${n.name} (${n.layer}, intensity: ${n.intensity}%, warmth: ${n.warmth}%)`).join(", ");
       userPrompt = `Analyze this blend: ${notesList}. Concentration: ${concentration}. 
 Provide: 1) Brief assessment of balance 2) One specific suggestion to improve it.`;
