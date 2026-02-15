@@ -182,6 +182,24 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string
@@ -217,10 +235,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_alltime_leaderboard: {
+        Args: { _limit?: number }
+        Returns: {
+          blend_name: string
+          blend_number: number
+          concentration: string
+          created_at: string
+          harmony_score: number
+          note_count: number
+        }[]
+      }
       get_waitlist_count: { Args: never; Returns: number }
+      get_weekly_leaderboard: {
+        Args: { _limit?: number }
+        Returns: {
+          blend_name: string
+          blend_number: number
+          concentration: string
+          created_at: string
+          harmony_score: number
+          note_count: number
+        }[]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -347,6 +394,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
