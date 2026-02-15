@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Brain, Target, FlaskConical, Swords, Lock, Star, CheckCircle, XCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, Brain, Target, FlaskConical, Swords, Lock, Star, CheckCircle, XCircle, Sparkles, Eye } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { worlds } from "@/data/worldsData";
 import type { QuizQuestion } from "@/data/worldsData";
+import ScentSeance from "@/components/ScentSeance";
 
-type Tab = "quizzes" | "missions" | "collection" | "battles";
+type Tab = "quizzes" | "missions" | "collection" | "battles" | "seance";
 
 const WorldDetailPage = () => {
   const { worldId } = useParams();
@@ -44,6 +45,7 @@ const WorldDetailPage = () => {
     { id: "missions", label: "Missions", icon: <Target className="w-4 h-4" /> },
     { id: "collection", label: "Collection", icon: <FlaskConical className="w-4 h-4" /> },
     { id: "battles", label: "Battles", icon: <Swords className="w-4 h-4" /> },
+    { id: "seance", label: "Séance", icon: <Eye className="w-4 h-4" /> },
   ];
 
   return (
@@ -98,6 +100,7 @@ const WorldDetailPage = () => {
             {activeTab === "missions" && <MissionsSection missions={world.dailyMissions} />}
             {activeTab === "collection" && <CollectionSection ingredients={world.ingredients} />}
             {activeTab === "battles" && <BattlesSection challenges={world.blendChallenges} />}
+            {activeTab === "seance" && <ScentSeance worldName={world.name} worldType={world.type} worldEmoji={world.emoji} />}
           </motion.div>
         </AnimatePresence>
       </div>
