@@ -37,9 +37,9 @@ For the best experience, run the app with a local server:
 
 **If you have Python installed:**
 1. Open Command Prompt (Windows) or Terminal (Mac)
-2. Navigate to the extracted folder:
+2. Navigate to the extracted folder (replace with your actual path):
    ```
-   cd path/to/scentra-world-builder
+   cd ~/Downloads/scentra-world-builder
    ```
 3. Run this command:
    ```
@@ -49,9 +49,9 @@ For the best experience, run the app with a local server:
 
 **If you have Node.js installed:**
 1. Open Command Prompt (Windows) or Terminal (Mac)
-2. Navigate to the extracted folder:
+2. Navigate to the extracted folder (replace with your actual path):
    ```
-   cd path/to/scentra-world-builder
+   cd ~/Downloads/scentra-world-builder
    ```
 3. Run this command:
    ```

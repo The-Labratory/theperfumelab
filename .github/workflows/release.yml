@@ -60,7 +60,7 @@ jobs:
             ### Download and Run
             
             **Web Version:**
-            - Visit the [live app](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }})
+            - Visit the [live app](https://lawrencehariri.github.io/scentra-world-builder)
             
             **Download Build:**
             1. Download `scentra-world-builder.zip` below
