@@ -19,6 +19,7 @@ import InstallPage from "./pages/InstallPage";
 import PartnerPage from "./pages/PartnerPage";
 import ExclusiveAccessPage from "./pages/ExclusiveAccessPage";
 import LaunchPage from "./pages/LaunchPage";
+import SharePage from "./pages/SharePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const AppContent = () => {
       <Route path="/install" element={<InstallPage />} />
       <Route path="/access" element={<ExclusiveAccessPage />} />
       <Route path="/launch" element={<LaunchPage />} />
+      <Route path="/share" element={<SharePage />} />
       <Route path="/partner" element={<PartnerPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
