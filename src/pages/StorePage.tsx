@@ -109,20 +109,34 @@ const StorePage = () => {
                     <p className="text-xs text-muted-foreground font-body line-clamp-2 mb-2 hidden sm:block">
                       {product.node.description}
                     </p>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-display text-sm text-primary">
+                    <div className="space-y-2">
+                      <span className="font-display text-sm text-primary block">
                         {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
                       </span>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-xs h-7 sm:h-8 px-2 sm:px-3"
-                        onClick={() => handleAddToCart(product)}
-                        disabled={isCartLoading}
-                      >
-                        <ShoppingCart className="w-3 h-3 sm:mr-1" />
-                        <span className="hidden sm:inline">Add</span>
-                      </Button>
+                      <div className="flex gap-1.5">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-xs h-7 sm:h-8 px-2 sm:px-3 flex-1"
+                          onClick={() => handleAddToCart(product)}
+                          disabled={isCartLoading}
+                        >
+                          <ShoppingCart className="w-3 h-3 sm:mr-1" />
+                          <span className="hidden sm:inline">Add</span>
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="text-xs h-7 sm:h-8 px-2 sm:px-3 flex-1 glow-primary"
+                          onClick={async () => {
+                            await handleAddToCart(product);
+                            const url = useCartStore.getState().getCheckoutUrl();
+                            if (url) window.open(url, '_blank');
+                          }}
+                          disabled={isCartLoading}
+                        >
+                          <span className="text-[10px] sm:text-xs">Buy Now</span>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
