@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, CreditCard, Shield } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 
 export const CartDrawer = () => {
@@ -46,6 +46,7 @@ export const CartDrawer = () => {
               <div className="text-center">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground font-body">Your cart is empty</p>
+                <p className="text-xs text-muted-foreground font-body mt-2">Browse the <a href="/store" className="text-primary hover:underline">Store</a> or create a blend in the <a href="/lab" className="text-primary hover:underline">Lab</a></p>
               </div>
             </div>
           ) : (
@@ -82,14 +83,29 @@ export const CartDrawer = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex-shrink-0 space-y-4 pt-4 border-t border-border bg-background">
+              <div className="flex-shrink-0 space-y-3 pt-4 border-t border-border bg-background">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold font-display">Total</span>
-                  <span className="text-xl font-bold font-display">{items[0]?.price.currencyCode || '$'} {totalPrice.toFixed(2)}</span>
+                  <span className="text-xl font-bold font-display">{items[0]?.price.currencyCode || '€'} {totalPrice.toFixed(2)}</span>
                 </div>
+                
                 <Button onClick={handleCheckout} className="w-full glow-primary font-display tracking-wider" size="lg" disabled={items.length === 0 || isLoading || isSyncing}>
-                  {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ExternalLink className="w-4 h-4 mr-2" />Checkout</>}
+                  {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CreditCard className="w-4 h-4 mr-2" />Secure Checkout</>}
                 </Button>
+
+                {/* Payment methods & trust badges */}
+                <div className="flex items-center justify-center gap-3 pt-1">
+                  <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                    <Shield className="w-3 h-3" />
+                    <span>SSL Encrypted</span>
+                  </div>
+                  <span className="text-muted-foreground/30">|</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-semibold text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded">VISA</span>
+                    <span className="text-[10px] font-semibold text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded">MC</span>
+                    <span className="text-[10px] font-semibold text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded">PayPal</span>
+                  </div>
+                </div>
               </div>
             </>
           )}

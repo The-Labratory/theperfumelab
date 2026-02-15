@@ -148,14 +148,38 @@ const ProductPage = () => {
               </div>
             ))}
 
-            <Button
-              onClick={handleAddToCart}
-              disabled={isCartLoading || !variant?.availableForSale}
-              className="w-full glow-primary font-display tracking-wider"
-              size="lg"
-            >
-              {isCartLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ShoppingCart className="w-4 h-4 mr-2" />Add to Cart</>}
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                onClick={handleAddToCart}
+                disabled={isCartLoading || !variant?.availableForSale}
+                variant="outline"
+                className="flex-1 font-display tracking-wider"
+                size="lg"
+              >
+                {isCartLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ShoppingCart className="w-4 h-4 mr-2" />Add to Cart</>}
+              </Button>
+              <Button
+                onClick={async () => {
+                  await handleAddToCart();
+                  const url = useCartStore.getState().getCheckoutUrl();
+                  if (url) window.open(url, '_blank');
+                }}
+                disabled={isCartLoading || !variant?.availableForSale}
+                className="flex-1 glow-primary font-display tracking-wider"
+                size="lg"
+              >
+                {isCartLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Buy Now</>}
+              </Button>
+            </div>
+
+            {/* Payment trust badges */}
+            <div className="flex items-center justify-center gap-3 pt-1">
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <span className="bg-muted/50 px-2 py-0.5 rounded font-semibold">VISA</span>
+                <span className="bg-muted/50 px-2 py-0.5 rounded font-semibold">Mastercard</span>
+                <span className="bg-muted/50 px-2 py-0.5 rounded font-semibold">PayPal</span>
+              </div>
+            </div>
 
             {variant && !variant.availableForSale && (
               <p className="text-sm text-destructive font-body text-center">This variant is currently out of stock</p>
