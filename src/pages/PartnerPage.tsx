@@ -148,30 +148,46 @@ const PartnerPage = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass-surface rounded-2xl p-6 sm:p-8 mb-12 sm:mb-16 border border-primary/20"
+          className="rounded-2xl p-8 sm:p-12 mb-12 sm:mb-16 relative overflow-hidden"
         >
-          <div className="text-center mb-8">
-            <span className="text-[10px] font-display tracking-[0.3em] text-accent mb-3 block">THE INNER CIRCLE ADVANTAGE</span>
-            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-wider text-foreground mb-2">
-              Partner Pricing
+          {/* Soft radial glow background */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.06)_0%,transparent_70%)]" />
+          
+          <div className="relative z-10 text-center mb-10">
+            <span className="text-[10px] font-display tracking-[0.35em] text-muted-foreground/60 mb-4 block">CRAFTED FOR THE CIRCLE</span>
+            <h2 className="font-display text-lg sm:text-xl font-light tracking-[0.15em] text-foreground/80 mb-3">
+              Your Investment
             </h2>
-            <p className="text-sm text-muted-foreground font-body max-w-md mx-auto">
-              Every composition at half the retail price. Produced weekly, exclusively for our partners.
+            <p className="text-xs text-muted-foreground/50 font-body max-w-sm mx-auto leading-relaxed">
+              Each bottle produced individually in our atelier — yours at a fraction of what the world pays.
             </p>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
             {[
-              { size: "30ml", original: "51.98", partner: "26.00" },
-              { size: "50ml", original: "75.98", partner: "38.00" },
-              { size: "100ml", original: "119.98", partner: "60.00" },
-            ].map((p) => (
-              <div key={p.size} className="rounded-xl bg-muted/20 border border-border p-5 text-center group hover:border-primary/30 transition-colors">
-                <span className="font-display text-lg text-foreground block mb-1">{p.size}</span>
-                <span className="text-sm text-muted-foreground line-through block">€{p.original}</span>
-                <span className="font-display text-3xl text-primary block my-1 group-hover:drop-shadow-[0_0_20px_hsl(185_80%_55%/0.4)] transition-all">€{p.partner}</span>
-                <span className="text-[10px] text-accent font-display tracking-wider">PARFUM CONCENTRATION</span>
-              </div>
+              { size: "30ml", partner: "26", daily: "0.14", label: "The Introduction" },
+              { size: "50ml", partner: "38", daily: "0.21", label: "The Signature" },
+              { size: "100ml", partner: "60", daily: "0.33", label: "The Statement" },
+            ].map((p, i) => (
+              <motion.div
+                key={p.size}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="text-center group"
+              >
+                <span className="text-[9px] font-display tracking-[0.3em] text-primary/40 block mb-3">{p.label.toUpperCase()}</span>
+                <span className="font-display text-sm tracking-widest text-foreground/50 block mb-1">{p.size}</span>
+                <div className="flex items-baseline justify-center gap-0.5">
+                  <span className="text-xs text-muted-foreground/30 font-body">€</span>
+                  <span className="font-display text-3xl sm:text-4xl font-light text-foreground/90 tracking-wide group-hover:text-primary transition-colors duration-500">{p.partner}</span>
+                </div>
+                <span className="text-[9px] text-muted-foreground/30 font-body mt-2 block">less than €{p.daily}/day</span>
+              </motion.div>
             ))}
+          </div>
+          <div className="relative z-10 mt-10 text-center">
+            <span className="text-[9px] font-body text-muted-foreground/30 tracking-wide">Parfum concentration · Handcrafted weekly · No minimum commitment</span>
           </div>
         </motion.div>
 
