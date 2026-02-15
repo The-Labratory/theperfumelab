@@ -115,7 +115,44 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Urgency / Teaser */}
+      <section className="relative z-10 py-20 px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+            className="inline-block mb-6"
+          >
+            <Beaker className="w-12 h-12 text-primary drop-shadow-[0_0_24px_hsl(185_80%_55%/0.6)]" />
+          </motion.div>
+          <h2 className="font-display text-2xl sm:text-4xl font-black tracking-wider gradient-text mb-4">
+            Your Signature Awaits
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground font-body max-w-xl mx-auto mb-4 leading-relaxed">
+            Thousands of possible combinations. One that's unmistakably you. Our AI-guided Scent Lab
+            walks you through every layer — top, heart, base — until your vision becomes a bottle.
+          </p>
+          <p className="text-sm text-foreground/60 font-display tracking-wider mb-8 italic">
+            Most creators can't stop at just one.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="glow-primary font-display tracking-wider text-sm">
+              <Link to="/lab">
+                Enter the Scent Lab <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="font-display tracking-wider text-sm border-border hover:border-primary/50 hover:bg-primary/5">
+              <Link to="/collection">Browse the Collection</Link>
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
       <footer className="relative z-10 border-t border-border py-8 px-6 text-center">
         <p className="text-xs text-muted-foreground font-body tracking-wide">
           © 2026 The Perfume Lab — Each composition is blended individually in our atelier.

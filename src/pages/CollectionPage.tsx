@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Clock, Flame, X } from "lucide-react";
+import { Sparkles, Clock, Flame, X, ArrowRight, Beaker } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { perfumeCollections, type PerfumeCollection } from "@/data/collectionsData";
@@ -24,8 +26,11 @@ const CollectionPage = () => {
           <h1 className="font-display text-3xl md:text-5xl font-black tracking-wider gradient-text mb-3">
             THE COLLECTION
           </h1>
-          <p className="text-muted-foreground font-body text-sm sm:text-lg max-w-xl mx-auto">
+          <p className="text-muted-foreground font-body text-sm sm:text-lg max-w-xl mx-auto mb-4">
             Curated signatures crafted by master perfumers. Each one a world, a story, a piece of identity.
+          </p>
+          <p className="text-xs text-primary/70 font-display tracking-wider">
+            Love these? Imagine creating something entirely yours.
           </p>
         </motion.div>
 
@@ -78,6 +83,37 @@ const CollectionPage = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Create Your Own CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 sm:mt-16 glass-surface rounded-2xl p-8 sm:p-10 border border-primary/20 text-center relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+          <div className="relative z-10">
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              className="inline-block mb-4"
+            >
+              <Beaker className="w-10 h-10 text-primary drop-shadow-[0_0_20px_hsl(185_80%_55%/0.5)]" />
+            </motion.div>
+            <h3 className="font-display text-xl sm:text-2xl font-bold tracking-wider text-foreground mb-3">
+              Why Wear Someone Else's Story?
+            </h3>
+            <p className="text-sm text-muted-foreground font-body max-w-lg mx-auto mb-6 leading-relaxed">
+              These compositions are just the beginning. Step into our Scent Lab and design a fragrance
+              that is unmistakably, irreplaceably yours — from the first note to the final drop.
+            </p>
+            <Button asChild size="lg" className="glow-primary font-display tracking-wider text-sm">
+              <Link to="/lab">
+                Create Your Own <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </Button>
+          </div>
+        </motion.div>
       </div>
 
       {/* Detail Modal */}
@@ -170,7 +206,7 @@ const CollectionPage = () => {
               </div>
 
               {/* Pricing */}
-              <div className="flex gap-3">
+              <div className="flex gap-3 mb-5">
                 <div className="flex-1 glass-surface rounded-xl p-4 text-center">
                   <span className="text-[10px] font-display tracking-wider text-muted-foreground block mb-1">50ML</span>
                   <span className="font-display text-lg text-primary">€{selectedPerfume.price["50ml"]}</span>
@@ -180,6 +216,19 @@ const CollectionPage = () => {
                   <span className="font-display text-lg text-primary">€{selectedPerfume.price["100ml"]}</span>
                 </div>
               </div>
+
+              {/* Create your own nudge */}
+              <Link
+                to="/lab"
+                className="block rounded-xl bg-primary/5 border border-primary/15 p-4 text-center group hover:border-primary/30 transition-all"
+              >
+                <p className="text-xs font-display tracking-wider text-muted-foreground mb-1">
+                  INSPIRED? CREATE SOMETHING ENTIRELY YOURS
+                </p>
+                <span className="text-sm font-display text-primary group-hover:tracking-widest transition-all inline-flex items-center gap-1.5">
+                  Open the Scent Lab <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </Link>
             </motion.div>
           </motion.div>
         )}

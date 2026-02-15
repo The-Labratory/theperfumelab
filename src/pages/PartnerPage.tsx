@@ -175,7 +175,66 @@ const PartnerPage = () => {
           </div>
         </motion.div>
 
-        {/* Application form */}
+        {/* Testimonials */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mb-12 sm:mb-16"
+        >
+          <div className="text-center mb-10">
+            <span className="text-[10px] font-display tracking-[0.3em] text-accent mb-3 block">VOICES FROM THE CIRCLE</span>
+            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-wider text-foreground">
+              What Our Partners Say
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5">
+            {[
+              {
+                quote: "Working with The Perfume Lab transformed our spa into a destination. Guests return specifically for the bespoke scenting experience we've built together.",
+                name: "Isabelle Morel",
+                role: "Director, Maison Éclat Spa",
+                initials: "IM",
+              },
+              {
+                quote: "The quality is unmatched. Our private-label line outsells established brands at three times the margin. The atelier team feels like an extension of ours.",
+                name: "Karim Al-Rashid",
+                role: "CEO, Noor Fragrances",
+                initials: "KA",
+              },
+              {
+                quote: "From concept to shelf in eight weeks. The speed, the craftsmanship, the personal attention — it's a partnership in the truest sense of the word.",
+                name: "Elena Whitmore",
+                role: "Founder, The Scented Room",
+                initials: "EW",
+              },
+            ].map((t, i) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 }}
+                className="glass-surface rounded-2xl p-6 border border-border hover:border-primary/20 transition-colors relative"
+              >
+                <div className="text-3xl text-primary/30 font-display mb-3">"</div>
+                <p className="text-sm font-body text-muted-foreground leading-relaxed italic mb-6">
+                  {t.quote}
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <span className="text-xs font-display text-primary tracking-wider">{t.initials}</span>
+                  </div>
+                  <div>
+                    <span className="text-xs font-display text-foreground block tracking-wide">{t.name}</span>
+                    <span className="text-[10px] font-body text-muted-foreground">{t.role}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
