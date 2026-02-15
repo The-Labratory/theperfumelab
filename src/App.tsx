@@ -20,6 +20,7 @@ import PartnerPage from "./pages/PartnerPage";
 import ExclusiveAccessPage from "./pages/ExclusiveAccessPage";
 import LaunchPage from "./pages/LaunchPage";
 import SharePage from "./pages/SharePage";
+import MilestonesPage from "./pages/MilestonesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const AppContent = () => {
       <Route path="/launch" element={<LaunchPage />} />
       <Route path="/share" element={<SharePage />} />
       <Route path="/partner" element={<PartnerPage />} />
+      <Route path="/milestones" element={<MilestonesPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
