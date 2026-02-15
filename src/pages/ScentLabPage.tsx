@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sparkles, Wind, Clock, Heart, Droplets, Save } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import ScentIdentityCard from "@/components/ScentIdentityCard";
 import ParticleField from "@/components/ParticleField";
 import PerfumeFlacon from "@/components/PerfumeFlacon";
 import CreationCheckout from "@/components/CreationCheckout";
@@ -372,6 +373,26 @@ const ScentLabPage = () => {
                 </Button>
               </div>
             )}
+
+            {/* Scent Identity Card — appears after saving */}
+            <AnimatePresence>
+              {savedBlendNumber && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-4"
+                >
+                  <ScentIdentityCard
+                    blendNumber={savedBlendNumber}
+                    blendName={selected.map(s => s.name).join(" · ")}
+                    harmonyScore={harmonyScore}
+                    noteEmojis={selected.map(s => s.emoji)}
+                    concentration={concentration.name}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <AnimatePresence>
               {showCheckout && selected.length > 0 && (

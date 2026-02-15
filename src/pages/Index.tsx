@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Beaker, Globe } from "lucide-react";
+import { ArrowRight, Sparkles, Beaker, Globe, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import GlowOrb from "@/components/GlowOrb";
 import ParticleField from "@/components/ParticleField";
@@ -45,6 +45,15 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}>
 
+            <div className="flex justify-center mb-6">
+              <div className="glass-surface rounded-full px-4 py-1.5 flex items-center gap-2 border border-primary/20">
+                <Lock className="w-3 h-3 text-primary" />
+                <span className="font-display text-[9px] tracking-[0.3em] text-primary uppercase">
+                  Only 100 Founding Creators Accepted
+                </span>
+              </div>
+            </div>
+
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-2">
               <span className="gradient-text">The Perfume Lab</span>
             </h1>
@@ -57,10 +66,15 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.7 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body">
-
-            Each composition is blended individually in our atelier.
-            No two formulas are ever identical.
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-3 font-body">
+            The private tools of master perfumers. Now in your hands.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.45 }}
+            className="text-sm text-foreground/50 font-body italic mb-10">
+            Each composition is blended individually. No two formulas are ever identical.
           </motion.p>
 
           <motion.div
@@ -70,12 +84,14 @@ const Index = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center">
 
             <Button asChild size="lg" className="glow-primary font-display tracking-wider text-sm">
-              <Link to="/onboarding">
-                Begin Your Journey <ArrowRight className="ml-2 w-4 h-4" />
+              <Link to="/access">
+                Request Access <Lock className="ml-2 w-4 h-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="font-display tracking-wider text-sm border-border hover:border-primary/50 hover:bg-primary/5">
-              <Link to="/lab">Enter Scent Lab</Link>
+              <Link to="/onboarding">
+                Begin Your Journey <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
             </Button>
           </motion.div>
         </div>
