@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Package, ShoppingCart, Mail, Building2, Phone, Send, CheckCircle, ArrowRight, Tag } from "lucide-react";
+import { Users, Package, ShoppingCart, Mail, Building2, Phone, Send, CheckCircle, ArrowRight, Tag, Gem, Crown, Star, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -8,10 +8,10 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const BENEFITS = [
-  { icon: Tag, title: "Partner Pricing", description: "Exclusive rates reserved for our approved partners. No tiers, no complexity." },
-  { icon: Package, title: "Bespoke Labelling", description: "Your identity on every bottle — designed with the same care as the fragrance within." },
-  { icon: ShoppingCart, title: "Order Portal", description: "A dedicated space to manage, reorder, and track every composition." },
-  { icon: Users, title: "Direct Atelier Access", description: "Work directly with our perfumers on formulation, sourcing, and logistics." },
+  { icon: Crown, title: "Exclusive Partner Rates", description: "Pricing reserved for the inner circle. No tiers, no complexity — only privilege." },
+  { icon: Gem, title: "Bespoke Labelling", description: "Your identity etched into every bottle, designed with the same reverence as the fragrance within." },
+  { icon: Star, title: "Private Order Portal", description: "A sanctuary to curate, reorder, and track every composition at your leisure." },
+  { icon: Sparkles, title: "Direct Atelier Access", description: "Collaborate intimately with our master perfumers on formulation, sourcing, and vision." },
 ];
 
 interface PartnerFormData {
@@ -82,18 +82,41 @@ const PartnerPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-16 sm:mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Users className="w-4 h-4 text-primary" />
-            <span className="text-xs font-display tracking-wider text-primary">PRIVATE PARTNERSHIP</span>
-          </div>
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-black tracking-wider gradient-text mb-4">
-            A Private Perfumery Experience
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-8"
+          >
+            <Crown className="w-4 h-4 text-primary" />
+            <span className="text-[10px] font-display tracking-[0.3em] text-primary">BY INVITATION ONLY</span>
+          </motion.div>
+          <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-black tracking-wider gradient-text mb-6 leading-tight">
+            Where Vision Meets<br />Fragrance
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground font-body max-w-2xl mx-auto">
-            We work with a select number of partners who share our commitment to craftsmanship.
-            Each collaboration is individually considered.
+          <p className="text-base sm:text-lg text-muted-foreground font-body max-w-2xl mx-auto leading-relaxed mb-8">
+            We don't seek partners — we welcome kindred spirits. A rare invitation
+            to shape the future of luxury fragrance, together.
+          </p>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "6rem" }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"
+          />
+        </motion.div>
+
+        {/* Aspirational quote */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <p className="font-display text-lg sm:text-xl text-foreground/60 italic tracking-wide max-w-lg mx-auto">
+            "The rarest things in the world are not found — they are created by those who dare to imagine."
           </p>
         </motion.div>
 
@@ -127,25 +150,26 @@ const PartnerPage = () => {
           viewport={{ once: true }}
           className="glass-surface rounded-2xl p-6 sm:p-8 mb-12 sm:mb-16 border border-primary/20"
         >
-          <div className="text-center mb-6">
+          <div className="text-center mb-8">
+            <span className="text-[10px] font-display tracking-[0.3em] text-accent mb-3 block">THE INNER CIRCLE ADVANTAGE</span>
             <h2 className="font-display text-xl sm:text-2xl font-bold tracking-wider text-foreground mb-2">
               Partner Pricing
             </h2>
-            <p className="text-sm text-muted-foreground font-body">
-              All custom compositions at partner rates. Produced weekly in our atelier.
+            <p className="text-sm text-muted-foreground font-body max-w-md mx-auto">
+              Every composition at half the retail price. Produced weekly, exclusively for our partners.
             </p>
           </div>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { size: "30ml", original: "25.99", partner: "13.00" },
-              { size: "50ml", original: "37.99", partner: "19.00" },
-              { size: "100ml", original: "59.99", partner: "30.00" },
+              { size: "30ml", original: "51.98", partner: "26.00" },
+              { size: "50ml", original: "75.98", partner: "38.00" },
+              { size: "100ml", original: "119.98", partner: "60.00" },
             ].map((p) => (
-              <div key={p.size} className="rounded-xl bg-muted/20 border border-border p-4 text-center">
-                <span className="font-display text-lg text-foreground block">{p.size}</span>
+              <div key={p.size} className="rounded-xl bg-muted/20 border border-border p-5 text-center group hover:border-primary/30 transition-colors">
+                <span className="font-display text-lg text-foreground block mb-1">{p.size}</span>
                 <span className="text-sm text-muted-foreground line-through block">€{p.original}</span>
-                <span className="font-display text-2xl text-primary block">€{p.partner}</span>
-                <span className="text-[10px] text-accent font-display">Parfum concentration</span>
+                <span className="font-display text-3xl text-primary block my-1 group-hover:drop-shadow-[0_0_20px_hsl(185_80%_55%/0.4)] transition-all">€{p.partner}</span>
+                <span className="text-[10px] text-accent font-display tracking-wider">PARFUM CONCENTRATION</span>
               </div>
             ))}
           </div>
