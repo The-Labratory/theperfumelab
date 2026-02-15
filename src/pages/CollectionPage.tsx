@@ -1,16 +1,28 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Clock, Flame, X, ArrowRight, Beaker } from "lucide-react";
+import { Sparkles, Clock, Flame, X, ArrowRight, Beaker, Lock, CheckCircle, Circle, Shield, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { perfumeCollections, type PerfumeCollection } from "@/data/collectionsData";
+import { useProgression, collectionQuests } from "@/hooks/useProgression";
 
 const intensityBars: Record<string, number> = { Light: 1, Moderate: 2, Bold: 3, Intense: 4 };
 
 const CollectionPage = () => {
   const [selectedPerfume, setSelectedPerfume] = useState<PerfumeCollection | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const { isUnlocked, getQuestProgress, state } = useProgression();
+
+  const totalUnlocked = perfumeCollections.filter((_, i) => isUnlocked(i)).length;
+
+  const handleSelect = (perfume: PerfumeCollection, index: number) => {
+    if (isUnlocked(index)) {
+      setSelectedPerfume(perfume);
+      setSelectedIndex(index);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -18,6 +30,7 @@ const CollectionPage = () => {
       <ParticleField count={10} />
 
       <div className="relative z-10 pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -27,62 +40,175 @@ const CollectionPage = () => {
             THE COLLECTION
           </h1>
           <p className="text-muted-foreground font-body text-sm sm:text-lg max-w-xl mx-auto mb-4">
-            Curated signatures crafted by master perfumers. Each one a world, a story, a piece of identity.
+            Six masterworks. Each one earned, not given. Complete quests to unlock the next chapter.
           </p>
-          <p className="text-xs text-primary/70 font-display tracking-wider">
-            Love these? Imagine creating something entirely yours.
-          </p>
+
+          {/* Progress bar */}
+          <div className="max-w-xs mx-auto">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[9px] font-display tracking-widest text-muted-foreground">
+                PROGRESS
+              </span>
+              <span className="text-[9px] font-display tracking-widest text-primary">
+                {totalUnlocked}/{perfumeCollections.length} UNLOCKED
+              </span>
+            </div>
+            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+              <motion.div
+                className="h-full rounded-full bg-primary"
+                initial={{ width: 0 }}
+                animate={{ width: `${(totalUnlocked / perfumeCollections.length) * 100}%` }}
+                transition={{ duration: 0.8 }}
+              />
+            </div>
+          </div>
         </motion.div>
 
-        {/* Featured */}
+        {/* Collection grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {perfumeCollections.map((perfume, i) => (
-            <motion.div
-              key={perfume.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              onClick={() => setSelectedPerfume(perfume)}
-              className="group glass-surface rounded-2xl p-5 sm:p-6 cursor-pointer hover:border-primary/30 transition-all relative overflow-hidden"
-            >
-              {perfume.featured && (
-                <div className="absolute top-3 right-3">
-                  <span className="text-[9px] font-display tracking-widest bg-accent/10 text-accent px-2 py-1 rounded-full border border-accent/30">
-                    FEATURED
-                  </span>
+          {perfumeCollections.map((perfume, i) => {
+            const unlocked = isUnlocked(i);
+            const progress = getQuestProgress(i);
+
+            return (
+              <motion.div
+                key={perfume.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                onClick={() => handleSelect(perfume, i)}
+                className={`group glass-surface rounded-2xl p-5 sm:p-6 relative overflow-hidden transition-all ${
+                  unlocked
+                    ? "cursor-pointer hover:border-primary/30"
+                    : "cursor-default opacity-70"
+                }`}
+              >
+                {/* Lock overlay for gated items */}
+                {!unlocked && (
+                  <div className="absolute inset-0 z-20 bg-background/60 backdrop-blur-[2px] flex flex-col items-center justify-center p-4">
+                    <Lock className="w-6 h-6 text-primary/40 mb-3" />
+                    <p className="font-display text-[10px] tracking-widest text-muted-foreground mb-3">
+                      COMPLETE TO UNLOCK
+                    </p>
+                    <div className="w-full max-w-[180px] space-y-1.5">
+                      {progress.quests.map((q, qi) => (
+                        <div key={qi} className="flex items-center gap-2">
+                          {q.done ? (
+                            <CheckCircle className="w-3 h-3 text-primary flex-shrink-0" />
+                          ) : (
+                            <Circle className="w-3 h-3 text-muted-foreground/40 flex-shrink-0" />
+                          )}
+                          <span className={`text-[9px] font-body ${q.done ? "text-primary line-through" : "text-muted-foreground"}`}>
+                            {q.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-3 h-1 w-full max-w-[180px] rounded-full bg-muted overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-primary transition-all"
+                        style={{ width: `${(progress.completed / progress.total) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-[8px] font-display tracking-widest text-muted-foreground/50 mt-1.5">
+                      {progress.completed}/{progress.total} COMPLETE
+                    </span>
+                  </div>
+                )}
+
+                {/* Unlock badge */}
+                {unlocked && (
+                  <div className="absolute top-3 right-3">
+                    {perfume.featured ? (
+                      <span className="text-[9px] font-display tracking-widest bg-accent/10 text-accent px-2 py-1 rounded-full border border-accent/30">
+                        FEATURED
+                      </span>
+                    ) : (
+                      <CheckCircle className="w-4 h-4 text-primary/40" />
+                    )}
+                  </div>
+                )}
+
+                {/* Level indicator */}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-4xl">{perfume.emoji}</span>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: i + 1 }).map((_, si) => (
+                      <Shield key={si} className={`w-2.5 h-2.5 ${unlocked ? "text-primary" : "text-muted-foreground/20"}`} />
+                    ))}
+                  </div>
                 </div>
-              )}
 
-              <div className="text-4xl mb-3">{perfume.emoji}</div>
-              <h3 className="font-display text-base sm:text-lg font-bold tracking-wide text-foreground mb-1">
-                {perfume.name}
-              </h3>
-              <p className="text-xs text-muted-foreground font-body italic mb-3">{perfume.tagline}</p>
-              <p className="text-xs text-muted-foreground font-body line-clamp-2 mb-4">{perfume.description}</p>
+                <h3 className="font-display text-base sm:text-lg font-bold tracking-wide text-foreground mb-1">
+                  {perfume.name}
+                </h3>
+                <p className="text-xs text-muted-foreground font-body italic mb-3">{perfume.tagline}</p>
+                <p className="text-xs text-muted-foreground font-body line-clamp-2 mb-4">{perfume.description}</p>
 
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-display tracking-wider text-muted-foreground">{perfume.family}</span>
-                <span className="font-display text-sm text-primary">€{perfume.price["50ml"]}</span>
-              </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-display tracking-wider text-muted-foreground">{perfume.family}</span>
+                  <span className="font-display text-sm text-primary">€{perfume.price["50ml"]}</span>
+                </div>
 
-              {/* Intensity bars */}
-              <div className="flex items-center gap-1 mt-3">
-                <Flame className="w-3 h-3 text-muted-foreground" />
-                {[1, 2, 3, 4].map((level) => (
-                  <div
-                    key={level}
-                    className={`h-1.5 flex-1 rounded-full transition-all ${
-                      level <= intensityBars[perfume.intensity]
-                        ? "bg-primary"
-                        : "bg-muted/50"
-                    }`}
-                  />
-                ))}
-                <span className="text-[9px] text-muted-foreground font-body ml-1">{perfume.intensity}</span>
-              </div>
-            </motion.div>
-          ))}
+                {/* Intensity */}
+                <div className="flex items-center gap-1 mt-3">
+                  <Flame className="w-3 h-3 text-muted-foreground" />
+                  {[1, 2, 3, 4].map((level) => (
+                    <div key={level} className={`h-1.5 flex-1 rounded-full transition-all ${
+                      level <= intensityBars[perfume.intensity] ? "bg-primary" : "bg-muted/50"
+                    }`} />
+                  ))}
+                  <span className="text-[9px] text-muted-foreground font-body ml-1">{perfume.intensity}</span>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* Quest summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-10 glass-surface rounded-2xl p-6 sm:p-8 border border-primary/10"
+        >
+          <div className="flex items-center gap-3 mb-5">
+            <Trophy className="w-5 h-5 text-accent" />
+            <h3 className="font-display text-base font-bold tracking-wider text-foreground">
+              Your Quest Progress
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <QuestStat label="WAITLIST" value={state.waitlistJoined ? "✓" : "—"} done={state.waitlistJoined} />
+            <QuestStat label="WORLDS" value={`${state.worldsVisited.length}/6`} done={state.worldsVisited.length >= 6} />
+            <QuestStat label="BLENDS" value={String(state.blendsCreated)} done={state.blendsCreated >= 5} />
+            <QuestStat label="SHARES" value={String(state.cardsShared)} done={state.cardsShared >= 3} />
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            {!state.waitlistJoined && (
+              <Link to="/access" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[10px] font-display tracking-wider hover:bg-primary/20 transition-colors">
+                Join Waitlist <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+            {state.worldsVisited.length < 6 && (
+              <Link to="/worlds" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[10px] font-display tracking-wider hover:bg-primary/20 transition-colors">
+                Explore Worlds <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+            {state.blendsCreated < 5 && (
+              <Link to="/lab" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[10px] font-display tracking-wider hover:bg-primary/20 transition-colors">
+                Create a Blend <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+            {state.cardsShared < 3 && (
+              <Link to="/share" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[10px] font-display tracking-wider hover:bg-primary/20 transition-colors">
+                Share a Card <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+          </div>
+        </motion.div>
 
         {/* Create Your Own CTA */}
         <motion.div
@@ -116,7 +242,7 @@ const CollectionPage = () => {
         </motion.div>
       </div>
 
-      {/* Detail Modal */}
+      {/* Detail Modal — only for unlocked perfumes */}
       <AnimatePresence>
         {selectedPerfume && (
           <motion.div
@@ -145,7 +271,6 @@ const CollectionPage = () => {
               </h2>
               <p className="text-sm text-accent font-body italic mb-4">{selectedPerfume.tagline}</p>
 
-              {/* Story */}
               <div className="glass-surface rounded-xl p-4 mb-4 border border-border">
                 <p className="text-[10px] font-display tracking-widest text-accent mb-2">THE STORY</p>
                 <p className="text-xs sm:text-sm font-body text-muted-foreground leading-relaxed italic">
@@ -153,7 +278,6 @@ const CollectionPage = () => {
                 </p>
               </div>
 
-              {/* Notes pyramid */}
               <div className="space-y-3 mb-4">
                 {(["top", "heart", "base"] as const).map((layer) => {
                   const layerNotes = selectedPerfume.notes.filter((n) => n.layer === layer);
@@ -173,7 +297,6 @@ const CollectionPage = () => {
                 })}
               </div>
 
-              {/* Meta */}
               <div className="grid grid-cols-2 gap-3 mb-5">
                 <div className="glass-surface rounded-lg p-3">
                   <div className="flex items-center gap-1 mb-1">
@@ -191,21 +314,15 @@ const CollectionPage = () => {
                 </div>
               </div>
 
-              {/* Occasions */}
               <div className="flex flex-wrap gap-1.5 mb-5">
                 {selectedPerfume.occasion.map((o) => (
-                  <span key={o} className="text-[10px] font-display tracking-wider bg-primary/10 text-primary px-2.5 py-1 rounded-full border border-primary/20">
-                    {o}
-                  </span>
+                  <span key={o} className="text-[10px] font-display tracking-wider bg-primary/10 text-primary px-2.5 py-1 rounded-full border border-primary/20">{o}</span>
                 ))}
                 {selectedPerfume.season.map((s) => (
-                  <span key={s} className="text-[10px] font-display tracking-wider bg-accent/10 text-accent px-2.5 py-1 rounded-full border border-accent/20">
-                    {s}
-                  </span>
+                  <span key={s} className="text-[10px] font-display tracking-wider bg-accent/10 text-accent px-2.5 py-1 rounded-full border border-accent/20">{s}</span>
                 ))}
               </div>
 
-              {/* Pricing */}
               <div className="flex gap-3 mb-5">
                 <div className="flex-1 glass-surface rounded-xl p-4 text-center">
                   <span className="text-[10px] font-display tracking-wider text-muted-foreground block mb-1">50ML</span>
@@ -217,11 +334,7 @@ const CollectionPage = () => {
                 </div>
               </div>
 
-              {/* Create your own nudge */}
-              <Link
-                to="/lab"
-                className="block rounded-xl bg-primary/5 border border-primary/15 p-4 text-center group hover:border-primary/30 transition-all"
-              >
+              <Link to="/lab" className="block rounded-xl bg-primary/5 border border-primary/15 p-4 text-center group hover:border-primary/30 transition-all">
                 <p className="text-xs font-display tracking-wider text-muted-foreground mb-1">
                   INSPIRED? CREATE SOMETHING ENTIRELY YOURS
                 </p>
@@ -236,5 +349,14 @@ const CollectionPage = () => {
     </div>
   );
 };
+
+const QuestStat = ({ label, value, done }: { label: string; value: string; done: boolean }) => (
+  <div className="glass-surface rounded-xl p-3 text-center border border-border/30">
+    <div className={`font-display text-lg font-black ${done ? "text-primary" : "text-muted-foreground"}`}>
+      {value}
+    </div>
+    <div className="text-[7px] font-display tracking-[0.25em] text-muted-foreground mt-1">{label}</div>
+  </div>
+);
 
 export default CollectionPage;

@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useProgression } from "@/hooks/useProgression";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 
@@ -56,6 +57,7 @@ const SharePage = () => {
   const [copied, setCopied] = useState(false);
   const [triggerIdx, setTriggerIdx] = useState(0);
   const [viewerCount, setViewerCount] = useState(23);
+  const { markCardShared } = useProgression();
 
   // Fetch user blends + leaderboards
   useEffect(() => {
@@ -130,9 +132,10 @@ const SharePage = () => {
   const handleShare = async (b: SavedBlend) => {
     const text = shareText(b);
     if (navigator.share) {
-      try { await navigator.share({ title: `Blend No. ${String(b.blend_number).padStart(4, "0")}`, text }); } catch {}
+      try { await navigator.share({ title: `Blend No. ${String(b.blend_number).padStart(4, "0")}`, text }); markCardShared(); } catch {}
     } else {
       await navigator.clipboard.writeText(text);
+      markCardShared();
       toast.success("Copied to clipboard — paste anywhere");
     }
   };

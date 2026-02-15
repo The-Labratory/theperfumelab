@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
+import { useProgression } from "@/hooks/useProgression";
 
 const MAX_FOUNDING_CREATORS = 100;
 const WEEKLY_BLEND_CAP = 50;
@@ -17,6 +18,7 @@ const ExclusiveAccessPage = () => {
   const [loading, setLoading] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState<number | null>(null);
   const [revealReason, setRevealReason] = useState(false);
+  const { markWaitlistJoined } = useProgression();
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -44,6 +46,7 @@ const ExclusiveAccessPage = () => {
         } else throw error;
       }
       setSubmitted(true);
+      markWaitlistJoined();
       if (spotsLeft !== null && spotsLeft > 0) setSpotsLeft(spotsLeft - 1);
     } catch {
       toast.error("Something went wrong. Try again.");
