@@ -18,6 +18,7 @@ import GiftRevealPage from "./pages/GiftRevealPage";
 import InstallPage from "./pages/InstallPage";
 import PartnerPage from "./pages/PartnerPage";
 import ExclusiveAccessPage from "./pages/ExclusiveAccessPage";
+import LaunchPage from "./pages/LaunchPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const AppContent = () => {
       <Route path="/product/:handle" element={<ProductPage />} />
       <Route path="/install" element={<InstallPage />} />
       <Route path="/access" element={<ExclusiveAccessPage />} />
+      <Route path="/launch" element={<LaunchPage />} />
       <Route path="/partner" element={<PartnerPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
