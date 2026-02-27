@@ -3,7 +3,7 @@ import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Lock } from "lucide-react";
+import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Lock, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,7 @@ const adminNav = [
   { title: "Formulas", url: "/admin/formulas", icon: FlaskConical },
   { title: "IFRA Rules", url: "/admin/ifra", icon: ShieldCheck },
   { title: "Audit Log", url: "/admin/audit", icon: ScrollText },
+  { title: "Partners", url: "/admin/partners", icon: Handshake },
 ];
 
 export default function AdminLayout() {

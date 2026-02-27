@@ -1,0 +1,94 @@
+{
+  "nav": {
+    "home": "Home",
+    "worlds": "Worlds",
+    "lab": "Perfumer Lab",
+    "formulation": "Formulation",
+    "collection": "Collection",
+    "gifting": "Gifting",
+    "store": "Store",
+    "dna": "Scent DNA",
+    "backOffice": "Back Office",
+    "login": "Sign In",
+    "signup": "Sign Up",
+    "logout": "Sign Out",
+    "account": "Account"
+  },
+  "hero": {
+    "badge": "Only 100 Founding Creators Accepted",
+    "title": "The Perfume Lab",
+    "subtitle": "A Private Perfumery Experience",
+    "description": "The private tools of master perfumers. Now in your hands.",
+    "note": "Each composition is blended individually. No two formulas are ever identical.",
+    "cta": "Request Access",
+    "journey": "Begin Your Journey"
+  },
+  "features": {
+    "identity": "Your Scent Identity",
+    "identityDesc": "A guided journey to uncover your unique fragrance archetype and personal signature.",
+    "worlds": "Six Fragrance Worlds",
+    "worldsDesc": "Curated olfactory realms — each with its own palette, mood, and raw materials.",
+    "atelier": "The Atelier",
+    "atelierDesc": "Compose with precision. Every blend is produced by hand in small weekly batches."
+  },
+  "cta": {
+    "title": "Your Signature Awaits",
+    "description": "Thousands of possible combinations. One that's unmistakably you. Our AI-guided Scent Lab walks you through every layer — top, heart, base — until your vision becomes a bottle.",
+    "note": "Most creators can't stop at just one.",
+    "lab": "Enter the Scent Lab",
+    "browse": "Browse the Collection"
+  },
+  "footer": {
+    "copyright": "© 2026 The Perfume Lab — Each composition is blended individually in our atelier."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signInCta": "Sign in to your account",
+    "signUpCta": "Create your account",
+    "backToSite": "← Back to Site",
+    "checkEmail": "Check your email to confirm your account.",
+    "signedIn": "Signed in successfully",
+    "signedOut": "Signed out",
+    "error": "Authentication failed"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "ingredients": "Ingredients",
+    "interactions": "Interactions",
+    "formulas": "Formulas",
+    "ifra": "IFRA Rules",
+    "audit": "Audit Log",
+    "partners": "Partners",
+    "backToSite": "← Back to Site",
+    "backOffice": "Back Office",
+    "accessDenied": "Access Denied",
+    "adminRequired": "Administrator privileges required.",
+    "signedInAs": "Signed in as"
+  },
+  "partners": {
+    "title": "Partner Applications",
+    "company": "Company",
+    "contact": "Contact",
+    "email": "Email",
+    "phone": "Phone",
+    "type": "Business Type",
+    "volume": "Est. Volume",
+    "status": "Status",
+    "date": "Date",
+    "message": "Message",
+    "website": "Website",
+    "noApplications": "No partner applications yet.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  }
+}

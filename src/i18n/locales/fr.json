@@ -1,0 +1,94 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "worlds": "Mondes",
+    "lab": "Laboratoire",
+    "formulation": "Formulation",
+    "collection": "Collection",
+    "gifting": "Cadeaux",
+    "store": "Boutique",
+    "dna": "ADN Olfactif",
+    "backOffice": "Administration",
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "logout": "Déconnexion",
+    "account": "Compte"
+  },
+  "hero": {
+    "badge": "Seulement 100 Créateurs Fondateurs Acceptés",
+    "title": "Le Laboratoire de Parfums",
+    "subtitle": "Une Expérience de Parfumerie Privée",
+    "description": "Les outils privés des maîtres parfumeurs. Maintenant entre vos mains.",
+    "note": "Chaque composition est mélangée individuellement. Aucune formule n'est jamais identique.",
+    "cta": "Demander l'Accès",
+    "journey": "Commencez Votre Voyage"
+  },
+  "features": {
+    "identity": "Votre Identité Olfactive",
+    "identityDesc": "Un voyage guidé pour découvrir votre archétype de fragrance unique et votre signature personnelle.",
+    "worlds": "Six Mondes Olfactifs",
+    "worldsDesc": "Des royaumes olfactifs — chacun avec sa propre palette, ambiance et matières premières.",
+    "atelier": "L'Atelier",
+    "atelierDesc": "Composez avec précision. Chaque mélange est produit à la main en petits lots hebdomadaires."
+  },
+  "cta": {
+    "title": "Votre Signature Vous Attend",
+    "description": "Des milliers de combinaisons possibles. Une qui est indubitablement vous. Notre Laboratoire de Senteurs guidé par IA vous accompagne à travers chaque couche — tête, cœur, fond — jusqu'à ce que votre vision devienne un flacon.",
+    "note": "La plupart des créateurs ne peuvent pas s'arrêter à un seul.",
+    "lab": "Entrer au Laboratoire",
+    "browse": "Parcourir la Collection"
+  },
+  "footer": {
+    "copyright": "© 2026 Le Laboratoire de Parfums — Chaque composition est mélangée individuellement dans notre atelier."
+  },
+  "auth": {
+    "signIn": "Connexion",
+    "signUp": "Créer un Compte",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "signInCta": "Connectez-vous à votre compte",
+    "signUpCta": "Créez votre compte",
+    "backToSite": "← Retour au Site",
+    "checkEmail": "Vérifiez votre e-mail pour confirmer votre compte.",
+    "signedIn": "Connexion réussie",
+    "signedOut": "Déconnecté",
+    "error": "Échec de l'authentification"
+  },
+  "admin": {
+    "dashboard": "Tableau de Bord",
+    "ingredients": "Ingrédients",
+    "interactions": "Interactions",
+    "formulas": "Formules",
+    "ifra": "Règles IFRA",
+    "audit": "Journal",
+    "partners": "Partenaires",
+    "backToSite": "← Retour au Site",
+    "backOffice": "Administration",
+    "accessDenied": "Accès Refusé",
+    "adminRequired": "Privilèges d'administrateur requis.",
+    "signedInAs": "Connecté en tant que"
+  },
+  "partners": {
+    "title": "Demandes de Partenariat",
+    "company": "Entreprise",
+    "contact": "Contact",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "type": "Type d'Activité",
+    "volume": "Volume Estimé",
+    "status": "Statut",
+    "date": "Date",
+    "message": "Message",
+    "website": "Site Web",
+    "noApplications": "Aucune demande de partenariat pour le moment.",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "pending": "En attente",
+    "approved": "Approuvé",
+    "rejected": "Rejeté"
+  }
+}

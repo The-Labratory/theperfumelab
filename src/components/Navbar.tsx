@@ -1,25 +1,45 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
 import { CartDrawer } from "@/components/CartDrawer";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 import lhaririLogo from "@/assets/lhariri-logo.png";
 
-const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/worlds", label: "Worlds" },
-  { path: "/lab", label: "Perfumer Lab" },
-  { path: "/formulation", label: "Formulation" },
-  { path: "/collection", label: "Collection" },
-  { path: "/gifting", label: "Gifting" },
-  { path: "/store", label: "Store" },
-  { path: "/dna", label: "Scent DNA" },
-  { path: "/admin", label: "Back Office" },
-];
-
 const Navbar = () => {
+  const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null));
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
+  const navItems = [
+    { path: "/", label: t("nav.home") },
+    { path: "/worlds", label: t("nav.worlds") },
+    { path: "/lab", label: t("nav.lab") },
+    { path: "/formulation", label: t("nav.formulation") },
+    { path: "/collection", label: t("nav.collection") },
+    { path: "/gifting", label: t("nav.gifting") },
+    { path: "/store", label: t("nav.store") },
+    { path: "/dna", label: t("nav.dna") },
+    { path: "/admin", label: t("nav.backOffice") },
+  ];
 
   return (
     <motion.nav
@@ -55,14 +75,36 @@ const Navbar = () => {
               </Link>
             );
           })}
-          <div className="ml-2">
+          <LanguageSwitcher />
+          <div className="ml-1">
             <CartDrawer />
           </div>
+          {user ? (
+            <Button variant="ghost" size="sm" onClick={handleSignOut} className="ml-1 gap-1.5 text-muted-foreground hover:text-foreground px-2">
+              <LogOut className="w-4 h-4" />
+            </Button>
+          ) : (
+            <Button asChild variant="outline" size="sm" className="ml-1 font-display tracking-wider text-xs border-primary/30 hover:bg-primary/10">
+              <Link to="/auth">
+                <User className="w-3.5 h-3.5 mr-1.5" /> {t("nav.login")}
+              </Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile right side */}
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex md:hidden items-center gap-1">
+          <LanguageSwitcher />
           <CartDrawer />
+          {user ? (
+            <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground" onClick={handleSignOut}>
+              <LogOut className="w-4 h-4" />
+            </Button>
+          ) : (
+            <Button asChild variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground">
+              <Link to="/auth"><User className="w-4 h-4" /></Link>
+            </Button>
+          )}
           <button className="text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
