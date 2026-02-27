@@ -50,6 +50,126 @@ export type Database = {
         }
         Relationships: []
       }
+      blend_comments: {
+        Row: {
+          blend_id: string
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blend_id: string
+          content: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blend_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blend_comments_blend_id_fkey"
+            columns: ["blend_id"]
+            isOneToOne: false
+            referencedRelation: "saved_blends"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blend_likes: {
+        Row: {
+          blend_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          blend_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          blend_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blend_likes_blend_id_fkey"
+            columns: ["blend_id"]
+            isOneToOne: false
+            referencedRelation: "saved_blends"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_costs: {
+        Row: {
+          batch_size_ml: number | null
+          bottle_cost: number
+          calculated_at: string
+          currency: string | null
+          formula_id: string
+          id: string
+          labor_cost: number
+          margin_pct: number | null
+          overhead_cost: number
+          packaging_cost: number
+          raw_material_cost: number
+          recommended_price: number | null
+          total_cost: number
+        }
+        Insert: {
+          batch_size_ml?: number | null
+          bottle_cost?: number
+          calculated_at?: string
+          currency?: string | null
+          formula_id: string
+          id?: string
+          labor_cost?: number
+          margin_pct?: number | null
+          overhead_cost?: number
+          packaging_cost?: number
+          raw_material_cost?: number
+          recommended_price?: number | null
+          total_cost?: number
+        }
+        Update: {
+          batch_size_ml?: number | null
+          bottle_cost?: number
+          calculated_at?: string
+          currency?: string | null
+          formula_id?: string
+          id?: string
+          labor_cost?: number
+          margin_pct?: number | null
+          overhead_cost?: number
+          packaging_cost?: number
+          raw_material_cost?: number
+          recommended_price?: number | null
+          total_cost?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_costs_formula_id_fkey"
+            columns: ["formula_id"]
+            isOneToOne: true
+            referencedRelation: "formulas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       formula_ingredients: {
         Row: {
           concentration_pct: number
@@ -92,59 +212,147 @@ export type Database = {
           },
         ]
       }
+      formula_snapshots: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          estimated_cost: number | null
+          formula_id: string
+          harmony_score: number | null
+          id: string
+          ingredient_snapshot: Json
+          notes: string | null
+          snapshot_data: Json
+          stability_score: number | null
+          total_concentration: number
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          estimated_cost?: number | null
+          formula_id: string
+          harmony_score?: number | null
+          id?: string
+          ingredient_snapshot: Json
+          notes?: string | null
+          snapshot_data: Json
+          stability_score?: number | null
+          total_concentration: number
+          version: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          estimated_cost?: number | null
+          formula_id?: string
+          harmony_score?: number | null
+          id?: string
+          ingredient_snapshot?: Json
+          notes?: string | null
+          snapshot_data?: Json
+          stability_score?: number | null
+          total_concentration?: number
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_snapshots_formula_id_fkey"
+            columns: ["formula_id"]
+            isOneToOne: false
+            referencedRelation: "formulas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       formulas: {
         Row: {
+          batch_size_ml: number | null
           compliance_notes: string | null
           compliance_status: string
           concentration_type: string
           created_at: string
           description: string | null
+          estimated_cost: number | null
+          estimated_margin_pct: number | null
           evolution_summary: string | null
           formula_number: number
           harmony_score: number | null
           id: string
+          is_locked: boolean | null
+          locked_at: string | null
+          locked_by: string | null
           name: string
+          parent_formula_id: string | null
+          production_notes: string | null
           stability_score: number | null
           status: string
           total_concentration: number
           updated_at: string
           user_id: string | null
+          version: number | null
         }
         Insert: {
+          batch_size_ml?: number | null
           compliance_notes?: string | null
           compliance_status?: string
           concentration_type?: string
           created_at?: string
           description?: string | null
+          estimated_cost?: number | null
+          estimated_margin_pct?: number | null
           evolution_summary?: string | null
           formula_number?: number
           harmony_score?: number | null
           id?: string
+          is_locked?: boolean | null
+          locked_at?: string | null
+          locked_by?: string | null
           name: string
+          parent_formula_id?: string | null
+          production_notes?: string | null
           stability_score?: number | null
           status?: string
           total_concentration?: number
           updated_at?: string
           user_id?: string | null
+          version?: number | null
         }
         Update: {
+          batch_size_ml?: number | null
           compliance_notes?: string | null
           compliance_status?: string
           concentration_type?: string
           created_at?: string
           description?: string | null
+          estimated_cost?: number | null
+          estimated_margin_pct?: number | null
           evolution_summary?: string | null
           formula_number?: number
           harmony_score?: number | null
           id?: string
+          is_locked?: boolean | null
+          locked_at?: string | null
+          locked_by?: string | null
           name?: string
+          parent_formula_id?: string | null
+          production_notes?: string | null
           stability_score?: number | null
           status?: string
           total_concentration?: number
           updated_at?: string
           user_id?: string | null
+          version?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "formulas_parent_formula_id_fkey"
+            columns: ["parent_formula_id"]
+            isOneToOne: false
+            referencedRelation: "formulas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       gifts: {
         Row: {
@@ -321,9 +529,12 @@ export type Database = {
       }
       ingredients: {
         Row: {
+          allergen_flags: string[] | null
           boiling_point: number
           cas_number: string | null
           category: string
+          cost_currency: string | null
+          cost_per_kg: number | null
           created_at: string
           default_layer: string
           freshness: number
@@ -333,10 +544,17 @@ export type Database = {
           ifra_max_concentration: number | null
           is_active: boolean
           is_fixative: boolean
+          min_order_qty_kg: number | null
           molecular_weight: number
           name: string
           odor_intensity: number
           odor_profile: string | null
+          origin_country: string | null
+          regulatory_notes: string | null
+          shelf_life_months: number | null
+          storage_conditions: string | null
+          supplier_code: string | null
+          supplier_name: string | null
           sweetness: number
           updated_at: string
           vapor_pressure: number
@@ -344,9 +562,12 @@ export type Database = {
           warmth: number
         }
         Insert: {
+          allergen_flags?: string[] | null
           boiling_point?: number
           cas_number?: string | null
           category?: string
+          cost_currency?: string | null
+          cost_per_kg?: number | null
           created_at?: string
           default_layer?: string
           freshness?: number
@@ -356,10 +577,17 @@ export type Database = {
           ifra_max_concentration?: number | null
           is_active?: boolean
           is_fixative?: boolean
+          min_order_qty_kg?: number | null
           molecular_weight?: number
           name: string
           odor_intensity?: number
           odor_profile?: string | null
+          origin_country?: string | null
+          regulatory_notes?: string | null
+          shelf_life_months?: number | null
+          storage_conditions?: string | null
+          supplier_code?: string | null
+          supplier_name?: string | null
           sweetness?: number
           updated_at?: string
           vapor_pressure?: number
@@ -367,9 +595,12 @@ export type Database = {
           warmth?: number
         }
         Update: {
+          allergen_flags?: string[] | null
           boiling_point?: number
           cas_number?: string | null
           category?: string
+          cost_currency?: string | null
+          cost_per_kg?: number | null
           created_at?: string
           default_layer?: string
           freshness?: number
@@ -379,15 +610,127 @@ export type Database = {
           ifra_max_concentration?: number | null
           is_active?: boolean
           is_fixative?: boolean
+          min_order_qty_kg?: number | null
           molecular_weight?: number
           name?: string
           odor_intensity?: number
           odor_profile?: string | null
+          origin_country?: string | null
+          regulatory_notes?: string | null
+          shelf_life_months?: number | null
+          storage_conditions?: string | null
+          supplier_code?: string | null
+          supplier_name?: string | null
           sweetness?: number
           updated_at?: string
           vapor_pressure?: number
           volatility_index?: number
           warmth?: number
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          is_read: boolean | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          billing_address: Json | null
+          created_at: string
+          currency: string | null
+          customer_email: string | null
+          customer_name: string | null
+          discount_amount: number | null
+          id: string
+          items: Json
+          notes: string | null
+          order_number: number
+          payment_provider: string | null
+          payment_reference: string | null
+          payment_status: string
+          shipping_address: Json | null
+          shipping_cost: number | null
+          status: string
+          subtotal: number
+          tax_amount: number | null
+          total: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          billing_address?: Json | null
+          created_at?: string
+          currency?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          discount_amount?: number | null
+          id?: string
+          items?: Json
+          notes?: string | null
+          order_number?: number
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          shipping_address?: Json | null
+          shipping_cost?: number | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number | null
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          billing_address?: Json | null
+          created_at?: string
+          currency?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          discount_amount?: number | null
+          id?: string
+          items?: Json
+          notes?: string | null
+          order_number?: number
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          shipping_address?: Json | null
+          shipping_cost?: number | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number | null
+          total?: number
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -433,13 +776,160 @@ export type Database = {
         }
         Relationships: []
       }
+      production_orders: {
+        Row: {
+          batch_id: string | null
+          completed_at: string | null
+          compliance_doc_url: string | null
+          concentration_type: string
+          created_at: string
+          estimated_completion: string | null
+          formula_id: string
+          formula_snapshot_id: string | null
+          id: string
+          mixing_instructions: Json | null
+          order_number: number
+          priority: string | null
+          production_notes: string | null
+          quantity: number
+          sale_price: number | null
+          shipped_at: string | null
+          shipping_tracking: string | null
+          shipping_weight_g: number | null
+          started_at: string | null
+          status: string
+          total_cost: number | null
+          updated_at: string
+          user_id: string | null
+          volume_ml: number
+        }
+        Insert: {
+          batch_id?: string | null
+          completed_at?: string | null
+          compliance_doc_url?: string | null
+          concentration_type?: string
+          created_at?: string
+          estimated_completion?: string | null
+          formula_id: string
+          formula_snapshot_id?: string | null
+          id?: string
+          mixing_instructions?: Json | null
+          order_number?: number
+          priority?: string | null
+          production_notes?: string | null
+          quantity?: number
+          sale_price?: number | null
+          shipped_at?: string | null
+          shipping_tracking?: string | null
+          shipping_weight_g?: number | null
+          started_at?: string | null
+          status?: string
+          total_cost?: number | null
+          updated_at?: string
+          user_id?: string | null
+          volume_ml?: number
+        }
+        Update: {
+          batch_id?: string | null
+          completed_at?: string | null
+          compliance_doc_url?: string | null
+          concentration_type?: string
+          created_at?: string
+          estimated_completion?: string | null
+          formula_id?: string
+          formula_snapshot_id?: string | null
+          id?: string
+          mixing_instructions?: Json | null
+          order_number?: number
+          priority?: string | null
+          production_notes?: string | null
+          quantity?: number
+          sale_price?: number | null
+          shipped_at?: string | null
+          shipping_tracking?: string | null
+          shipping_weight_g?: number | null
+          started_at?: string | null
+          status?: string
+          total_cost?: number | null
+          updated_at?: string
+          user_id?: string | null
+          volume_ml?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_orders_formula_id_fkey"
+            columns: ["formula_id"]
+            isOneToOne: false
+            referencedRelation: "formulas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_orders_formula_snapshot_id_fkey"
+            columns: ["formula_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "formula_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          blends_created: number | null
+          created_at: string
+          display_name: string | null
+          experience_level: string | null
+          favorite_families: string[] | null
+          id: string
+          is_public: boolean | null
+          scent_personality: string | null
+          total_likes_received: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          blends_created?: number | null
+          created_at?: string
+          display_name?: string | null
+          experience_level?: string | null
+          favorite_families?: string[] | null
+          id?: string
+          is_public?: boolean | null
+          scent_personality?: string | null
+          total_likes_received?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          blends_created?: number | null
+          created_at?: string
+          display_name?: string | null
+          experience_level?: string | null
+          favorite_families?: string[] | null
+          id?: string
+          is_public?: boolean | null
+          scent_personality?: string | null
+          total_likes_received?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_blends: {
         Row: {
           blend_number: number
+          comment_count: number | null
           concentration: string
           created_at: string
           harmony_score: number | null
           id: string
+          is_public: boolean | null
+          like_count: number | null
           name: string | null
           scent_notes: Json
           story_text: string | null
@@ -449,10 +939,13 @@ export type Database = {
         }
         Insert: {
           blend_number?: number
+          comment_count?: number | null
           concentration: string
           created_at?: string
           harmony_score?: number | null
           id?: string
+          is_public?: boolean | null
+          like_count?: number | null
           name?: string | null
           scent_notes?: Json
           story_text?: string | null
@@ -462,16 +955,70 @@ export type Database = {
         }
         Update: {
           blend_number?: number
+          comment_count?: number | null
           concentration?: string
           created_at?: string
           harmony_score?: number | null
           id?: string
+          is_public?: boolean | null
+          like_count?: number | null
           name?: string | null
           scent_notes?: Json
           story_text?: string | null
           total_price?: number | null
           user_id?: string | null
           volume?: number
+        }
+        Relationships: []
+      }
+      user_activity_logs: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          page_path: string | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          page_path?: string | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          page_path?: string | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
         }
         Relationships: []
       }
@@ -531,6 +1078,10 @@ export type Database = {
       assign_admin_if_allowed: {
         Args: { _email: string; _user_id: string }
         Returns: boolean
+      }
+      calculate_formula_cost: {
+        Args: { _batch_size_ml?: number; _formula_id: string }
+        Returns: Json
       }
       get_alltime_leaderboard: {
         Args: { _limit?: number }
@@ -598,6 +1149,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      lock_formula_version: { Args: { _formula_id: string }; Returns: Json }
+      validate_formula: { Args: { _formula_id: string }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "user"
