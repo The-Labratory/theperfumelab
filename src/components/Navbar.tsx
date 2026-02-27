@@ -9,11 +9,12 @@ const navItems = [
   { path: "/", label: "Home" },
   { path: "/worlds", label: "Worlds" },
   { path: "/lab", label: "Perfumer Lab" },
+  { path: "/formulation", label: "Formulation" },
   { path: "/collection", label: "Collection" },
   { path: "/gifting", label: "Gifting" },
   { path: "/store", label: "Store" },
   { path: "/dna", label: "Scent DNA" },
-  { path: "/partner", label: "Partner" },
+  { path: "/admin", label: "Back Office" },
 ];
 
 const Navbar = () => {
