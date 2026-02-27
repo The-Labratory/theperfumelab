@@ -3,3 +3,5 @@ project_id = "xkfztnyodbzftlshoqui"
 [functions]
   [functions.auth-email-hook]
     verify_jwt = false
+  [functions.formula-engine]
+    verify_jwt = false
