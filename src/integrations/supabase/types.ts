@@ -14,6 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          ip_address: string | null
+          new_values: Json | null
+          old_values: Json | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      formula_ingredients: {
+        Row: {
+          concentration_pct: number
+          created_at: string
+          formula_id: string
+          id: string
+          ingredient_id: string
+          layer_override: string | null
+        }
+        Insert: {
+          concentration_pct?: number
+          created_at?: string
+          formula_id: string
+          id?: string
+          ingredient_id: string
+          layer_override?: string | null
+        }
+        Update: {
+          concentration_pct?: number
+          created_at?: string
+          formula_id?: string
+          id?: string
+          ingredient_id?: string
+          layer_override?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_ingredients_formula_id_fkey"
+            columns: ["formula_id"]
+            isOneToOne: false
+            referencedRelation: "formulas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_ingredients_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formulas: {
+        Row: {
+          compliance_notes: string | null
+          compliance_status: string
+          concentration_type: string
+          created_at: string
+          description: string | null
+          evolution_summary: string | null
+          formula_number: number
+          harmony_score: number | null
+          id: string
+          name: string
+          stability_score: number | null
+          status: string
+          total_concentration: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          compliance_notes?: string | null
+          compliance_status?: string
+          concentration_type?: string
+          created_at?: string
+          description?: string | null
+          evolution_summary?: string | null
+          formula_number?: number
+          harmony_score?: number | null
+          id?: string
+          name: string
+          stability_score?: number | null
+          status?: string
+          total_concentration?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          compliance_notes?: string | null
+          compliance_status?: string
+          concentration_type?: string
+          created_at?: string
+          description?: string | null
+          evolution_summary?: string | null
+          formula_number?: number
+          harmony_score?: number | null
+          id?: string
+          name?: string
+          stability_score?: number | null
+          status?: string
+          total_concentration?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       gifts: {
         Row: {
           blend_intensity: string | null
@@ -95,6 +227,167 @@ export type Database = {
           scent_letter?: string | null
           share_code?: string
           zodiac_sign?: string | null
+        }
+        Relationships: []
+      }
+      ifra_restrictions: {
+        Row: {
+          amendment_number: string | null
+          created_at: string
+          effective_date: string | null
+          id: string
+          ingredient_id: string
+          max_concentration: number
+          notes: string | null
+          product_category: string
+        }
+        Insert: {
+          amendment_number?: string | null
+          created_at?: string
+          effective_date?: string | null
+          id?: string
+          ingredient_id: string
+          max_concentration: number
+          notes?: string | null
+          product_category?: string
+        }
+        Update: {
+          amendment_number?: string | null
+          created_at?: string
+          effective_date?: string | null
+          id?: string
+          ingredient_id?: string
+          max_concentration?: number
+          notes?: string | null
+          product_category?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ifra_restrictions_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ingredient_interactions: {
+        Row: {
+          accord_name: string | null
+          created_at: string
+          id: string
+          ingredient_a_id: string
+          ingredient_b_id: string
+          interaction_strength: number
+          interaction_type: string
+          notes: string | null
+        }
+        Insert: {
+          accord_name?: string | null
+          created_at?: string
+          id?: string
+          ingredient_a_id: string
+          ingredient_b_id: string
+          interaction_strength?: number
+          interaction_type?: string
+          notes?: string | null
+        }
+        Update: {
+          accord_name?: string | null
+          created_at?: string
+          id?: string
+          ingredient_a_id?: string
+          ingredient_b_id?: string
+          interaction_strength?: number
+          interaction_type?: string
+          notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ingredient_interactions_ingredient_a_id_fkey"
+            columns: ["ingredient_a_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ingredient_interactions_ingredient_b_id_fkey"
+            columns: ["ingredient_b_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ingredients: {
+        Row: {
+          boiling_point: number
+          cas_number: string | null
+          category: string
+          created_at: string
+          default_layer: string
+          freshness: number
+          functional_group: string
+          id: string
+          ifra_category: string
+          ifra_max_concentration: number | null
+          is_active: boolean
+          is_fixative: boolean
+          molecular_weight: number
+          name: string
+          odor_intensity: number
+          odor_profile: string | null
+          sweetness: number
+          updated_at: string
+          vapor_pressure: number
+          volatility_index: number
+          warmth: number
+        }
+        Insert: {
+          boiling_point?: number
+          cas_number?: string | null
+          category?: string
+          created_at?: string
+          default_layer?: string
+          freshness?: number
+          functional_group?: string
+          id?: string
+          ifra_category?: string
+          ifra_max_concentration?: number | null
+          is_active?: boolean
+          is_fixative?: boolean
+          molecular_weight?: number
+          name: string
+          odor_intensity?: number
+          odor_profile?: string | null
+          sweetness?: number
+          updated_at?: string
+          vapor_pressure?: number
+          volatility_index?: number
+          warmth?: number
+        }
+        Update: {
+          boiling_point?: number
+          cas_number?: string | null
+          category?: string
+          created_at?: string
+          default_layer?: string
+          freshness?: number
+          functional_group?: string
+          id?: string
+          ifra_category?: string
+          ifra_max_concentration?: number | null
+          is_active?: boolean
+          is_fixative?: boolean
+          molecular_weight?: number
+          name?: string
+          odor_intensity?: number
+          odor_profile?: string | null
+          sweetness?: number
+          updated_at?: string
+          vapor_pressure?: number
+          volatility_index?: number
+          warmth?: number
         }
         Relationships: []
       }
