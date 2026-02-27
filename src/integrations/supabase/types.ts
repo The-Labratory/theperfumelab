@@ -528,6 +528,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assign_admin_if_allowed: {
+        Args: { _email: string; _user_id: string }
+        Returns: boolean
+      }
       get_alltime_leaderboard: {
         Args: { _limit?: number }
         Returns: {
