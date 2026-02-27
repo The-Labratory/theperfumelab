@@ -56,7 +56,9 @@
     "checkEmail": "Check your email to confirm your account.",
     "signedIn": "Signed in successfully",
     "signedOut": "Signed out",
-    "error": "Authentication failed"
+    "error": "Authentication failed",
+    "or": "or",
+    "google": "Continue with Google"
   },
   "admin": {
     "dashboard": "Dashboard",
