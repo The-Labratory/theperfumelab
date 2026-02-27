@@ -1,0 +1,94 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "worlds": "Mundos",
+    "lab": "Laboratorio",
+    "formulation": "Formulación",
+    "collection": "Colección",
+    "gifting": "Regalos",
+    "store": "Tienda",
+    "dna": "ADN Olfativo",
+    "backOffice": "Administración",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "account": "Cuenta"
+  },
+  "hero": {
+    "badge": "Solo 100 Creadores Fundadores Aceptados",
+    "title": "El Laboratorio de Perfumes",
+    "subtitle": "Una Experiencia de Perfumería Privada",
+    "description": "Las herramientas privadas de los maestros perfumistas. Ahora en tus manos.",
+    "note": "Cada composición se mezcla individualmente. Ninguna fórmula es jamás idéntica.",
+    "cta": "Solicitar Acceso",
+    "journey": "Comienza Tu Viaje"
+  },
+  "features": {
+    "identity": "Tu Identidad Olfativa",
+    "identityDesc": "Un viaje guiado para descubrir tu arquetipo de fragancia único y tu firma personal.",
+    "worlds": "Seis Mundos Olfativos",
+    "worldsDesc": "Reinos olfativos curados — cada uno con su propia paleta, estado de ánimo y materias primas.",
+    "atelier": "El Atelier",
+    "atelierDesc": "Compón con precisión. Cada mezcla se produce a mano en pequeños lotes semanales."
+  },
+  "cta": {
+    "title": "Tu Firma Te Espera",
+    "description": "Miles de combinaciones posibles. Una que es inconfundiblemente tú. Nuestro Laboratorio de Aromas guiado por IA te lleva por cada capa — superior, corazón, base — hasta que tu visión se convierte en un frasco.",
+    "note": "La mayoría de los creadores no pueden parar en solo uno.",
+    "lab": "Entrar al Laboratorio",
+    "browse": "Explorar la Colección"
+  },
+  "footer": {
+    "copyright": "© 2026 El Laboratorio de Perfumes — Cada composición se mezcla individualmente en nuestro atelier."
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Crear Cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "signInCta": "Inicia sesión en tu cuenta",
+    "signUpCta": "Crea tu cuenta",
+    "backToSite": "← Volver al Sitio",
+    "checkEmail": "Revisa tu correo para confirmar tu cuenta.",
+    "signedIn": "Sesión iniciada correctamente",
+    "signedOut": "Sesión cerrada",
+    "error": "Error de autenticación"
+  },
+  "admin": {
+    "dashboard": "Panel",
+    "ingredients": "Ingredientes",
+    "interactions": "Interacciones",
+    "formulas": "Fórmulas",
+    "ifra": "Reglas IFRA",
+    "audit": "Registro",
+    "partners": "Socios",
+    "backToSite": "← Volver al Sitio",
+    "backOffice": "Administración",
+    "accessDenied": "Acceso Denegado",
+    "adminRequired": "Se requieren privilegios de administrador.",
+    "signedInAs": "Sesión como"
+  },
+  "partners": {
+    "title": "Solicitudes de Socios",
+    "company": "Empresa",
+    "contact": "Contacto",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "type": "Tipo de Negocio",
+    "volume": "Volumen Estimado",
+    "status": "Estado",
+    "date": "Fecha",
+    "message": "Mensaje",
+    "website": "Sitio Web",
+    "noApplications": "Aún no hay solicitudes de socios.",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "pending": "Pendiente",
+    "approved": "Aprobado",
+    "rejected": "Rechazado"
+  }
+}

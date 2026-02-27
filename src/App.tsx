@@ -26,6 +26,7 @@ const LaunchPage = lazy(() => import("./pages/LaunchPage"));
 const SharePage = lazy(() => import("./pages/SharePage"));
 const MilestonesPage = lazy(() => import("./pages/MilestonesPage"));
 const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -35,6 +36,7 @@ const InteractionsManager = lazy(() => import("./pages/admin/InteractionsManager
 const FormulasManager = lazy(() => import("./pages/admin/FormulasManager"));
 const IFRARulesManager = lazy(() => import("./pages/admin/IFRARulesManager"));
 const AuditLogPage = lazy(() => import("./pages/admin/AuditLogPage"));
+const PartnerManager = lazy(() => import("./pages/admin/PartnerManager"));
 
 const queryClient = new QueryClient();
 
@@ -67,6 +69,7 @@ const AppContent = () => {
         <Route path="/share" element={<SharePage />} />
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/milestones" element={<MilestonesPage />} />
+        <Route path="/auth" element={<AuthPage />} />
 
         {/* Admin Back Office */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -76,6 +79,7 @@ const AppContent = () => {
           <Route path="formulas" element={<FormulasManager />} />
           <Route path="ifra" element={<IFRARulesManager />} />
           <Route path="audit" element={<AuditLogPage />} />
+          <Route path="partners" element={<PartnerManager />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -1,0 +1,94 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "worlds": "Welten",
+    "lab": "Parfüm-Labor",
+    "formulation": "Formulierung",
+    "collection": "Kollektion",
+    "gifting": "Geschenke",
+    "store": "Shop",
+    "dna": "Duft-DNA",
+    "backOffice": "Verwaltung",
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "logout": "Abmelden",
+    "account": "Konto"
+  },
+  "hero": {
+    "badge": "Nur 100 Gründer-Plätze verfügbar",
+    "title": "Das Parfüm-Labor",
+    "subtitle": "Ein privates Parfümerie-Erlebnis",
+    "description": "Die privaten Werkzeuge der Meisterparfümeure. Jetzt in Ihren Händen.",
+    "note": "Jede Komposition wird individuell gemischt. Keine zwei Formeln sind jemals identisch.",
+    "cta": "Zugang anfordern",
+    "journey": "Starten Sie Ihre Reise"
+  },
+  "features": {
+    "identity": "Ihre Duft-Identität",
+    "identityDesc": "Eine geführte Reise, um Ihren einzigartigen Duft-Archetyp und Ihre persönliche Signatur zu entdecken.",
+    "worlds": "Sechs Duftwelten",
+    "worldsDesc": "Kuratierte olfaktorische Welten — jede mit eigener Palette, Stimmung und Rohstoffen.",
+    "atelier": "Das Atelier",
+    "atelierDesc": "Komponieren Sie mit Präzision. Jede Mischung wird in kleinen wöchentlichen Chargen von Hand hergestellt."
+  },
+  "cta": {
+    "title": "Ihre Signatur wartet",
+    "description": "Tausende mögliche Kombinationen. Eine, die unverwechselbar Sie ist. Unser KI-geführtes Duft-Labor begleitet Sie durch jede Schicht — Kopf, Herz, Basis — bis Ihre Vision zur Flasche wird.",
+    "note": "Die meisten Kreateur·innen können bei einer nicht aufhören.",
+    "lab": "Duft-Labor betreten",
+    "browse": "Kollektion durchstöbern"
+  },
+  "footer": {
+    "copyright": "© 2026 Das Parfüm-Labor — Jede Komposition wird individuell in unserem Atelier gemischt."
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Konto erstellen",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Noch kein Konto?",
+    "hasAccount": "Bereits ein Konto?",
+    "signInCta": "In Ihr Konto anmelden",
+    "signUpCta": "Erstellen Sie Ihr Konto",
+    "backToSite": "← Zurück zur Seite",
+    "checkEmail": "Überprüfen Sie Ihre E-Mail zur Bestätigung.",
+    "signedIn": "Erfolgreich angemeldet",
+    "signedOut": "Abgemeldet",
+    "error": "Authentifizierung fehlgeschlagen"
+  },
+  "admin": {
+    "dashboard": "Übersicht",
+    "ingredients": "Inhaltsstoffe",
+    "interactions": "Interaktionen",
+    "formulas": "Formeln",
+    "ifra": "IFRA-Regeln",
+    "audit": "Protokoll",
+    "partners": "Partner",
+    "backToSite": "← Zurück zur Seite",
+    "backOffice": "Verwaltung",
+    "accessDenied": "Zugang verweigert",
+    "adminRequired": "Administratorrechte erforderlich.",
+    "signedInAs": "Angemeldet als"
+  },
+  "partners": {
+    "title": "Partneranträge",
+    "company": "Unternehmen",
+    "contact": "Kontakt",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "type": "Geschäftstyp",
+    "volume": "Geschätztes Volumen",
+    "status": "Status",
+    "date": "Datum",
+    "message": "Nachricht",
+    "website": "Website",
+    "noApplications": "Noch keine Partneranträge.",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
+    "pending": "Ausstehend",
+    "approved": "Genehmigt",
+    "rejected": "Abgelehnt"
+  }
+}
