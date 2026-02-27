@@ -343,12 +343,14 @@ const ScentLabPage = () => {
                   onClick={async () => {
                     setIsSaving(true);
                     try {
+                      const { data: { user } } = await supabase.auth.getUser();
                       const { data, error } = await supabase.from("saved_blends").insert({
                         scent_notes: selected.map(s => ({ id: s.id, name: s.name, layer: s.layer, emoji: s.emoji, color: s.color, intensity: s.intensity, warmth: s.warmth })),
                         concentration: concentration.id,
                         volume,
                         harmony_score: harmonyScore,
                         name: selected.map(s => s.name).join(" · "),
+                        ...(user ? { user_id: user.id } : {}),
                       }).select("blend_number").single();
                       if (error) throw error;
                       setSavedBlendNumber(data.blend_number);

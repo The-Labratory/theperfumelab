@@ -3,8 +3,10 @@ import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle } from "lucide-react";
+import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 const adminNav = [
@@ -18,24 +20,71 @@ const adminNav = [
 
 export default function AdminLayout() {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    checkAdmin();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        // Auto-assign admin role for allowed emails
+        if (_event === 'SIGNED_IN') {
+          await supabase.rpc("assign_admin_if_allowed", { _user_id: session.user.id, _email: session.user.email || "" });
+        }
+        checkAdmin(session.user.id);
+      } else {
+        setIsAdmin(false);
+        setLoading(false);
+      }
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdmin(session.user.id);
+      } else {
+        setIsAdmin(false);
+        setLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const checkAdmin = async () => {
+  const checkAdmin = async (userId: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setIsAdmin(false); setLoading(false); return; }
-      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+      const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
       setIsAdmin(!!data);
     } catch {
       setIsAdmin(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    try {
+      if (authMode === "signup") {
+        const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin } });
+        if (error) throw error;
+        toast.success("Check your email to confirm your account.");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        toast.success("Signed in");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Authentication failed");
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -53,16 +102,58 @@ export default function AdminLayout() {
     );
   }
 
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="glass-surface rounded-2xl p-8 max-w-sm w-full">
+          <div className="flex items-center gap-3 mb-6">
+            <Lock className="w-6 h-6 text-primary" />
+            <h1 className="text-xl font-display font-bold text-foreground">Admin Access</h1>
+          </div>
+          <form onSubmit={handleAuth} className="space-y-4">
+            <div>
+              <Label htmlFor="email" className="text-muted-foreground text-xs">Email</Label>
+              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required className="mt-1" />
+            </div>
+            <div>
+              <Label htmlFor="password" className="text-muted-foreground text-xs">Password</Label>
+              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} className="mt-1" />
+            </div>
+            <Button type="submit" disabled={authLoading} className="w-full">
+              {authLoading ? "Please wait…" : authMode === "login" ? "Sign In" : "Sign Up"}
+            </Button>
+          </form>
+          <p className="text-xs text-muted-foreground text-center mt-4">
+            {authMode === "login" ? "No account? " : "Already have an account? "}
+            <button onClick={() => setAuthMode(authMode === "login" ? "signup" : "login")} className="text-primary underline">
+              {authMode === "login" ? "Sign Up" : "Sign In"}
+            </button>
+          </p>
+          <div className="mt-4">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="w-full text-muted-foreground text-xs">
+              ← Back to Site
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="glass-surface rounded-2xl p-8 max-w-md text-center">
           <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
           <h1 className="text-xl font-display font-bold text-foreground mb-2">Access Denied</h1>
-          <p className="text-sm text-muted-foreground mb-6">Administrator privileges required to access this area.</p>
-          <Button variant="outline" onClick={() => navigate("/")} className="gap-2">
-            <LogOut className="w-4 h-4" /> Return Home
-          </Button>
+          <p className="text-sm text-muted-foreground mb-6">Administrator privileges required. Signed in as {user.email}.</p>
+          <div className="flex gap-2 justify-center">
+            <Button variant="outline" onClick={handleSignOut} className="gap-2">
+              <LogOut className="w-4 h-4" /> Sign Out
+            </Button>
+            <Button variant="outline" onClick={() => navigate("/")} className="gap-2">
+              Return Home
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -94,7 +185,8 @@ export default function AdminLayout() {
               </SidebarGroupContent>
             </SidebarGroup>
 
-            <div className="mt-auto p-4">
+            <div className="mt-auto p-4 space-y-1">
+              <p className="text-[10px] text-muted-foreground truncate px-2">{user.email}</p>
               <Button variant="ghost" size="sm" onClick={handleSignOut} className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground">
                 <LogOut className="w-4 h-4" /> Sign Out
               </Button>
