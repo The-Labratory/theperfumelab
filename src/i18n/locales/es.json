@@ -56,7 +56,9 @@
     "checkEmail": "Revisa tu correo para confirmar tu cuenta.",
     "signedIn": "Sesión iniciada correctamente",
     "signedOut": "Sesión cerrada",
-    "error": "Error de autenticación"
+    "error": "Error de autenticación",
+    "or": "o",
+    "google": "Continuar con Google"
   },
   "admin": {
     "dashboard": "Panel",

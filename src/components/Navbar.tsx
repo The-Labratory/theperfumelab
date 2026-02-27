@@ -15,12 +15,25 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_e, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        const { data } = await supabase.rpc("has_role", { _user_id: session.user.id, _role: "admin" });
+        setIsAdmin(!!data);
+      } else {
+        setIsAdmin(false);
+      }
     });
-    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null));
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        const { data } = await supabase.rpc("has_role", { _user_id: session.user.id, _role: "admin" });
+        setIsAdmin(!!data);
+      }
+    });
     return () => subscription.unsubscribe();
   }, []);
 
@@ -38,7 +51,7 @@ const Navbar = () => {
     { path: "/gifting", label: t("nav.gifting") },
     { path: "/store", label: t("nav.store") },
     { path: "/dna", label: t("nav.dna") },
-    { path: "/admin", label: t("nav.backOffice") },
+    ...(isAdmin ? [{ path: "/admin", label: t("nav.backOffice") }] : []),
   ];
 
   return (

@@ -56,7 +56,9 @@
     "checkEmail": "Vérifiez votre e-mail pour confirmer votre compte.",
     "signedIn": "Connexion réussie",
     "signedOut": "Déconnecté",
-    "error": "Échec de l'authentification"
+    "error": "Échec de l'authentification",
+    "or": "ou",
+    "google": "Continuer avec Google"
   },
   "admin": {
     "dashboard": "Tableau de Bord",

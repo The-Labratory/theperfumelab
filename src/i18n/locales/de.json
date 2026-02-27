@@ -56,7 +56,9 @@
     "checkEmail": "Überprüfen Sie Ihre E-Mail zur Bestätigung.",
     "signedIn": "Erfolgreich angemeldet",
     "signedOut": "Abgemeldet",
-    "error": "Authentifizierung fehlgeschlagen"
+    "error": "Authentifizierung fehlgeschlagen",
+    "or": "oder",
+    "google": "Weiter mit Google"
   },
   "admin": {
     "dashboard": "Übersicht",

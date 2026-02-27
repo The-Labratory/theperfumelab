@@ -56,7 +56,9 @@
     "checkEmail": "Hesabınızı onaylamak için e-postanızı kontrol edin.",
     "signedIn": "Başarıyla giriş yapıldı",
     "signedOut": "Çıkış yapıldı",
-    "error": "Kimlik doğrulama başarısız"
+    "error": "Kimlik doğrulama başarısız",
+    "or": "veya",
+    "google": "Google ile devam et"
   },
   "admin": {
     "dashboard": "Kontrol Paneli",
