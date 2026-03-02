@@ -50,6 +50,173 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_partners: {
+        Row: {
+          approved_at: string | null
+          commission_rate: number
+          company_name: string | null
+          created_at: string
+          display_name: string
+          email: string
+          id: string
+          payout_details: Json | null
+          payout_method: string | null
+          phone: string | null
+          referral_code: string
+          status: string
+          tier: string
+          total_earnings: number
+          total_referrals: number
+          total_sales: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          commission_rate?: number
+          company_name?: string | null
+          created_at?: string
+          display_name: string
+          email: string
+          id?: string
+          payout_details?: Json | null
+          payout_method?: string | null
+          phone?: string | null
+          referral_code?: string
+          status?: string
+          tier?: string
+          total_earnings?: number
+          total_referrals?: number
+          total_sales?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          commission_rate?: number
+          company_name?: string | null
+          created_at?: string
+          display_name?: string
+          email?: string
+          id?: string
+          payout_details?: Json | null
+          payout_method?: string | null
+          phone?: string | null
+          referral_code?: string
+          status?: string
+          tier?: string
+          total_earnings?: number
+          total_referrals?: number
+          total_sales?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      affiliate_payouts: {
+        Row: {
+          affiliate_id: string
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          notes: string | null
+          payout_method: string | null
+          processed_at: string | null
+          reference: string | null
+          status: string
+        }
+        Insert: {
+          affiliate_id: string
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          payout_method?: string | null
+          processed_at?: string | null
+          reference?: string | null
+          status?: string
+        }
+        Update: {
+          affiliate_id?: string
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          payout_method?: string | null
+          processed_at?: string | null
+          reference?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_payouts_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_referrals: {
+        Row: {
+          affiliate_id: string
+          commission_amount: number | null
+          commission_paid: boolean | null
+          converted_at: string | null
+          created_at: string
+          id: string
+          order_id: string | null
+          referral_type: string
+          referred_email: string | null
+          referred_user_id: string | null
+          status: string
+        }
+        Insert: {
+          affiliate_id: string
+          commission_amount?: number | null
+          commission_paid?: boolean | null
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          referral_type?: string
+          referred_email?: string | null
+          referred_user_id?: string | null
+          status?: string
+        }
+        Update: {
+          affiliate_id?: string
+          commission_amount?: number | null
+          commission_paid?: boolean | null
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          referral_type?: string
+          referred_email?: string | null
+          referred_user_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_referrals_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blend_comments: {
         Row: {
           blend_id: string
