@@ -281,6 +281,105 @@ export type Database = {
           },
         ]
       }
+      departments: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      employees: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          department_id: string | null
+          email: string | null
+          full_name: string
+          hierarchy_level: number
+          id: string
+          is_active: boolean
+          job_title: string
+          joined_at: string | null
+          manager_id: string | null
+          phone: string | null
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          department_id?: string | null
+          email?: string | null
+          full_name: string
+          hierarchy_level?: number
+          id?: string
+          is_active?: boolean
+          job_title: string
+          joined_at?: string | null
+          manager_id?: string | null
+          phone?: string | null
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          department_id?: string | null
+          email?: string | null
+          full_name?: string
+          hierarchy_level?: number
+          id?: string
+          is_active?: boolean
+          job_title?: string
+          joined_at?: string | null
+          manager_id?: string | null
+          phone?: string | null
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       formula_costs: {
         Row: {
           batch_size_ml: number | null

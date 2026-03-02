@@ -39,6 +39,8 @@ const FormulasManager = lazy(() => import("./pages/admin/FormulasManager"));
 const IFRARulesManager = lazy(() => import("./pages/admin/IFRARulesManager"));
 const AuditLogPage = lazy(() => import("./pages/admin/AuditLogPage"));
 const PartnerManager = lazy(() => import("./pages/admin/PartnerManager"));
+const EmployeeManager = lazy(() => import("./pages/admin/EmployeeManager"));
+const TeamPage = lazy(() => import("./pages/TeamPage"));
 
 const queryClient = new QueryClient();
 
@@ -74,6 +76,7 @@ const AppContent = () => {
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/milestones" element={<MilestonesPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
+        <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
 
         {/* Admin Back Office */}
@@ -85,6 +88,7 @@ const AppContent = () => {
           <Route path="ifra" element={<IFRARulesManager />} />
           <Route path="audit" element={<AuditLogPage />} />
           <Route path="partners" element={<PartnerManager />} />
+          <Route path="employees" element={<EmployeeManager />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
