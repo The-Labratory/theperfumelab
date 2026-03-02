@@ -43,7 +43,7 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { path: "/", label: t("nav.home") },
+    { path: "/home", label: t("nav.home") },
     { path: "/worlds", label: t("nav.worlds") },
     { path: "/lab", label: t("nav.lab") },
     { path: "/formulation", label: t("nav.formulation") },
