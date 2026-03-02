@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Users, Link2, Copy, CheckCircle, TrendingUp, DollarSign,
   Award, ArrowRight, Share2, BarChart3, Gift, Zap, Crown,
-  ShieldCheck, Wallet, UserPlus
+  ShieldCheck, Wallet, UserPlus, MessageCircle, Mail, Twitter
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -286,6 +286,45 @@ const AffiliatePage = () => {
                   {copied ? <CheckCircle className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied!" : "Copy"}
                 </Button>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-4">
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(`Check out The Perfume Lab — create your own signature scent! ${referralLink}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[hsl(142_70%_40%)]/10 border border-[hsl(142_70%_40%)]/20 text-[hsl(142_70%_40%)] hover:bg-[hsl(142_70%_40%)]/20 transition-colors text-xs font-display tracking-wider"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  WhatsApp
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Create your own signature scent at The Perfume Lab 🧪✨`)}&url=${encodeURIComponent(referralLink)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-colors text-xs font-display tracking-wider"
+                >
+                  <Twitter className="w-3.5 h-3.5" />
+                  Twitter / X
+                </a>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigator.clipboard.writeText(referralLink);
+                    toast.success("Link copied! Paste it in your Instagram bio or story.", { description: "Instagram doesn't support direct link sharing." });
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 text-accent hover:bg-accent/20 transition-colors text-xs font-display tracking-wider"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  Instagram
+                </a>
+                <a
+                  href={`mailto:?subject=${encodeURIComponent("Create Your Signature Scent — The Perfume Lab")}&body=${encodeURIComponent(`I've been using The Perfume Lab to create custom fragrances and thought you'd love it!\n\nJoin here: ${referralLink}`)}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/30 border border-border text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors text-xs font-display tracking-wider"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  Email
+                </a>
               </div>
               <p className="text-xs text-muted-foreground font-body mt-3">Share this link anywhere — social media, email, your website. Every signup earns you commission.</p>
             </motion.div>
