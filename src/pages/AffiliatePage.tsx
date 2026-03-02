@@ -13,10 +13,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 
 const TIERS = [
-  { name: "Bronze", code: "bronze", commission: "10%", requirement: "0 referrals", color: "from-amber-700 to-amber-900", icon: Award },
-  { name: "Silver", code: "silver", commission: "15%", requirement: "10+ referrals", color: "from-gray-300 to-gray-500", icon: Award },
-  { name: "Gold", code: "gold", commission: "20%", requirement: "50+ referrals", color: "from-yellow-400 to-amber-500", icon: Crown },
-  { name: "Platinum", code: "platinum", commission: "25%", requirement: "100+ referrals", color: "from-cyan-300 to-blue-400", icon: Crown },
+  { name: "Bronze", code: "bronze", commission: "20%", requirement: "0 referrals", color: "from-amber-700 to-amber-900", icon: Award },
+  { name: "Silver", code: "silver", commission: "30%", requirement: "10+ referrals", color: "from-gray-300 to-gray-500", icon: Award },
+  { name: "Gold", code: "gold", commission: "35%", requirement: "50+ referrals", color: "from-yellow-400 to-amber-500", icon: Crown },
+  { name: "Platinum", code: "platinum", commission: "40%", requirement: "100+ referrals", color: "from-cyan-300 to-blue-400", icon: Crown },
+  { name: "High Achiever", code: "high_achiever", commission: "50%", requirement: "250+ referrals", color: "from-purple-400 to-fuchsia-500", icon: Crown },
 ];
 
 const HOW_IT_WORKS = [
