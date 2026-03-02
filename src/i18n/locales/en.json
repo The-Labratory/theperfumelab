@@ -38,6 +38,32 @@
     "lab": "Enter the Scent Lab",
     "browse": "Browse the Collection"
   },
+  "social": {
+    "blendsCreated": "Blends Created",
+    "satisfaction": "Satisfaction",
+    "countries": "Countries",
+    "founders": "Founding Creators"
+  },
+  "quiz": {
+    "title": "What's Your Scent Identity?",
+    "description": "Answer 5 quick questions and our AI perfumer will map your unique fragrance archetype — from the notes you'll love to the worlds you belong in.",
+    "duration": "Takes only 2 minutes",
+    "cta": "Discover Your Scent DNA"
+  },
+  "testimonials": {
+    "badge": "The Inner Circle",
+    "title": "What Our Creators Say",
+    "sophia": "I've spent thousands on niche fragrances. Nothing comes close to wearing something that was built molecule by molecule around my personality.",
+    "james": "The Formulation Lab is addictive. I've created 6 blends so far — each one tells a different story. The precision is unlike anything else.",
+    "amira": "As a creative director, I need my scent to be as intentional as my work. The Perfume Lab gave me exactly that — a signature no one else has.",
+    "marcus": "From the onboarding quiz to the final bottle, every step felt like a luxury experience. This isn't perfume shopping — it's perfume creation."
+  },
+  "trust": {
+    "ssl": "SSL Encrypted",
+    "handBlended": "Hand Blended",
+    "exclusive": "Limited to 100 Creators",
+    "ifra": "IFRA Compliant"
+  },
   "footer": {
     "copyright": "© 2026 The Perfume Lab — Each composition is blended individually in our atelier."
   },
