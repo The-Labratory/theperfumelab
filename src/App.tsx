@@ -27,6 +27,7 @@ const SharePage = lazy(() => import("./pages/SharePage"));
 const MilestonesPage = lazy(() => import("./pages/MilestonesPage"));
 const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
+const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -69,6 +70,7 @@ const AppContent = () => {
         <Route path="/share" element={<SharePage />} />
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/milestones" element={<MilestonesPage />} />
+        <Route path="/affiliate" element={<AffiliatePage />} />
         <Route path="/auth" element={<AuthPage />} />
 
         {/* Admin Back Office */}
