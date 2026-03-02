@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useCartSync } from "@/hooks/useCartSync";
 import { lazy, Suspense } from "react";
+import GatewayPage from "./pages/GatewayPage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -52,7 +53,8 @@ const AppContent = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<GatewayPage />} />
+        <Route path="/home" element={<Index />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/worlds" element={<WorldsPage />} />
         <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
