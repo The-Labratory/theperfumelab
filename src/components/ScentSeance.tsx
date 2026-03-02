@@ -4,6 +4,21 @@ import { Eye, Sparkles, Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const SeanceResultSchema = z.object({
+  spiritName: z.string(),
+  prophecy: z.string(),
+  spiritNotes: z.array(z.object({
+    name: z.string(),
+    emoji: z.string(),
+    layer: z.string(),
+    whisper: z.string(),
+  })),
+  element: z.string(),
+  aura: z.string(),
+  ritualAdvice: z.string(),
+});
 
 interface SeanceResult {
   spiritName: string;
@@ -56,7 +71,8 @@ const ScentSeance = ({ worldName, worldType, worldEmoji }: Props) => {
       });
       if (error) throw error;
 
-      const parsed = JSON.parse(data.content);
+      const raw = JSON.parse(data.content);
+      const parsed = SeanceResultSchema.parse(raw) as SeanceResult;
       setResult(parsed);
       setPhase("result");
     } catch (err) {
