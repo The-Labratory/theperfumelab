@@ -6,6 +6,7 @@ import {
   ShieldCheck, Wallet, UserPlus, MessageCircle, Mail, Twitter, Triangle
 } from "lucide-react";
 import AffiliatePyramidChart from "@/components/affiliate/AffiliatePyramidChart";
+import AffiliateNetworkPyramid from "@/components/affiliate/AffiliateNetworkPyramid";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -389,12 +390,17 @@ const AffiliatePage = () => {
               )}
 
               {tab === "pyramid" && (
-                <motion.div key="pyramid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass-surface rounded-xl p-6">
-                  <AffiliatePyramidChart
-                    currentTier={affiliate.tier || "bronze"}
-                    totalEarnings={affiliate.total_earnings || 0}
-                    totalReferrals={affiliate.total_referrals || 0}
-                  />
+                <motion.div key="pyramid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
+                  <div className="glass-surface rounded-xl p-6">
+                    <AffiliateNetworkPyramid />
+                  </div>
+                  <div className="glass-surface rounded-xl p-6">
+                    <AffiliatePyramidChart
+                      currentTier={affiliate.tier || "bronze"}
+                      totalEarnings={affiliate.total_earnings || 0}
+                      totalReferrals={affiliate.total_referrals || 0}
+                    />
+                  </div>
                 </motion.div>
               )}
 
