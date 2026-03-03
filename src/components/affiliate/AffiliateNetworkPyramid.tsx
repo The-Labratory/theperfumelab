@@ -6,6 +6,7 @@ import lenzoAvatar from "@/assets/lenzo-avatar.png";
 
 // Map known names to local avatar assets
 const AVATAR_OVERRIDES: Record<string, string> = {
+  "LAW el HARIRI": lenzoAvatar,
   "Lenzo Al Hariri": lenzoAvatar,
   "Lenzo Hariri": lenzoAvatar,
 };
