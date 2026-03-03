@@ -21,29 +21,36 @@ const COLORS = [
   "hsl(200 80% 55%)",
 ];
 
-function generateParticles(count: number): Particle[] {
+// Intensity 0-5 maps to rank index (Starter=0 … Diamond=5)
+function generateParticles(count: number, intensity: number): Particle[] {
+  const spread = 200 + intensity * 40;   // wider burst for higher ranks
+  const height = 140 + intensity * 30;   // taller burst
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    x: (Math.random() - 0.5) * 260,
-    y: -(Math.random() * 180 + 40),
+    x: (Math.random() - 0.5) * spread,
+    y: -(Math.random() * height + 40),
     rotation: Math.random() * 720 - 360,
-    scale: Math.random() * 0.6 + 0.4,
+    scale: (Math.random() * 0.6 + 0.4) * (1 + intensity * 0.12),
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
     delay: Math.random() * 0.15,
     shape: (["circle", "rect", "star"] as const)[Math.floor(Math.random() * 3)],
   }));
 }
 
-export default function ConfettiBurst({ trigger }: { trigger: boolean }) {
+// intensity: 0 (Starter) → 5 (Diamond)
+const PARTICLE_COUNTS = [12, 18, 26, 36, 50, 70];
+
+export default function ConfettiBurst({ trigger, intensity = 0 }: { trigger: boolean; intensity?: number }) {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const idx = Math.min(Math.max(intensity, 0), 5);
 
   useEffect(() => {
     if (trigger) {
-      setParticles(generateParticles(24));
-      const t = setTimeout(() => setParticles([]), 1200);
+      setParticles(generateParticles(PARTICLE_COUNTS[idx], idx));
+      const t = setTimeout(() => setParticles([]), 1200 + idx * 200);
       return () => clearTimeout(t);
     }
-  }, [trigger]);
+  }, [trigger, idx]);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-visible z-50">

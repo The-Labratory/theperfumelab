@@ -275,7 +275,7 @@ function RankProgression() {
                   {rank.minSales === 0 ? "Start" : `${rank.minSales}+ sales`}
                 </span>
                 {/* Confetti burst on reveal */}
-                <ConfettiBurst trigger={confettiIdx === i} />
+                <ConfettiBurst trigger={confettiIdx === i} intensity={i} />
                 {/* Pulse ring when not yet opened */}
                 {!isActive && (
                   <motion.div
