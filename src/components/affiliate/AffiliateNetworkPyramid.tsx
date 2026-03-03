@@ -2,13 +2,18 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Crown, User, UserPlus, TrendingUp, ChevronDown, ChevronRight, Star, Shield, Gem, Award, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import ConfettiBurst from "./ConfettiBurst";
+import { playCelebrationChime } from "./celebrationSound";
 import lenzoAvatar from "@/assets/lenzo-avatar.png";
+import maherAvatar from "@/assets/maher-alia-avatar.jpg";
 
 // Map known names to local avatar assets
 const AVATAR_OVERRIDES: Record<string, string> = {
   "LAW el HARIRI": lenzoAvatar,
   "Lenzo Al Hariri": lenzoAvatar,
   "Lenzo Hariri": lenzoAvatar,
+  "Maher Alia": maherAvatar,
+  "Maher Allan": maherAvatar,
 };
 
 interface PyramidNode {
@@ -220,6 +225,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
 /* Rank Progression Table */
 function RankProgression() {
   const [activeRank, setActiveRank] = useState<number | null>(null);
+  const [confettiIdx, setConfettiIdx] = useState<number | null>(null);
 
   return (
     <div className="mt-10 pt-8 border-t border-border/20">
@@ -240,7 +246,15 @@ function RankProgression() {
               className="relative"
             >
               <motion.div
-                onClick={() => setActiveRank(isActive ? null : i)}
+                onClick={() => {
+                  const opening = !isActive;
+                  setActiveRank(opening ? i : null);
+                  if (opening) {
+                    setConfettiIdx(i);
+                    playCelebrationChime();
+                    setTimeout(() => setConfettiIdx(null), 1200);
+                  }
+                }}
                 whileHover={{ scale: 1.08, y: -4 }}
                 whileTap={{ scale: 0.95 }}
                 className={`cursor-pointer flex flex-col items-center p-4 rounded-xl border transition-all duration-300 ${
@@ -260,6 +274,8 @@ function RankProgression() {
                 <span className="text-[10px] text-muted-foreground">
                   {rank.minSales === 0 ? "Start" : `${rank.minSales}+ sales`}
                 </span>
+                {/* Confetti burst on reveal */}
+                <ConfettiBurst trigger={confettiIdx === i} />
                 {/* Pulse ring when not yet opened */}
                 {!isActive && (
                   <motion.div
