@@ -228,6 +228,18 @@ const AffiliatePage = () => {
               </div>
             </motion.div>
 
+            {/* Network Pyramid Teaser */}
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-20">
+              <div className="text-center mb-12">
+                <span className="text-[10px] font-display tracking-[0.3em] text-accent mb-3 block">OUR NETWORK</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-black tracking-wider text-foreground">Join the Pyramid</h2>
+                <p className="text-sm text-muted-foreground font-body max-w-lg mx-auto mt-3">See our growing network of affiliates. Claim your spot and start earning.</p>
+              </div>
+              <div className="glass-surface rounded-2xl p-6 sm:p-8">
+                <AffiliateNetworkPyramid />
+              </div>
+            </motion.div>
+
             {/* CTA */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
               <Button
