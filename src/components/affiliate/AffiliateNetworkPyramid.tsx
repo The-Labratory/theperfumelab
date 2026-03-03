@@ -26,12 +26,24 @@ interface PyramidNode {
 
 // Rank system based on total transactions (sales)
 const RANKS = [
-  { name: "Starter", minSales: 0, commission: 10, icon: Zap, color: "text-muted-foreground" },
-  { name: "Bronze", minSales: 5, commission: 15, icon: Shield, color: "text-[hsl(30_60%_50%)]" },
-  { name: "Silver", minSales: 15, commission: 20, icon: Star, color: "text-[hsl(220_20%_65%)]" },
-  { name: "Gold", minSales: 30, commission: 30, icon: Award, color: "text-[hsl(45_93%_47%)]" },
-  { name: "Platinum", minSales: 60, commission: 40, icon: Gem, color: "text-primary" },
-  { name: "Diamond", minSales: 100, commission: 50, icon: Crown, color: "text-accent" },
+  { name: "Starter", minSales: 0, commission: 10, icon: Zap, color: "text-muted-foreground", 
+    perks: ["Basic affiliate link", "Community access", "Weekly tips newsletter"],
+    tagline: "Your journey begins here 🔥", gradient: "from-muted/30 to-muted/10" },
+  { name: "Bronze", minSales: 5, commission: 15, icon: Shield, color: "text-[hsl(30_60%_50%)]",
+    perks: ["15% commission rate", "Priority support", "Monthly bonus drops", "Early product access"],
+    tagline: "Rising through the ranks ⚔️", gradient: "from-[hsl(30_60%_50%)]/20 to-[hsl(30_40%_30%)]/10" },
+  { name: "Silver", minSales: 15, commission: 20, icon: Star, color: "text-[hsl(220_20%_65%)]",
+    perks: ["20% commission rate", "Custom referral page", "Exclusive scent samples", "Team building tools", "Silver badge on profile"],
+    tagline: "Becoming legendary 🌟", gradient: "from-[hsl(220_20%_65%)]/20 to-[hsl(220_15%_45%)]/10" },
+  { name: "Gold", minSales: 30, commission: 30, icon: Award, color: "text-[hsl(45_93%_47%)]",
+    perks: ["30% commission rate", "VIP event invitations", "Free product monthly", "Gold-tier analytics dashboard", "Personal account manager", "Exclusive Gold collection access"],
+    tagline: "Elite status unlocked 👑", gradient: "from-[hsl(45_93%_47%)]/20 to-[hsl(45_80%_35%)]/10" },
+  { name: "Platinum", minSales: 60, commission: 40, icon: Gem, color: "text-primary",
+    perks: ["40% commission rate", "Revenue share on team sales", "Custom co-branded products", "Platinum retreat access", "Dedicated marketing team", "First access to new launches", "Quarterly luxury gift box"],
+    tagline: "Top 1% — Unstoppable 💎", gradient: "from-primary/20 to-primary/5" },
+  { name: "Diamond", minSales: 100, commission: 50, icon: Crown, color: "text-accent",
+    perks: ["50% maximum commission", "Equity partnership options", "Global ambassador status", "All-expenses-paid annual summit", "Custom fragrance line", "Lifetime VIP membership", "Direct CEO access", "Legacy wealth building"],
+    tagline: "The pinnacle of excellence 🏆", gradient: "from-accent/25 to-accent/5" },
 ];
 
 function getRank(totalSales: number) {
@@ -206,28 +218,108 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
 
 /* Rank Progression Table */
 function RankProgression() {
+  const [activeRank, setActiveRank] = useState<number | null>(null);
+
   return (
     <div className="mt-10 pt-8 border-t border-border/20">
-      <h4 className="font-display text-lg font-bold tracking-wide text-foreground text-center mb-6">
+      <h4 className="font-display text-lg font-bold tracking-wide text-foreground text-center mb-2">
         Rank Progression
       </h4>
+      <p className="text-xs text-muted-foreground text-center mb-6 font-body">Tap a rank to reveal its <span className="text-accent font-bold">exclusive rewards</span></p>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
         {RANKS.map((rank, i) => {
           const Icon = rank.icon;
+          const isActive = activeRank === i;
           return (
             <motion.div
               key={rank.name}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className="flex flex-col items-center p-4 rounded-xl bg-muted/10 border border-border/20 hover:border-primary/30 transition-colors"
+              className="relative"
             >
-              <Icon className={`w-6 h-6 mb-2 ${rank.color}`} />
-              <span className={`text-xs font-display font-bold tracking-wider ${rank.color}`}>{rank.name}</span>
-              <span className="text-sm font-display font-black text-accent mt-1">{rank.commission}%</span>
-              <span className="text-[10px] text-muted-foreground">
-                {rank.minSales === 0 ? "Start" : `${rank.minSales}+ sales`}
-              </span>
+              <motion.div
+                onClick={() => setActiveRank(isActive ? null : i)}
+                whileHover={{ scale: 1.08, y: -4 }}
+                whileTap={{ scale: 0.95 }}
+                className={`cursor-pointer flex flex-col items-center p-4 rounded-xl border transition-all duration-300 ${
+                  isActive
+                    ? `bg-gradient-to-b ${rank.gradient} border-current shadow-lg shadow-current/10 ring-1 ring-current/20`
+                    : "bg-muted/10 border-border/20 hover:border-primary/30"
+                } ${rank.color}`}
+              >
+                <motion.div
+                  animate={isActive ? { rotate: [0, -10, 10, -5, 5, 0], scale: [1, 1.3, 1.1] } : {}}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Icon className={`w-7 h-7 mb-2 ${rank.color} ${isActive ? "drop-shadow-lg" : ""}`} />
+                </motion.div>
+                <span className={`text-xs font-display font-bold tracking-wider ${rank.color}`}>{rank.name}</span>
+                <span className="text-sm font-display font-black text-accent mt-1">{rank.commission}%</span>
+                <span className="text-[10px] text-muted-foreground">
+                  {rank.minSales === 0 ? "Start" : `${rank.minSales}+ sales`}
+                </span>
+                {/* Pulse ring when not yet opened */}
+                {!isActive && (
+                  <motion.div
+                    className={`absolute inset-0 rounded-xl border ${rank.color} pointer-events-none`}
+                    animate={{ opacity: [0, 0.3, 0], scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                    style={{ borderColor: "currentColor" }}
+                  />
+                )}
+              </motion.div>
+
+              {/* Popup Card */}
+              {isActive && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className={`absolute z-50 left-1/2 -translate-x-1/2 top-full mt-3 w-[260px] rounded-2xl border border-border/30 bg-background/95 backdrop-blur-xl shadow-2xl shadow-black/30 p-5`}
+                >
+                  {/* Arrow */}
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45 bg-background/95 border-l border-t border-border/30" />
+                  
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <Icon className={`w-5 h-5 ${rank.color}`} />
+                    <span className={`font-display font-black text-sm tracking-wider ${rank.color}`}>{rank.name}</span>
+                    <span className="ml-auto text-xs font-display font-bold text-accent">{rank.commission}%</span>
+                  </div>
+
+                  {/* Tagline */}
+                  <p className="text-[11px] font-display font-bold tracking-wide text-foreground/80 mb-3 pb-2 border-b border-border/15">
+                    {rank.tagline}
+                  </p>
+
+                  {/* Perks List */}
+                  <ul className="space-y-1.5">
+                    {rank.perks.map((perk, pi) => (
+                      <motion.li
+                        key={perk}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: pi * 0.05 }}
+                        className="flex items-start gap-2 text-[11px] font-body text-muted-foreground"
+                      >
+                        <span className={`mt-0.5 w-1.5 h-1.5 rounded-full shrink-0 ${rank.color.replace("text-", "bg-")}`} />
+                        {perk}
+                      </motion.li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  {rank.minSales > 0 && (
+                    <div className="mt-3 pt-2 border-t border-border/15">
+                      <p className="text-[10px] font-display tracking-wider text-muted-foreground/60 text-center">
+                        Reach <span className="text-accent font-bold">{rank.minSales} sales</span> to unlock
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              )}
             </motion.div>
           );
         })}
