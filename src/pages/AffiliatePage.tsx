@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import AffiliatePyramidChart from "@/components/affiliate/AffiliatePyramidChart";
 import AffiliateNetworkPyramid from "@/components/affiliate/AffiliateNetworkPyramid";
+import MyNetworkManager from "@/components/affiliate/MyNetworkManager";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -36,7 +37,7 @@ const AffiliatePage = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"overview" | "pyramid" | "referrals" | "payouts">("overview");
+  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "referrals" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
 
   useEffect(() => {
@@ -365,16 +366,16 @@ const AffiliatePage = () => {
             </motion.div>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-6">
-              {(["overview", "pyramid", "referrals", "payouts"] as const).map(t => (
+            <div className="flex gap-2 mb-6 overflow-x-auto">
+              {(["overview", "my-network", "pyramid", "referrals", "payouts"] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
-                  className={`px-4 py-2 rounded-lg text-xs font-display tracking-wider transition-colors ${
+                  className={`px-4 py-2 rounded-lg text-xs font-display tracking-wider transition-colors whitespace-nowrap ${
                     tab === t ? "bg-primary/10 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                  {t === "my-network" ? "My Network" : t.charAt(0).toUpperCase() + t.slice(1)}
                 </button>
               ))}
             </div>
@@ -398,6 +399,17 @@ const AffiliatePage = () => {
                       </div>
                     ))}
                   </div>
+                </motion.div>
+              )}
+
+              {tab === "my-network" && (
+                <motion.div key="my-network" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass-surface rounded-xl p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Users className="w-5 h-5 text-primary" />
+                    <h3 className="font-display text-base font-semibold tracking-wide text-foreground">My Network</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body mb-6">Manage the agents in your downline. Add, edit, or remove team members.</p>
+                  <MyNetworkManager affiliateId={affiliate.id} />
                 </motion.div>
               )}
 
