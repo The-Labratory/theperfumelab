@@ -19,12 +19,12 @@ interface PyramidNode {
 
 // Rank system based on total transactions (sales)
 const RANKS = [
-  { name: "Starter", minSales: 0, icon: Zap, color: "text-muted-foreground" },
-  { name: "Bronze", minSales: 5, icon: Shield, color: "text-[hsl(30_60%_50%)]" },
-  { name: "Silver", minSales: 15, icon: Star, color: "text-[hsl(220_20%_65%)]" },
-  { name: "Gold", minSales: 30, icon: Award, color: "text-[hsl(45_93%_47%)]" },
-  { name: "Platinum", minSales: 60, icon: Gem, color: "text-primary" },
-  { name: "Diamond", minSales: 100, icon: Crown, color: "text-accent" },
+  { name: "Starter", minSales: 0, commission: 10, icon: Zap, color: "text-muted-foreground" },
+  { name: "Bronze", minSales: 5, commission: 15, icon: Shield, color: "text-[hsl(30_60%_50%)]" },
+  { name: "Silver", minSales: 15, commission: 20, icon: Star, color: "text-[hsl(220_20%_65%)]" },
+  { name: "Gold", minSales: 30, commission: 30, icon: Award, color: "text-[hsl(45_93%_47%)]" },
+  { name: "Platinum", minSales: 60, commission: 40, icon: Gem, color: "text-primary" },
+  { name: "Diamond", minSales: 100, commission: 50, icon: Crown, color: "text-accent" },
 ];
 
 function getRank(totalSales: number) {
@@ -128,6 +128,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         <div className="flex items-center justify-center gap-1.5 mt-2">
           <RankIcon className={`w-4 h-4 ${rank.color}`} />
           <span className={`text-xs font-display font-bold tracking-wider ${rank.color}`}>{rank.name}</span>
+          <span className="text-[10px] font-display font-semibold text-accent ml-1">({rank.commission}%)</span>
         </div>
 
         {/* Rank Progress */}
@@ -216,7 +217,8 @@ function RankProgression() {
             >
               <Icon className={`w-6 h-6 mb-2 ${rank.color}`} />
               <span className={`text-xs font-display font-bold tracking-wider ${rank.color}`}>{rank.name}</span>
-              <span className="text-[10px] text-muted-foreground mt-1">
+              <span className="text-sm font-display font-black text-accent mt-1">{rank.commission}%</span>
+              <span className="text-[10px] text-muted-foreground">
                 {rank.minSales === 0 ? "Start" : `${rank.minSales}+ sales`}
               </span>
             </motion.div>
