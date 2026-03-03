@@ -3,7 +3,7 @@ import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Lock, Handshake, Users } from "lucide-react";
+import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Lock, Handshake, Users, Triangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,7 @@ const adminNav = [
   { title: "Audit Log", url: "/admin/audit", icon: ScrollText },
   { title: "Partners", url: "/admin/partners", icon: Handshake },
   { title: "Employees", url: "/admin/employees", icon: Users },
+  { title: "Affiliate Pyramid", url: "/admin/pyramid", icon: Triangle },
 ];
 
 export default function AdminLayout() {

@@ -160,6 +160,69 @@ export type Database = {
           },
         ]
       }
+      affiliate_pyramid: {
+        Row: {
+          affiliate_partner_id: string | null
+          avatar_url: string | null
+          created_at: string
+          earnings: number
+          id: string
+          is_placeholder: boolean
+          level: number
+          name: string
+          parent_id: string | null
+          position: number
+          title: string | null
+          total_transactions: number
+          updated_at: string
+        }
+        Insert: {
+          affiliate_partner_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          earnings?: number
+          id?: string
+          is_placeholder?: boolean
+          level?: number
+          name: string
+          parent_id?: string | null
+          position?: number
+          title?: string | null
+          total_transactions?: number
+          updated_at?: string
+        }
+        Update: {
+          affiliate_partner_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          earnings?: number
+          id?: string
+          is_placeholder?: boolean
+          level?: number
+          name?: string
+          parent_id?: string | null
+          position?: number
+          title?: string | null
+          total_transactions?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_pyramid_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_pyramid_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_pyramid"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliate_referrals: {
         Row: {
           affiliate_id: string
