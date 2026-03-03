@@ -261,15 +261,64 @@ export default function AffiliateNetworkPyramid() {
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-2">
-        <TrendingUp className="w-6 h-6 text-accent" />
-        <h3 className="font-display text-xl font-bold tracking-wide text-foreground">Network Hierarchy</h3>
-      </div>
-      <p className="text-sm text-muted-foreground font-body mb-10">
-        Your position in the affiliate network. Make sales to climb the ranks and unlock higher commissions.
-      </p>
+      {/* Header with floral ornaments */}
+      <div className="relative flex flex-col items-center mb-12">
+        {/* Decorative floral corner - left */}
+        <svg className="absolute -left-2 -top-4 w-28 h-28 text-accent/20" viewBox="0 0 120 120" fill="none">
+          <path d="M10 60 C10 30, 30 10, 60 10 C45 25, 35 45, 35 60 C35 45, 25 35, 10 35 C25 45, 30 55, 30 60" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.08"/>
+          <path d="M15 80 C15 55, 35 40, 55 40 C42 50, 38 62, 38 75" stroke="currentColor" strokeWidth="1" fill="none"/>
+          <circle cx="60" cy="10" r="3" fill="currentColor" fillOpacity="0.3"/>
+          <circle cx="10" cy="35" r="2.5" fill="currentColor" fillOpacity="0.25"/>
+          <circle cx="55" cy="40" r="2" fill="currentColor" fillOpacity="0.2"/>
+          <path d="M5 95 Q20 85, 25 70 Q30 85, 45 90" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.05"/>
+        </svg>
+        {/* Decorative floral corner - right */}
+        <svg className="absolute -right-2 -top-4 w-28 h-28 text-primary/20 scale-x-[-1]" viewBox="0 0 120 120" fill="none">
+          <path d="M10 60 C10 30, 30 10, 60 10 C45 25, 35 45, 35 60 C35 45, 25 35, 10 35 C25 45, 30 55, 30 60" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.08"/>
+          <path d="M15 80 C15 55, 35 40, 55 40 C42 50, 38 62, 38 75" stroke="currentColor" strokeWidth="1" fill="none"/>
+          <circle cx="60" cy="10" r="3" fill="currentColor" fillOpacity="0.3"/>
+          <circle cx="10" cy="35" r="2.5" fill="currentColor" fillOpacity="0.25"/>
+          <circle cx="55" cy="40" r="2" fill="currentColor" fillOpacity="0.2"/>
+          <path d="M5 95 Q20 85, 25 70 Q30 85, 45 90" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.05"/>
+        </svg>
 
-      <div className="overflow-x-auto pb-8">
+        <div className="flex items-center gap-2 mb-2">
+          <TrendingUp className="w-6 h-6 text-accent" />
+          <h3 className="font-display text-xl font-bold tracking-wide text-foreground">Network Hierarchy</h3>
+        </div>
+        <p className="text-sm text-muted-foreground font-body">
+          Your position in the affiliate network. Make sales to climb the ranks and unlock higher commissions.
+        </p>
+        {/* Decorative divider with floral motif */}
+        <div className="flex items-center gap-3 mt-5 w-full max-w-md">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-accent/30 to-accent/10" />
+          <svg className="w-8 h-8 text-accent/40" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4 C12 8, 10 12, 16 16 C22 12, 20 8, 16 4Z" fill="currentColor" fillOpacity="0.3" stroke="currentColor" strokeWidth="0.8"/>
+            <path d="M4 16 C8 12, 12 10, 16 16 C12 22, 8 20, 4 16Z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.8"/>
+            <path d="M28 16 C24 12, 20 10, 16 16 C20 22, 24 20, 28 16Z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.8"/>
+            <path d="M16 28 C12 24, 10 20, 16 16 C22 20, 20 24, 16 28Z" fill="currentColor" fillOpacity="0.3" stroke="currentColor" strokeWidth="0.8"/>
+            <circle cx="16" cy="16" r="2.5" fill="currentColor" fillOpacity="0.5"/>
+          </svg>
+          <div className="flex-1 h-px bg-gradient-to-l from-transparent via-primary/30 to-primary/10" />
+        </div>
+      </div>
+
+      {/* Pyramid chart with decorative botanical accents */}
+      <div className="relative overflow-x-auto pb-8">
+        {/* Subtle vine/leaf accents on chart edges */}
+        <svg className="absolute left-0 top-1/4 w-12 h-40 text-accent/10 pointer-events-none" viewBox="0 0 40 140" fill="none">
+          <path d="M20 0 C20 30, 5 50, 5 70 C5 90, 15 110, 20 140" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+          <path d="M5 35 C-5 28, -2 18, 8 25" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.15"/>
+          <path d="M5 65 C-8 58, -4 45, 8 55" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.12"/>
+          <path d="M10 95 C0 88, 2 78, 14 85" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.1"/>
+        </svg>
+        <svg className="absolute right-0 top-1/4 w-12 h-40 text-primary/10 pointer-events-none scale-x-[-1]" viewBox="0 0 40 140" fill="none">
+          <path d="M20 0 C20 30, 5 50, 5 70 C5 90, 15 110, 20 140" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+          <path d="M5 35 C-5 28, -2 18, 8 25" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.15"/>
+          <path d="M5 65 C-8 58, -4 45, 8 55" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.12"/>
+          <path d="M10 95 C0 88, 2 78, 14 85" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.1"/>
+        </svg>
+
         <div className="flex justify-center min-w-[700px]">
           {nodes.map(root => (
             <PyramidCard key={root.id} node={root} />
