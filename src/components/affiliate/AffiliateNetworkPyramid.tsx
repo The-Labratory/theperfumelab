@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Crown, User, UserPlus, TrendingUp, ChevronDown, ChevronRight, Star, Shield, Gem, Award, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import lenzoAvatar from "@/assets/lenzo-avatar.png";
+
+// Map known names to local avatar assets
+const AVATAR_OVERRIDES: Record<string, string> = {
+  "Lenzo Al Hariri": lenzoAvatar,
+  "Lenzo Hariri": lenzoAvatar,
+};
 
 interface PyramidNode {
   id: string;
@@ -109,8 +116,8 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         <div className={`w-18 h-18 rounded-full mx-auto mb-3 flex items-center justify-center border-2 ${style.border} ${style.bg} shadow-lg ${style.glow}`}
           style={{ width: 72, height: 72 }}
         >
-          {node.avatar_url ? (
-            <img src={node.avatar_url} alt={node.name} className="w-full h-full rounded-full object-cover" />
+          {(AVATAR_OVERRIDES[node.name] || node.avatar_url) ? (
+            <img src={AVATAR_OVERRIDES[node.name] || node.avatar_url!} alt={node.name} className="w-full h-full rounded-full object-cover" />
           ) : (
             <span className={`font-display text-2xl font-black ${style.text}`}>
               {node.name.split(' ').map(w => w[0]).join('').slice(0, 2)}
