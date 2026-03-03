@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Users, Link2, Copy, CheckCircle, TrendingUp, DollarSign,
   Award, ArrowRight, Share2, BarChart3, Gift, Zap, Crown,
-  ShieldCheck, Wallet, UserPlus, MessageCircle, Mail, Twitter
+  ShieldCheck, Wallet, UserPlus, MessageCircle, Mail, Twitter, Triangle
 } from "lucide-react";
+import AffiliatePyramidChart from "@/components/affiliate/AffiliatePyramidChart";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -34,7 +35,7 @@ const AffiliatePage = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"overview" | "referrals" | "payouts">("overview");
+  const [tab, setTab] = useState<"overview" | "pyramid" | "referrals" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
 
   useEffect(() => {
@@ -352,7 +353,7 @@ const AffiliatePage = () => {
 
             {/* Tabs */}
             <div className="flex gap-2 mb-6">
-              {(["overview", "referrals", "payouts"] as const).map(t => (
+              {(["overview", "pyramid", "referrals", "payouts"] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
@@ -384,6 +385,16 @@ const AffiliatePage = () => {
                       </div>
                     ))}
                   </div>
+                </motion.div>
+              )}
+
+              {tab === "pyramid" && (
+                <motion.div key="pyramid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass-surface rounded-xl p-6">
+                  <AffiliatePyramidChart
+                    currentTier={affiliate.tier || "bronze"}
+                    totalEarnings={affiliate.total_earnings || 0}
+                    totalReferrals={affiliate.total_referrals || 0}
+                  />
                 </motion.div>
               )}
 
