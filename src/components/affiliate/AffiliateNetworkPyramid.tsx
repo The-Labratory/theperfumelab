@@ -85,16 +85,20 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         onClick={() => hasChildren && setExpanded(!expanded)}
       >
         {/* Avatar */}
-        <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center border ${style.border} ${style.bg}`}>
+        <div className={`w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center border-2 ${style.border} ${style.bg} shadow-lg ${style.glow}`}>
           {node.avatar_url ? (
             <img src={node.avatar_url} alt={node.name} className="w-full h-full rounded-full object-cover" />
-          ) : (
+          ) : node.is_placeholder ? (
             <style.icon className={`w-5 h-5 ${style.text}`} />
+          ) : (
+            <span className={`font-display text-lg font-black ${style.text}`}>
+              {node.name.split(' ').map(w => w[0]).join('').slice(0, 2)}
+            </span>
           )}
         </div>
 
         {/* Name */}
-        <h4 className="font-display text-sm font-bold tracking-wide text-foreground">{node.name}</h4>
+        <h4 className="font-display text-sm font-black tracking-wide text-foreground">{node.name}</h4>
         {node.title && (
           <p className="text-[9px] font-display tracking-[0.15em] text-muted-foreground mt-0.5">{node.title}</p>
         )}
