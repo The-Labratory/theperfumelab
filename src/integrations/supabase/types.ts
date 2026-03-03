@@ -1479,6 +1479,10 @@ export type Database = {
         Returns: boolean
       }
       lock_formula_version: { Args: { _formula_id: string }; Returns: Json }
+      owns_pyramid_node: {
+        Args: { _node_id: string; _user_id: string }
+        Returns: boolean
+      }
       validate_formula: { Args: { _formula_id: string }; Returns: Json }
     }
     Enums: {
