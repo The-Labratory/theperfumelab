@@ -280,6 +280,38 @@ export type Database = {
           },
         ]
       }
+      affiliate_sales: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          pyramid_node_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          pyramid_node_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          pyramid_node_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_sales_pyramid_node_id_fkey"
+            columns: ["pyramid_node_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_pyramid"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blend_comments: {
         Row: {
           blend_id: string

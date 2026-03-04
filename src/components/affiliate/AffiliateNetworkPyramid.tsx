@@ -37,15 +37,18 @@ interface PyramidNode {
   children?: PyramidNode[];
 }
 
-// Admin context to pass down to cards
-interface AdminCtx {
+// Context to pass down to cards
+interface AppCtx {
   isAdmin: boolean;
+  currentUserId: string | null;
+  userNodeId: string | null; // pyramid node linked to current user
   onEdit: (node: PyramidNode) => void;
   onDelete: (id: string) => void;
   onAdd: (parentId: string, level: number) => void;
+  onRegisterSale: (nodeId: string) => void;
   allNodes: PyramidNode[];
 }
-const AdminContext = createContext<AdminCtx>({ isAdmin: false, onEdit: () => {}, onDelete: () => {}, onAdd: () => {}, allNodes: [] });
+const AppContext = createContext<AppCtx>({ isAdmin: false, currentUserId: null, userNodeId: null, onEdit: () => {}, onDelete: () => {}, onAdd: () => {}, onRegisterSale: () => {}, allNodes: [] });
 
 // Rank system based on total transactions (sales)
 const RANKS = [
@@ -116,7 +119,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
   const hasChildren = node.children && node.children.length > 0;
   const rank = getRank(node.total_transactions);
   const RankIcon = rank.icon;
-  const { isAdmin, onEdit, onDelete, onAdd } = useContext(AdminContext);
+  const { isAdmin, onEdit, onDelete, onAdd, onRegisterSale, currentUserId, userNodeId } = useContext(AppContext);
 
   if (node.is_placeholder) {
     return (
@@ -224,7 +227,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         )}
 
         {/* Earnings */}
-        <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-border/20">
+          <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-border/20">
           <div className="text-center">
             <p className={`font-display text-xs font-black ${style.text}`}>€{node.earnings.toFixed(0)}</p>
             <p className="text-[8px] font-display tracking-wider text-muted-foreground/60">EARNED</p>
@@ -235,6 +238,16 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
             <p className="text-[8px] font-display tracking-wider text-muted-foreground/60">SALES</p>
           </div>
         </div>
+
+        {/* Register Sale button — visible to admin or node owner */}
+        {(isAdmin || (currentUserId && userNodeId === node.id)) && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onRegisterSale(node.id); }}
+            className="mt-2 w-full py-1.5 rounded-lg text-[10px] font-display font-bold tracking-wider bg-accent/20 text-accent border border-accent/30 hover:bg-accent/30 transition-colors"
+          >
+            + Register Sale
+          </button>
+        )}
 
         {/* Expand indicator */}
         {hasChildren && (
@@ -469,19 +482,36 @@ export default function AffiliateNetworkPyramid() {
   const [flatNodes, setFlatNodes] = useState<PyramidNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [userNodeId, setUserNodeId] = useState<string | null>(null);
   const [editing, setEditing] = useState<Partial<PyramidNode> | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     loadPyramid();
-    checkAdmin();
+    checkUser();
   }, []);
 
-  const checkAdmin = async () => {
+  const checkUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-    setIsAdmin(!!data);
+    setCurrentUserId(user.id);
+    const { data: roleData } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+    setIsAdmin(!!roleData);
+    // Find the user's pyramid node via affiliate_partners
+    const { data: partner } = await supabase
+      .from("affiliate_partners")
+      .select("id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (partner) {
+      const { data: node } = await supabase
+        .from("affiliate_pyramid")
+        .select("id")
+        .eq("affiliate_partner_id", partner.id)
+        .maybeSingle();
+      if (node) setUserNodeId(node.id);
+    }
   };
 
   const loadPyramid = async () => {
@@ -527,6 +557,17 @@ export default function AffiliateNetworkPyramid() {
     loadPyramid();
   };
 
+  const handleRegisterSale = async (nodeId: string) => {
+    if (!currentUserId) { toast.error("Please log in first"); return; }
+    const { error } = await supabase.from("affiliate_sales").insert({
+      pyramid_node_id: nodeId,
+      user_id: currentUserId,
+    });
+    if (error) { toast.error(error.message); return; }
+    toast.success("Sale registered! 🎉");
+    loadPyramid();
+  };
+
   const handleSave = async () => {
     if (!editing?.name) { toast.error("Name is required"); return; }
     const payload = {
@@ -555,11 +596,14 @@ export default function AffiliateNetworkPyramid() {
     loadPyramid();
   };
 
-  const adminCtx: AdminCtx = {
+  const appCtx: AppCtx = {
     isAdmin,
+    currentUserId,
+    userNodeId,
     onEdit: handleEdit,
     onDelete: handleDelete,
     onAdd: handleAdd,
+    onRegisterSale: handleRegisterSale,
     allNodes: flatNodes,
   };
 
@@ -572,7 +616,7 @@ export default function AffiliateNetworkPyramid() {
   }
 
   return (
-    <AdminContext.Provider value={adminCtx}>
+    <AppContext.Provider value={appCtx}>
       <div>
         {/* Header with floral ornaments */}
         <div className="relative flex flex-col items-center mb-12">
@@ -674,6 +718,6 @@ export default function AffiliateNetworkPyramid() {
           allNodes={flatNodes}
         />
       </div>
-    </AdminContext.Provider>
+    </AppContext.Provider>
   );
 }
