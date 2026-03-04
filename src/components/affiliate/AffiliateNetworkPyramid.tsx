@@ -227,7 +227,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         )}
 
         {/* Earnings */}
-        <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-border/20">
+          <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-border/20">
           <div className="text-center">
             <p className={`font-display text-xs font-black ${style.text}`}>€{node.earnings.toFixed(0)}</p>
             <p className="text-[8px] font-display tracking-wider text-muted-foreground/60">EARNED</p>
@@ -238,6 +238,16 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
             <p className="text-[8px] font-display tracking-wider text-muted-foreground/60">SALES</p>
           </div>
         </div>
+
+        {/* Register Sale button — visible to admin or node owner */}
+        {(isAdmin || (currentUserId && userNodeId === node.id)) && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onRegisterSale(node.id); }}
+            className="mt-2 w-full py-1.5 rounded-lg text-[10px] font-display font-bold tracking-wider bg-accent/20 text-accent border border-accent/30 hover:bg-accent/30 transition-colors"
+          >
+            + Register Sale
+          </button>
+        )}
 
         {/* Expand indicator */}
         {hasChildren && (
