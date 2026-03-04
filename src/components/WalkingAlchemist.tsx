@@ -154,7 +154,7 @@ const WalkingAlchemist = () => {
                     src={alchemistWalk}
                     alt="Alchemist walking"
                     className="h-32 sm:h-44 w-auto drop-shadow-[0_4px_20px_hsl(var(--primary)/0.15)]"
-                    style={{ mixBlendMode: "normal" }}
+                    style={{ mixBlendMode: "screen" }}
                   />
                   {/* Subtle ambient glow under feet while walking */}
                   <motion.div
@@ -197,7 +197,7 @@ const WalkingAlchemist = () => {
                     src={alchemistMixing}
                     alt="Alchemist mixing perfume"
                     className="relative z-10 h-40 sm:h-52 w-auto drop-shadow-[0_4px_30px_hsl(var(--primary)/0.2)]"
-                    style={{ mixBlendMode: "normal" }}
+                    style={{ mixBlendMode: "screen" }}
                   />
 
                   {/* Color explosion bursts */}
