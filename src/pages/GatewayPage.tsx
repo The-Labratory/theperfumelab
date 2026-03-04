@@ -4,6 +4,7 @@ import { Sparkles, Users, ArrowRight, FlaskConical, Handshake } from "lucide-rea
 import ParticleField from "@/components/ParticleField";
 import lhaririLogo from "@/assets/lhariri-logo.png";
 import heroOrb from "@/assets/hero-orb.jpg";
+import alchemistAvatar from "@/assets/alchemist-avatar.png";
 
 const GatewayPage = () => {
   return (
@@ -69,7 +70,7 @@ const GatewayPage = () => {
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
         >
-          <img src={lhaririLogo} alt="The Perfume Lab" className="h-14 sm:h-20 w-auto mx-auto drop-shadow-[0_0_30px_hsl(185_80%_55%/0.3)]" />
+          <img src={lhaririLogo} alt="The Perfume Lab" className="h-24 sm:h-36 w-auto mx-auto drop-shadow-[0_0_40px_hsl(185_80%_55%/0.4)]" />
         </motion.div>
         <motion.p
           initial={{ opacity: 0, letterSpacing: "0.2em" }}
@@ -156,6 +157,52 @@ const GatewayPage = () => {
           </Link>
         </motion.div>
       </div>
+
+      {/* Walking Alchemist */}
+      <motion.div
+        initial={{ x: "-20vw", opacity: 0 }}
+        animate={{ x: "120vw", opacity: [0, 1, 1, 1, 0] }}
+        transition={{ duration: 14, repeat: Infinity, repeatDelay: 4, ease: "linear" }}
+        className="fixed bottom-8 z-20 pointer-events-none"
+      >
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img
+            src={alchemistAvatar}
+            alt="Alchemist Perfumer"
+            className="h-28 sm:h-40 w-auto drop-shadow-[0_0_20px_hsl(185_80%_55%/0.4)]"
+          />
+        </motion.div>
+        {/* Trailing particles */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: 4 + Math.random() * 4,
+              height: 4 + Math.random() * 4,
+              bottom: 20 + Math.random() * 40,
+              right: 30 + i * 18,
+              background: i % 2 === 0
+                ? "hsl(var(--primary) / 0.6)"
+                : "hsl(var(--accent) / 0.6)",
+            }}
+            animate={{
+              opacity: [0.8, 0],
+              y: [0, -20 - Math.random() * 20],
+              scale: [1, 0.3],
+            }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              delay: i * 0.25,
+              ease: "easeOut",
+            }}
+          />
+        ))}
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0 }}
