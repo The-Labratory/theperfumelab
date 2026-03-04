@@ -251,6 +251,105 @@ const PartnerPage = () => {
           </div>
         </motion.div>
 
+        {/* Affiliate Success Stories */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mb-12 sm:mb-16"
+        >
+          <div className="text-center mb-10">
+            <span className="text-[10px] font-display tracking-[0.3em] text-primary mb-3 block">SUCCESS STORIES</span>
+            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-wider text-foreground">
+              Top Affiliates, Real Results
+            </h2>
+            <p className="text-xs text-muted-foreground font-body max-w-md mx-auto mt-2 leading-relaxed">
+              Our affiliate partners are building real income streams — here's what they have to say.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {[
+              {
+                quote: "I shared my link on Instagram stories and within 3 months I was earning over €2,000/month. The products sell themselves — people love creating their own scent.",
+                name: "Lina Berger",
+                role: "Gold Tier · €14,200 earned",
+                initials: "LB",
+                stat: "€4,700/mo",
+                statLabel: "Peak month",
+                tier: "gold",
+              },
+              {
+                quote: "I was skeptical at first, but the 50% commission at Diamond tier is real. My network of beauty bloggers grew fast — now I have 40+ active referrals.",
+                name: "Youssef Karam",
+                role: "Diamond Tier · €31,500 earned",
+                initials: "YK",
+                stat: "42",
+                statLabel: "Active referrals",
+                tier: "diamond",
+              },
+              {
+                quote: "As a fragrance reviewer on YouTube, recommending The Perfume Lab was natural. My audience trusts me, and the conversion rate is insane — 18% click-to-sale.",
+                name: "Sophie Deschamps",
+                role: "Platinum Tier · €22,800 earned",
+                initials: "SD",
+                stat: "18%",
+                statLabel: "Conversion rate",
+                tier: "platinum",
+              },
+              {
+                quote: "I run a small beauty salon. I placed my referral QR code at the counter and it brings in an extra €800-1,200 every month without me doing anything.",
+                name: "Marco Vitali",
+                role: "Silver Tier · €9,600 earned",
+                initials: "MV",
+                stat: "€1,200",
+                statLabel: "Monthly passive",
+                tier: "silver",
+              },
+            ].map((t, i) => {
+              const tierColors: Record<string, string> = {
+                gold: "from-yellow-400/20 to-amber-500/20 border-yellow-500/30",
+                diamond: "from-purple-400/20 to-fuchsia-500/20 border-purple-500/30",
+                platinum: "from-cyan-300/20 to-blue-400/20 border-cyan-400/30",
+                silver: "from-gray-300/20 to-gray-500/20 border-gray-400/30",
+              };
+              const tierGlow: Record<string, string> = {
+                gold: "text-yellow-400",
+                diamond: "text-purple-400",
+                platinum: "text-cyan-400",
+                silver: "text-gray-400",
+              };
+              return (
+                <motion.div
+                  key={t.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`rounded-2xl p-6 border bg-gradient-to-br ${tierColors[t.tier]} backdrop-blur-sm relative overflow-hidden`}
+                >
+                  <div className="absolute top-4 right-4 text-right">
+                    <span className={`font-display text-2xl font-black ${tierGlow[t.tier]}`}>{t.stat}</span>
+                    <span className="text-[9px] font-display tracking-[0.2em] text-muted-foreground block uppercase">{t.statLabel}</span>
+                  </div>
+                  <div className="text-2xl text-primary/20 font-display mb-2">"</div>
+                  <p className="text-sm font-body text-foreground/80 leading-relaxed italic mb-5 pr-20">
+                    {t.quote}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${tierColors[t.tier]} flex items-center justify-center`}>
+                      <span className={`text-xs font-display tracking-wider ${tierGlow[t.tier]}`}>{t.initials}</span>
+                    </div>
+                    <div>
+                      <span className="text-xs font-display text-foreground block tracking-wide">{t.name}</span>
+                      <span className={`text-[10px] font-display ${tierGlow[t.tier]} tracking-wider`}>{t.role}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
