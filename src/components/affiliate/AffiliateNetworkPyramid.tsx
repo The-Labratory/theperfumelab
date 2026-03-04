@@ -558,7 +558,7 @@ export default function AffiliateNetworkPyramid() {
     loadPyramid();
   };
 
-  const adminCtx: AdminCtx = {
+  const appCtx: AppCtx = {
     isAdmin,
     onEdit: handleEdit,
     onDelete: handleDelete,
@@ -575,7 +575,7 @@ export default function AffiliateNetworkPyramid() {
   }
 
   return (
-    <AdminContext.Provider value={adminCtx}>
+    <AppContext.Provider value={appCtx}>
       <div>
         {/* Header with floral ornaments */}
         <div className="relative flex flex-col items-center mb-12">
@@ -677,6 +677,6 @@ export default function AffiliateNetworkPyramid() {
           allNodes={flatNodes}
         />
       </div>
-    </AdminContext.Provider>
+    </AppContext.Provider>
   );
 }
