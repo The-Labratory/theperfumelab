@@ -88,8 +88,9 @@ const LEVEL_STYLES = [
   { bg: "bg-accent/20", border: "border-accent/50", text: "text-accent", glow: "shadow-accent/20", icon: Crown },
   { bg: "bg-primary/20", border: "border-primary/50", text: "text-primary", glow: "shadow-primary/20", icon: Crown },
   { bg: "bg-[hsl(45_93%_47%)]/15", border: "border-[hsl(45_93%_47%)]/40", text: "text-[hsl(45_93%_47%)]", glow: "shadow-[hsl(45_93%_47%)]/10", icon: User },
-  { bg: "bg-muted/20", border: "border-muted-foreground/30", text: "text-muted-foreground", glow: "", icon: User },
-  { bg: "bg-muted/10", border: "border-border/30", text: "text-muted-foreground/60", glow: "", icon: User },
+  { bg: "bg-[hsl(220_20%_65%)]/10", border: "border-[hsl(220_20%_65%)]/30", text: "text-[hsl(220_20%_65%)]", glow: "", icon: User },
+  { bg: "bg-muted/15", border: "border-muted-foreground/25", text: "text-muted-foreground", glow: "", icon: User },
+  { bg: "bg-muted/10", border: "border-border/20", text: "text-muted-foreground/60", glow: "", icon: User },
 ];
 
 function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number }) {
