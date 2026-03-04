@@ -94,7 +94,7 @@ const LEVEL_STYLES = [
 ];
 
 function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number }) {
-  const [expanded, setExpanded] = useState(depth < 2);
+  const [expanded, setExpanded] = useState(true);
   const style = LEVEL_STYLES[Math.min(node.level, LEVEL_STYLES.length - 1)];
   const hasChildren = node.children && node.children.length > 0;
   const rank = getRank(node.total_transactions);
@@ -108,9 +108,9 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         transition={{ delay: depth * 0.05 }}
         className="flex flex-col items-center"
       >
-        <div className="w-full max-w-[220px] rounded-2xl border-2 border-dashed border-border/30 bg-muted/5 p-6 text-center">
-          <div className="w-14 h-14 rounded-full bg-muted/10 border border-border/20 mx-auto mb-3 flex items-center justify-center">
-            <UserPlus className="w-5 h-5 text-muted-foreground/30" />
+        <div className="w-full max-w-[180px] rounded-2xl border-2 border-dashed border-border/30 bg-muted/5 p-4 text-center">
+          <div className="w-10 h-10 rounded-full bg-muted/10 border border-border/20 mx-auto mb-2 flex items-center justify-center">
+            <UserPlus className="w-4 h-4 text-muted-foreground/30" />
           </div>
           <p className="text-[11px] font-display tracking-[0.2em] text-muted-foreground/40 uppercase">Available Slot</p>
           <p className="text-[9px] text-muted-foreground/30 mt-1">Join & claim this position</p>
@@ -128,33 +128,33 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
     >
       {/* Card */}
       <div
-        className={`w-full max-w-[280px] rounded-2xl border-2 ${style.border} ${style.bg} p-6 text-center relative cursor-pointer transition-all hover:scale-[1.03] backdrop-blur-sm ${style.glow ? `shadow-xl ${style.glow}` : ""}`}
+        className={`w-full max-w-[200px] rounded-2xl border-2 ${style.border} ${style.bg} p-3 text-center relative cursor-pointer transition-all hover:scale-[1.03] backdrop-blur-sm ${style.glow ? `shadow-xl ${style.glow}` : ""}`}
         onClick={() => hasChildren && setExpanded(!expanded)}
       >
         {/* Avatar */}
-        <div className={`w-18 h-18 rounded-full mx-auto mb-3 flex items-center justify-center border-2 ${style.border} ${style.bg} shadow-lg ${style.glow}`}
-          style={{ width: 72, height: 72 }}
+        <div className={`rounded-full mx-auto mb-2 flex items-center justify-center border-2 ${style.border} ${style.bg} shadow-lg ${style.glow}`}
+          style={{ width: 48, height: 48 }}
         >
           {(AVATAR_OVERRIDES[node.name] || node.avatar_url) ? (
             <img src={AVATAR_OVERRIDES[node.name] || node.avatar_url!} alt={node.name} className="w-full h-full rounded-full object-cover" />
           ) : (
-            <span className={`font-display text-2xl font-black ${style.text}`}>
+            <span className={`font-display text-base font-black ${style.text}`}>
               {node.name.split(' ').map(w => w[0]).join('').slice(0, 2)}
             </span>
           )}
         </div>
 
         {/* Name */}
-        <h4 className="font-display text-base font-black tracking-wide text-foreground">{node.name}</h4>
+        <h4 className="font-display text-xs font-black tracking-wide text-foreground">{node.name}</h4>
         {node.title && (
           <p className="text-[10px] font-display tracking-[0.15em] text-muted-foreground mt-0.5">{node.title}</p>
         )}
 
         {/* Rank Badge */}
-        <div className="flex items-center justify-center gap-1.5 mt-2">
-          <RankIcon className={`w-4 h-4 ${rank.color}`} />
-          <span className={`text-xs font-display font-bold tracking-wider ${rank.color}`}>{rank.name}</span>
-          <span className="text-[10px] font-display font-semibold text-accent ml-1">({rank.commission}%)</span>
+        <div className="flex items-center justify-center gap-1 mt-1">
+          <RankIcon className={`w-3 h-3 ${rank.color}`} />
+          <span className={`text-[10px] font-display font-bold tracking-wider ${rank.color}`}>{rank.name}</span>
+          <span className="text-[9px] font-display font-semibold text-accent ml-0.5">({rank.commission}%)</span>
         </div>
 
         {/* Rank Progress */}
@@ -175,15 +175,15 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
         )}
 
         {/* Earnings */}
-        <div className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-border/20">
+        <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-border/20">
           <div className="text-center">
-            <p className={`font-display text-base font-black ${style.text}`}>€{node.earnings.toFixed(2)}</p>
-            <p className="text-[9px] font-display tracking-wider text-muted-foreground/60">EARNED</p>
+            <p className={`font-display text-xs font-black ${style.text}`}>€{node.earnings.toFixed(0)}</p>
+            <p className="text-[8px] font-display tracking-wider text-muted-foreground/60">EARNED</p>
           </div>
-          <div className="w-px h-7 bg-border/20" />
+          <div className="w-px h-5 bg-border/20" />
           <div className="text-center">
-            <p className={`font-display text-base font-black ${style.text}`}>{node.total_transactions}</p>
-            <p className="text-[9px] font-display tracking-wider text-muted-foreground/60">SALES</p>
+            <p className={`font-display text-xs font-black ${style.text}`}>{node.total_transactions}</p>
+            <p className="text-[8px] font-display tracking-wider text-muted-foreground/60">SALES</p>
           </div>
         </div>
 
@@ -208,7 +208,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
               <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px bg-border/30" 
                 style={{ width: `${Math.max((node.children!.length - 1) * 260, 100)}px` }} />
             )}
-            <div className="flex gap-6 items-start pt-0">
+            <div className="flex gap-3 items-start pt-0 flex-wrap justify-center">
               {node.children!.map((child) => (
                 <div key={child.id} className="flex flex-col items-center">
                   <div className="w-px h-6 bg-border/30" />
