@@ -56,7 +56,7 @@ const AppContent = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<GatewayPage />} />
         <Route path="/gateway" element={<GatewayPage />} />
         <Route path="/home" element={<Index />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
