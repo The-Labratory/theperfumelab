@@ -1,14 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import alchemistWalk from "@/assets/alchemist-walk.png";
 import alchemistMixing from "@/assets/alchemist-mixing.png";
 
 /**
  * Phases:
  *  0 – walking in   (left → center, 5s)
- *  1 – cooking       (center, 9s — dramatic effects)
+ *  1 – cooking       (center, 9s)
  *  2 – walking out   (center → right, 5s)
- *  3 – hidden pause  (3s)
+ *  3 – hidden pause  (3.5s)
  */
 const WalkingAlchemist = () => {
   const [phase, setPhase] = useState(0);
@@ -23,7 +23,39 @@ const WalkingAlchemist = () => {
     return () => clearTimeout(timer);
   }, [phase, advancePhase]);
 
+  // Pre-compute random values so they don't change on re-render
+  const vapors = useMemo(() => Array.from({ length: 12 }, () => ({
+    w: 4 + Math.random() * 10,
+    left: 25 + Math.random() * 50,
+    top: 5 + Math.random() * 20,
+    yEnd: -80 - Math.random() * 60,
+    xStart: (Math.random() - 0.5) * 10,
+    xEnd: (Math.random() - 0.5) * 50,
+    dur: 2 + Math.random() * 1.5,
+  })), []);
+
+  const bursts = useMemo(() => Array.from({ length: 6 }, (_, i) => {
+    const angle = (i / 6) * Math.PI * 2;
+    const radius = 55 + Math.random() * 30;
+    return { angle, radius, size: 8 + Math.random() * 10 };
+  }), []);
+
+  const sparkles = useMemo(() => Array.from({ length: 8 }, () => ({
+    left: 15 + Math.random() * 70,
+    top: -10 + Math.random() * 50,
+    size: 8 + Math.random() * 8,
+  })), []);
+
   if (phase === 3) return null;
+
+  const colors = [
+    "hsl(var(--primary))",
+    "hsl(var(--accent))",
+    "hsl(var(--secondary))",
+    "hsl(300 80% 65%)",
+    "hsl(160 70% 50%)",
+    "hsl(45 100% 60%)",
+  ];
 
   return (
     <div className="fixed bottom-4 left-0 right-0 z-20 pointer-events-none overflow-hidden">
@@ -43,15 +75,25 @@ const WalkingAlchemist = () => {
         }}
         className="relative"
       >
-        {/* Walk bob / cooking sway */}
+        {/* Human-like motion wrapper */}
         <motion.div
           animate={
             phase !== 1
-              ? { y: [0, -8, 0], rotate: [0, -1.5, 0, 1.5, 0] }
-              : { y: [0, -3, 0] }
+              ? {
+                  // Walking: vertical step bounce + slight torso lean
+                  y: [0, -7, -1, -7, 0],
+                  rotate: [-0.8, 0.5, -0.8, 0.5, -0.8],
+                  scaleY: [1, 0.98, 1, 0.98, 1],
+                }
+              : {
+                  // Cooking: gentle breathing + weight shift
+                  y: [0, -2, 0, -1, 0],
+                  rotate: [0, 0.5, 0, -0.5, 0],
+                  scaleY: [1, 1.005, 1, 1.005, 1],
+                }
           }
           transition={{
-            duration: phase !== 1 ? 0.6 : 2.5,
+            duration: phase !== 1 ? 0.7 : 3,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -67,8 +109,7 @@ const WalkingAlchemist = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
-                className="h-28 sm:h-40 w-auto mix-blend-screen"
-                style={{ filter: "drop-shadow(0 0 16px hsl(185 80% 55% / 0.5))" }}
+                className="h-28 sm:h-40 w-auto"
               />
             ) : (
               <motion.div
@@ -79,7 +120,7 @@ const WalkingAlchemist = () => {
                 transition={{ duration: 0.6 }}
                 className="relative"
               >
-                {/* Swirling vortex ring behind the alchemist */}
+                {/* Swirling vortex */}
                 <motion.div
                   className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full"
                   style={{
@@ -91,7 +132,7 @@ const WalkingAlchemist = () => {
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                 />
 
-                {/* Pulsing glow underneath */}
+                {/* Pulsing glow */}
                 <motion.div
                   className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 sm:w-56 sm:h-56 rounded-full blur-[40px]"
                   style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.5), hsl(var(--accent) / 0.3), transparent 70%)" }}
@@ -102,57 +143,45 @@ const WalkingAlchemist = () => {
                 <img
                   src={alchemistMixing}
                   alt="Alchemist mixing perfume"
-                  className="relative z-10 h-36 sm:h-48 w-auto mix-blend-screen"
-                  style={{ filter: "drop-shadow(0 0 28px hsl(35 90% 55% / 0.6))" }}
+                  className="relative z-10 h-36 sm:h-48 w-auto"
                 />
 
                 {/* Color explosion bursts */}
-                {[...Array(6)].map((_, i) => {
-                  const angle = (i / 6) * Math.PI * 2;
-                  const radius = 60 + Math.random() * 30;
-                  return (
-                    <motion.div
-                      key={`burst-${i}`}
-                      className="absolute left-1/2 top-1/3 z-20 rounded-full"
-                      style={{
-                        width: 8 + Math.random() * 10,
-                        height: 8 + Math.random() * 10,
-                        background: [
-                          "hsl(var(--primary))",
-                          "hsl(var(--accent))",
-                          "hsl(var(--secondary))",
-                          "hsl(300 80% 65%)",
-                          "hsl(160 70% 50%)",
-                          "hsl(45 100% 60%)",
-                        ][i],
-                        boxShadow: `0 0 20px ${["hsl(var(--primary) / 0.8)", "hsl(var(--accent) / 0.8)", "hsl(var(--secondary) / 0.8)", "hsl(300 80% 65% / 0.8)", "hsl(160 70% 50% / 0.8)", "hsl(45 100% 60% / 0.8)"][i]}`,
-                      }}
-                      animate={{
-                        x: [0, Math.cos(angle) * radius, Math.cos(angle) * radius * 1.5],
-                        y: [0, Math.sin(angle) * radius - 20, Math.sin(angle) * radius * 1.5 - 40],
-                        opacity: [0, 1, 0],
-                        scale: [0.3, 1.5, 0],
-                      }}
-                      transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        delay: i * 0.5 + 1,
-                        ease: "easeOut",
-                      }}
-                    />
-                  );
-                })}
+                {bursts.map((b, i) => (
+                  <motion.div
+                    key={`burst-${i}`}
+                    className="absolute left-1/2 top-1/3 z-20 rounded-full"
+                    style={{
+                      width: b.size,
+                      height: b.size,
+                      background: colors[i],
+                      boxShadow: `0 0 20px ${colors[i].replace(")", " / 0.8)")}`,
+                    }}
+                    animate={{
+                      x: [0, Math.cos(b.angle) * b.radius, Math.cos(b.angle) * b.radius * 1.5],
+                      y: [0, Math.sin(b.angle) * b.radius - 20, Math.sin(b.angle) * b.radius * 1.5 - 40],
+                      opacity: [0, 1, 0],
+                      scale: [0.3, 1.5, 0],
+                    }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      delay: i * 0.5 + 1,
+                      ease: "easeOut",
+                    }}
+                  />
+                ))}
 
                 {/* Rising vapors */}
-                {[...Array(12)].map((_, i) => (
+                {vapors.map((v, i) => (
                   <motion.div
                     key={`vapor-${i}`}
                     className="absolute rounded-full z-10"
                     style={{
-                      width: 4 + Math.random() * 10,
-                      height: 4 + Math.random() * 10,
-                      left: `${25 + Math.random() * 50}%`,
-                      top: `${5 + Math.random() * 20}%`,
+                      width: v.w,
+                      height: v.w,
+                      left: `${v.left}%`,
+                      top: `${v.top}%`,
                       background: [
                         "hsl(var(--primary) / 0.7)",
                         "hsl(var(--accent) / 0.7)",
@@ -161,13 +190,13 @@ const WalkingAlchemist = () => {
                       ][i % 4],
                     }}
                     animate={{
-                      y: [-5, -80 - Math.random() * 60],
-                      x: [(Math.random() - 0.5) * 10, (Math.random() - 0.5) * 50],
+                      y: [-5, v.yEnd],
+                      x: [v.xStart, v.xEnd],
                       opacity: [0, 0.9, 0],
                       scale: [0.5, 1.4, 0.2],
                     }}
                     transition={{
-                      duration: 2 + Math.random() * 1.5,
+                      duration: v.dur,
                       repeat: Infinity,
                       delay: i * 0.35,
                       ease: "easeOut",
@@ -176,15 +205,15 @@ const WalkingAlchemist = () => {
                 ))}
 
                 {/* Sparkle stars */}
-                {[...Array(8)].map((_, i) => (
+                {sparkles.map((s, i) => (
                   <motion.div
                     key={`star-${i}`}
                     className="absolute z-20"
                     style={{
-                      left: `${15 + Math.random() * 70}%`,
-                      top: `${-10 + Math.random() * 50}%`,
-                      fontSize: 8 + Math.random() * 8,
-                      color: ["hsl(var(--primary))", "hsl(var(--accent))", "hsl(45 100% 70%)"][i % 3],
+                      left: `${s.left}%`,
+                      top: `${s.top}%`,
+                      fontSize: s.size,
+                      color: [colors[0], colors[1], colors[5]][i % 3],
                     }}
                     animate={{
                       opacity: [0, 1, 0],
