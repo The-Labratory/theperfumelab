@@ -7,7 +7,7 @@ import ParticleField from "@/components/ParticleField";
 import Navbar from "@/components/Navbar";
 import { useTranslation } from "react-i18next";
 import heroOrb from "@/assets/hero-orb.jpg";
-import alchemistAvatar from "@/assets/alchemist-avatar.png";
+import WalkingAlchemist from "@/components/WalkingAlchemist";
 
 const testimonials = [
   {
@@ -94,82 +94,7 @@ const Index = () => {
             </Button>
           </motion.div>
 
-          {/* Walking Alchemist creating a chemistry mix */}
-          <motion.div
-            initial={{ x: "-20vw", opacity: 0 }}
-            animate={{ x: "120vw", opacity: [0, 1, 1, 1, 0] }}
-            transition={{ duration: 16, repeat: Infinity, repeatDelay: 6, ease: "linear" }}
-            className="absolute bottom-4 left-0 z-20 pointer-events-none"
-          >
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-              className="relative"
-            >
-              <img
-                src={alchemistAvatar}
-                alt="Alchemist creating perfume"
-                className="h-24 sm:h-36 w-auto drop-shadow-[0_0_24px_hsl(185_80%_55%/0.5)]"
-              />
-              {/* Chemistry bubbles rising from flask */}
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute rounded-full"
-                  style={{
-                    width: 3 + Math.random() * 6,
-                    height: 3 + Math.random() * 6,
-                    left: 20 + Math.random() * 30,
-                    top: 10 + Math.random() * 20,
-                    background: [
-                      "hsl(var(--primary) / 0.7)",
-                      "hsl(var(--accent) / 0.7)",
-                      "hsl(var(--secondary) / 0.7)",
-                    ][i % 3],
-                  }}
-                  animate={{
-                    y: [-10, -50 - Math.random() * 40],
-                    x: [0, (Math.random() - 0.5) * 30],
-                    opacity: [0.9, 0],
-                    scale: [1, 0.4],
-                  }}
-                  transition={{
-                    duration: 1.5 + Math.random(),
-                    repeat: Infinity,
-                    delay: i * 0.3,
-                    ease: "easeOut",
-                  }}
-                />
-              ))}
-              {/* Trailing sparkle trail */}
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={`trail-${i}`}
-                  className="absolute rounded-full"
-                  style={{
-                    width: 3 + Math.random() * 3,
-                    height: 3 + Math.random() * 3,
-                    bottom: 8 + Math.random() * 20,
-                    right: 20 + i * 16,
-                    background: i % 2 === 0
-                      ? "hsl(var(--primary) / 0.5)"
-                      : "hsl(var(--accent) / 0.5)",
-                  }}
-                  animate={{
-                    opacity: [0.7, 0],
-                    y: [0, -15],
-                    scale: [1, 0.2],
-                  }}
-                  transition={{
-                    duration: 1,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                    ease: "easeOut",
-                  }}
-                />
-              ))}
-            </motion.div>
-          </motion.div>
+          <WalkingAlchemist />
         </div>
 
         <GlowOrb className="absolute bottom-20 right-10 w-32 h-32 opacity-30 hidden lg:block" />
