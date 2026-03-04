@@ -37,15 +37,18 @@ interface PyramidNode {
   children?: PyramidNode[];
 }
 
-// Admin context to pass down to cards
-interface AdminCtx {
+// Context to pass down to cards
+interface AppCtx {
   isAdmin: boolean;
+  currentUserId: string | null;
+  userNodeId: string | null; // pyramid node linked to current user
   onEdit: (node: PyramidNode) => void;
   onDelete: (id: string) => void;
   onAdd: (parentId: string, level: number) => void;
+  onRegisterSale: (nodeId: string) => void;
   allNodes: PyramidNode[];
 }
-const AdminContext = createContext<AdminCtx>({ isAdmin: false, onEdit: () => {}, onDelete: () => {}, onAdd: () => {}, allNodes: [] });
+const AppContext = createContext<AppCtx>({ isAdmin: false, currentUserId: null, userNodeId: null, onEdit: () => {}, onDelete: () => {}, onAdd: () => {}, onRegisterSale: () => {}, allNodes: [] });
 
 // Rank system based on total transactions (sales)
 const RANKS = [
