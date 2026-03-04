@@ -472,19 +472,36 @@ export default function AffiliateNetworkPyramid() {
   const [flatNodes, setFlatNodes] = useState<PyramidNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [userNodeId, setUserNodeId] = useState<string | null>(null);
   const [editing, setEditing] = useState<Partial<PyramidNode> | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     loadPyramid();
-    checkAdmin();
+    checkUser();
   }, []);
 
-  const checkAdmin = async () => {
+  const checkUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-    setIsAdmin(!!data);
+    setCurrentUserId(user.id);
+    const { data: roleData } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+    setIsAdmin(!!roleData);
+    // Find the user's pyramid node via affiliate_partners
+    const { data: partner } = await supabase
+      .from("affiliate_partners")
+      .select("id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (partner) {
+      const { data: node } = await supabase
+        .from("affiliate_pyramid")
+        .select("id")
+        .eq("affiliate_partner_id", partner.id)
+        .maybeSingle();
+      if (node) setUserNodeId(node.id);
+    }
   };
 
   const loadPyramid = async () => {
@@ -530,6 +547,17 @@ export default function AffiliateNetworkPyramid() {
     loadPyramid();
   };
 
+  const handleRegisterSale = async (nodeId: string) => {
+    if (!currentUserId) { toast.error("Please log in first"); return; }
+    const { error } = await supabase.from("affiliate_sales").insert({
+      pyramid_node_id: nodeId,
+      user_id: currentUserId,
+    });
+    if (error) { toast.error(error.message); return; }
+    toast.success("Sale registered! 🎉");
+    loadPyramid();
+  };
+
   const handleSave = async () => {
     if (!editing?.name) { toast.error("Name is required"); return; }
     const payload = {
@@ -560,9 +588,12 @@ export default function AffiliateNetworkPyramid() {
 
   const appCtx: AppCtx = {
     isAdmin,
+    currentUserId,
+    userNodeId,
     onEdit: handleEdit,
     onDelete: handleDelete,
     onAdd: handleAdd,
+    onRegisterSale: handleRegisterSale,
     allNodes: flatNodes,
   };
 
