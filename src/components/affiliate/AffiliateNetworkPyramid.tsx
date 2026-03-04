@@ -119,7 +119,7 @@ function PyramidCard({ node, depth = 0 }: { node: PyramidNode; depth?: number })
   const hasChildren = node.children && node.children.length > 0;
   const rank = getRank(node.total_transactions);
   const RankIcon = rank.icon;
-  const { isAdmin, onEdit, onDelete, onAdd } = useContext(AdminContext);
+  const { isAdmin, onEdit, onDelete, onAdd, onRegisterSale, currentUserId, userNodeId } = useContext(AppContext);
 
   if (node.is_placeholder) {
     return (
