@@ -5,3 +5,5 @@ project_id = "xkfztnyodbzftlshoqui"
     verify_jwt = false
   [functions.formula-engine]
     verify_jwt = false
+  [functions.perfumer-ai]
+    verify_jwt = false
