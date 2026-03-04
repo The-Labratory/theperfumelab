@@ -5,10 +5,10 @@ import alchemistMixing from "@/assets/alchemist-mixing.png";
 
 /**
  * Phases:
- *  0 – walking in   (left → center, 5s)
- *  1 – cooking       (center, 9s)
- *  2 – walking out   (center → right, 5s)
- *  3 – hidden pause  (3.5s)
+ *  0 – walking in   (left → center, 6s)
+ *  1 – cooking       (center, 10s)
+ *  2 – walking out   (center → right, 6s)
+ *  3 – hidden pause  (4s)
  */
 const WalkingAlchemist = () => {
   const [phase, setPhase] = useState(0);
@@ -18,14 +18,14 @@ const WalkingAlchemist = () => {
   }, []);
 
   useEffect(() => {
-    const durations = [5000, 9000, 5000, 3500];
+    const durations = [6000, 10000, 6000, 4000];
     const timer = setTimeout(advancePhase, durations[phase]);
     return () => clearTimeout(timer);
   }, [phase, advancePhase]);
 
-  // Pre-compute random values so they don't change on re-render
-  const vapors = useMemo(() => Array.from({ length: 12 }, () => ({
-    w: 4 + Math.random() * 10,
+  // Pre-compute random values for particles
+  const vapors = useMemo(() => Array.from({ length: 10 }, () => ({
+    w: 4 + Math.random() * 8,
     left: 25 + Math.random() * 50,
     top: 5 + Math.random() * 20,
     yEnd: -80 - Math.random() * 60,
@@ -40,13 +40,15 @@ const WalkingAlchemist = () => {
     return { angle, radius, size: 8 + Math.random() * 10 };
   }), []);
 
-  const sparkles = useMemo(() => Array.from({ length: 8 }, () => ({
+  const sparkles = useMemo(() => Array.from({ length: 6 }, () => ({
     left: 15 + Math.random() * 70,
     top: -10 + Math.random() * 50,
     size: 8 + Math.random() * 8,
   })), []);
 
   if (phase === 3) return null;
+
+  const isWalking = phase !== 1;
 
   const colors = [
     "hsl(var(--primary))",
@@ -58,7 +60,7 @@ const WalkingAlchemist = () => {
   ];
 
   return (
-    <div className="fixed bottom-4 left-0 right-0 z-20 pointer-events-none overflow-hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-20 pointer-events-none overflow-hidden">
       <motion.div
         key={phase}
         initial={{
@@ -70,208 +72,261 @@ const WalkingAlchemist = () => {
           opacity: phase === 2 ? [1, 1, 0] : 1,
         }}
         transition={{
-          duration: phase === 0 ? 5 : phase === 1 ? 0 : 5,
-          ease: "linear",
+          duration: phase === 0 ? 6 : phase === 1 ? 0 : 6,
+          ease: phase === 0 ? [0.25, 0.1, 0.25, 1] : phase === 2 ? [0.25, 0.1, 0.25, 1] : "linear",
         }}
         className="relative"
       >
-        {/* Human-like motion wrapper */}
+        {/* Ground shadow - makes character feel grounded */}
+        <motion.div
+          className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-[50%]"
+          style={{
+            width: isWalking ? 80 : 120,
+            height: 8,
+            background: "radial-gradient(ellipse, hsl(var(--foreground) / 0.15), transparent 70%)",
+          }}
+          animate={
+            isWalking
+              ? { scaleX: [0.9, 1.1, 0.9], opacity: [0.3, 0.5, 0.3] }
+              : { scaleX: [1, 1.05, 1], opacity: [0.4, 0.5, 0.4] }
+          }
+          transition={{
+            duration: isWalking ? 0.6 : 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Human-like motion wrapper - body sway */}
         <motion.div
           animate={
-            phase !== 1
+            isWalking
               ? {
-                  // Walking: vertical step bounce + slight torso lean
-                  y: [0, -7, -1, -7, 0],
-                  rotate: [-0.8, 0.5, -0.8, 0.5, -0.8],
-                  scaleY: [1, 0.98, 1, 0.98, 1],
+                  // Walking: realistic gait cycle with weight transfer
+                  y: [0, -6, -2, -6, 0],
+                  rotate: [-0.6, 0.4, -0.6, 0.4, -0.6],
+                  scaleY: [1, 0.985, 1, 0.985, 1],
                 }
               : {
-                  // Cooking: gentle breathing + weight shift
-                  y: [0, -2, 0, -1, 0],
-                  rotate: [0, 0.5, 0, -0.5, 0],
-                  scaleY: [1, 1.005, 1, 1.005, 1],
+                  // Cooking: subtle breathing + weight shift + concentration lean
+                  y: [0, -1.5, 0, -1, 0],
+                  rotate: [0, 0.3, 0, -0.3, 0],
+                  scaleY: [1, 1.004, 1, 1.004, 1],
                 }
           }
           transition={{
-            duration: phase !== 1 ? 0.7 : 3,
+            duration: isWalking ? 0.6 : 3.5,
             repeat: Infinity,
             ease: "easeInOut",
           }}
           className="relative"
         >
-          <AnimatePresence mode="wait">
-            {phase !== 1 ? (
-              <motion.img
-                key="walk"
-                src={alchemistWalk}
-                alt="Alchemist walking"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="h-28 sm:h-40 w-auto"
-              />
-            ) : (
-              <motion.div
-                key="mixing"
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.85 }}
-                transition={{ duration: 0.6 }}
-                className="relative"
-              >
-                {/* Swirling vortex */}
+          {/* Shoulder/upper body sway - secondary motion */}
+          <motion.div
+            animate={
+              isWalking
+                ? {
+                    skewX: [-0.5, 0.5, -0.5],
+                    x: [-1, 1, -1],
+                  }
+                : {
+                    skewX: [-0.2, 0.2, -0.2],
+                    x: [-0.5, 0.5, -0.5],
+                  }
+            }
+            transition={{
+              duration: isWalking ? 0.6 : 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              {isWalking ? (
                 <motion.div
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full"
-                  style={{
-                    background: "conic-gradient(from 0deg, hsl(var(--primary) / 0.4), hsl(var(--accent) / 0.4), hsl(var(--secondary) / 0.4), hsl(300 70% 60% / 0.3), hsl(var(--primary) / 0.4))",
-                    maskImage: "radial-gradient(circle, transparent 40%, black 50%, transparent 70%)",
-                    WebkitMaskImage: "radial-gradient(circle, transparent 40%, black 50%, transparent 70%)",
-                  }}
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                />
-
-                {/* Pulsing glow */}
-                <motion.div
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 sm:w-56 sm:h-56 rounded-full blur-[40px]"
-                  style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.5), hsl(var(--accent) / 0.3), transparent 70%)" }}
-                  animate={{ scale: [0.8, 1.3, 0.8], opacity: [0.4, 0.8, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-
-                <img
-                  src={alchemistMixing}
-                  alt="Alchemist mixing perfume"
-                  className="relative z-10 h-36 sm:h-48 w-auto"
-                />
-
-                {/* Color explosion bursts */}
-                {bursts.map((b, i) => (
-                  <motion.div
-                    key={`burst-${i}`}
-                    className="absolute left-1/2 top-1/3 z-20 rounded-full"
-                    style={{
-                      width: b.size,
-                      height: b.size,
-                      background: colors[i],
-                      boxShadow: `0 0 20px ${colors[i].replace(")", " / 0.8)")}`,
-                    }}
-                    animate={{
-                      x: [0, Math.cos(b.angle) * b.radius, Math.cos(b.angle) * b.radius * 1.5],
-                      y: [0, Math.sin(b.angle) * b.radius - 20, Math.sin(b.angle) * b.radius * 1.5 - 40],
-                      opacity: [0, 1, 0],
-                      scale: [0.3, 1.5, 0],
-                    }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                      delay: i * 0.5 + 1,
-                      ease: "easeOut",
-                    }}
-                  />
-                ))}
-
-                {/* Rising vapors */}
-                {vapors.map((v, i) => (
-                  <motion.div
-                    key={`vapor-${i}`}
-                    className="absolute rounded-full z-10"
-                    style={{
-                      width: v.w,
-                      height: v.w,
-                      left: `${v.left}%`,
-                      top: `${v.top}%`,
-                      background: [
-                        "hsl(var(--primary) / 0.7)",
-                        "hsl(var(--accent) / 0.7)",
-                        "hsl(var(--secondary) / 0.7)",
-                        "hsl(300 70% 60% / 0.6)",
-                      ][i % 4],
-                    }}
-                    animate={{
-                      y: [-5, v.yEnd],
-                      x: [v.xStart, v.xEnd],
-                      opacity: [0, 0.9, 0],
-                      scale: [0.5, 1.4, 0.2],
-                    }}
-                    transition={{
-                      duration: v.dur,
-                      repeat: Infinity,
-                      delay: i * 0.35,
-                      ease: "easeOut",
-                    }}
-                  />
-                ))}
-
-                {/* Sparkle stars */}
-                {sparkles.map((s, i) => (
-                  <motion.div
-                    key={`star-${i}`}
-                    className="absolute z-20"
-                    style={{
-                      left: `${s.left}%`,
-                      top: `${s.top}%`,
-                      fontSize: s.size,
-                      color: [colors[0], colors[1], colors[5]][i % 3],
-                    }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                      scale: [0, 1.8, 0],
-                      rotate: [0, 180],
-                    }}
-                    transition={{
-                      duration: 1.2,
-                      repeat: Infinity,
-                      delay: i * 0.7 + 0.3,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    ✦
-                  </motion.div>
-                ))}
-
-                {/* Label */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap z-30"
+                  key="walk"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  className="relative"
                 >
-                  <motion.span
-                    animate={{ opacity: [0.7, 1, 0.7] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="text-[10px] sm:text-xs font-display tracking-[0.25em] uppercase text-primary/90 text-glow-primary"
-                  >
-                    ✦ Crafting Your Perfume ✦
-                  </motion.span>
+                  <img
+                    src={alchemistWalk}
+                    alt="Alchemist walking"
+                    className="h-32 sm:h-44 w-auto drop-shadow-[0_4px_20px_hsl(var(--primary)/0.15)]"
+                    style={{ mixBlendMode: "normal" }}
+                  />
+                  {/* Subtle ambient glow under feet while walking */}
+                  <motion.div
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-4 rounded-full blur-[8px]"
+                    style={{ background: "hsl(var(--primary) / 0.1)" }}
+                    animate={{ opacity: [0.2, 0.4, 0.2], scaleX: [0.8, 1.2, 0.8] }}
+                    transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
+                  />
                 </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              ) : (
+                <motion.div
+                  key="mixing"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="relative"
+                >
+                  {/* Swirling vortex */}
+                  <motion.div
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full"
+                    style={{
+                      background: "conic-gradient(from 0deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3), hsl(var(--secondary) / 0.3), hsl(300 70% 60% / 0.2), hsl(var(--primary) / 0.3))",
+                      maskImage: "radial-gradient(circle, transparent 40%, black 50%, transparent 70%)",
+                      WebkitMaskImage: "radial-gradient(circle, transparent 40%, black 50%, transparent 70%)",
+                    }}
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  />
 
-          {/* Footstep dots while walking */}
-          {phase !== 1 &&
-            [...Array(5)].map((_, i) => (
-              <motion.div
-                key={`step-${i}`}
-                className="absolute rounded-full"
-                style={{
-                  width: 3,
-                  height: 3,
-                  bottom: 2,
-                  right: 40 + i * 20,
-                  background: "hsl(var(--primary) / 0.4)",
-                }}
-                animate={{ opacity: [0.6, 0], scale: [1, 0] }}
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  delay: i * 0.15,
-                  ease: "easeOut",
-                }}
-              />
-            ))}
+                  {/* Pulsing glow */}
+                  <motion.div
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 sm:w-56 sm:h-56 rounded-full blur-[40px]"
+                    style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.4), hsl(var(--accent) / 0.2), transparent 70%)" }}
+                    animate={{ scale: [0.8, 1.3, 0.8], opacity: [0.3, 0.7, 0.3] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  />
+
+                  <img
+                    src={alchemistMixing}
+                    alt="Alchemist mixing perfume"
+                    className="relative z-10 h-40 sm:h-52 w-auto drop-shadow-[0_4px_30px_hsl(var(--primary)/0.2)]"
+                    style={{ mixBlendMode: "normal" }}
+                  />
+
+                  {/* Color explosion bursts */}
+                  {bursts.map((b, i) => (
+                    <motion.div
+                      key={`burst-${i}`}
+                      className="absolute left-1/2 top-1/3 z-20 rounded-full"
+                      style={{
+                        width: b.size,
+                        height: b.size,
+                        background: colors[i],
+                        boxShadow: `0 0 16px ${colors[i].replace(")", " / 0.6)")}`,
+                      }}
+                      animate={{
+                        x: [0, Math.cos(b.angle) * b.radius, Math.cos(b.angle) * b.radius * 1.4],
+                        y: [0, Math.sin(b.angle) * b.radius - 20, Math.sin(b.angle) * b.radius * 1.4 - 40],
+                        opacity: [0, 1, 0],
+                        scale: [0.3, 1.3, 0],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        delay: i * 0.5 + 1,
+                        ease: "easeOut",
+                      }}
+                    />
+                  ))}
+
+                  {/* Rising vapors */}
+                  {vapors.map((v, i) => (
+                    <motion.div
+                      key={`vapor-${i}`}
+                      className="absolute rounded-full z-10"
+                      style={{
+                        width: v.w,
+                        height: v.w,
+                        left: `${v.left}%`,
+                        top: `${v.top}%`,
+                        background: [
+                          "hsl(var(--primary) / 0.6)",
+                          "hsl(var(--accent) / 0.6)",
+                          "hsl(var(--secondary) / 0.6)",
+                          "hsl(300 70% 60% / 0.5)",
+                        ][i % 4],
+                      }}
+                      animate={{
+                        y: [-5, v.yEnd],
+                        x: [v.xStart, v.xEnd],
+                        opacity: [0, 0.8, 0],
+                        scale: [0.5, 1.3, 0.2],
+                      }}
+                      transition={{
+                        duration: v.dur,
+                        repeat: Infinity,
+                        delay: i * 0.35,
+                        ease: "easeOut",
+                      }}
+                    />
+                  ))}
+
+                  {/* Sparkle stars */}
+                  {sparkles.map((s, i) => (
+                    <motion.div
+                      key={`star-${i}`}
+                      className="absolute z-20"
+                      style={{
+                        left: `${s.left}%`,
+                        top: `${s.top}%`,
+                        fontSize: s.size,
+                        color: [colors[0], colors[1], colors[5]][i % 3],
+                      }}
+                      animate={{
+                        opacity: [0, 1, 0],
+                        scale: [0, 1.6, 0],
+                        rotate: [0, 180],
+                      }}
+                      transition={{
+                        duration: 1.2,
+                        repeat: Infinity,
+                        delay: i * 0.8 + 0.3,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      ✦
+                    </motion.div>
+                  ))}
+
+                  {/* Label */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.5 }}
+                    className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap z-30"
+                  >
+                    <motion.span
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 2.5, repeat: Infinity }}
+                      className="text-[10px] sm:text-xs font-display tracking-[0.25em] uppercase text-primary/90 text-glow-primary"
+                    >
+                      ✦ Crafting Your Perfume ✦
+                    </motion.span>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Footstep dots while walking */}
+            {isWalking &&
+              [...Array(4)].map((_, i) => (
+                <motion.div
+                  key={`step-${i}`}
+                  className="absolute rounded-full"
+                  style={{
+                    width: 3,
+                    height: 3,
+                    bottom: 2,
+                    right: 40 + i * 22,
+                    background: "hsl(var(--primary) / 0.3)",
+                  }}
+                  animate={{ opacity: [0.5, 0], scale: [1, 0] }}
+                  transition={{
+                    duration: 0.7,
+                    repeat: Infinity,
+                    delay: i * 0.15,
+                    ease: "easeOut",
+                  }}
+                />
+              ))}
+          </motion.div>
         </motion.div>
       </motion.div>
     </div>
