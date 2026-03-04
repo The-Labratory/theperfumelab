@@ -348,6 +348,21 @@ const PartnerPage = () => {
               );
             })}
           </div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-8"
+          >
+            <Button
+              size="lg"
+              onClick={() => window.location.href = "/affiliate"}
+              className="glow-primary font-display tracking-wider text-sm px-10"
+            >
+              Become an Affiliate <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+            <p className="text-[10px] text-muted-foreground font-body mt-3 tracking-wide">Free to join · No minimum sales · Earn up to 50% commission</p>
+          </motion.div>
         </motion.div>
 
         <motion.div
