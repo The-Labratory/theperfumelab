@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import ConfettiBurst from "./ConfettiBurst";
 import { playCelebrationChime } from "./celebrationSound";
+import MonthlyLeaderboard from "./MonthlyLeaderboard";
 import lenzoAvatar from "@/assets/lenzo-avatar.png";
 import maherAvatar from "@/assets/maher-alia-avatar.jpg";
 
@@ -691,6 +692,8 @@ export default function AffiliateNetworkPyramid() {
             ))}
           </div>
         </div>
+
+        <MonthlyLeaderboard nodes={flatNodes} />
 
         <RankProgression />
 
