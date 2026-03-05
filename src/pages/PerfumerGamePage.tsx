@@ -576,6 +576,9 @@ export default function PerfumerGamePage() {
                                   {alreadyDone ? "Correct! (Already completed)" : `Correct! +${challenge.xpReward} XP`}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1 font-body italic">{challenge.hint}</p>
+                                {challenge.source && (
+                                  <p className="text-[10px] text-muted-foreground/60 mt-2 font-body">📚 {challenge.source}</p>
+                                )}
                               </div>
                             </div>
                           ) : (
@@ -584,6 +587,9 @@ export default function PerfumerGamePage() {
                               <div>
                                 <p className="text-sm font-display font-bold text-destructive">Not quite!</p>
                                 <p className="text-xs text-muted-foreground mt-1 font-body italic">{challenge.hint}</p>
+                                {challenge.source && (
+                                  <p className="text-[10px] text-muted-foreground/60 mt-2 font-body">📚 {challenge.source}</p>
+                                )}
                               </div>
                             </div>
                           )}
