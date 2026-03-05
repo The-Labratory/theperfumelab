@@ -51,6 +51,7 @@ const Navbar = () => {
     { path: "/gifting", label: t("nav.gifting") },
     { path: "/store", label: t("nav.store") },
     { path: "/dna", label: t("nav.dna") },
+    { path: "/game", label: t("nav.game") },
     { path: "/affiliate", label: t("nav.affiliate") },
     ...(isAdmin ? [{ path: "/admin", label: t("nav.backOffice") }] : []),
   ];
