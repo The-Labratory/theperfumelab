@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Lock, CheckCircle, XCircle, Lightbulb, Trophy, Star, Sparkles, BookOpen, ChevronRight } from "lucide-react";
+import ConfettiBurst from "@/components/affiliate/ConfettiBurst";
+import { playCelebrationChime } from "@/components/affiliate/celebrationSound";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
