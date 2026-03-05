@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Lock, CheckCircle, XCircle, Lightbulb, Trophy, Star, Sparkles, BookOpen, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Lock, CheckCircle, XCircle, Lightbulb, Trophy, Star, Sparkles, BookOpen, ChevronRight, Copy, Gift, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import ConfettiBurst from "@/components/affiliate/ConfettiBurst";
 import { playCelebrationChime } from "@/components/affiliate/celebrationSound";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,8 @@ export default function PerfumerGamePage() {
   const [showHint, setShowHint] = useState(false);
   const [xpAnim, setXpAnim] = useState(false);
   const [rankUpInfo, setRankUpInfo] = useState<{ name: string; icon: string; color: string; idx: number } | null>(null);
+  const [platinumCode, setPlatinumCode] = useState<string | null>(null);
+  const [claimingReward, setClaimingReward] = useState(false);
   const userIdRef = useRef<string | null>(null);
   const dbSaveTimer = useRef<ReturnType<typeof setTimeout>>();
   const prevRankRef = useRef(getCurrentRank(loadLocalProgress().xp).name);
@@ -118,6 +121,35 @@ export default function PerfumerGamePage() {
     ? ((progress.xp - rank.minXP) / (nextRank.minXP - rank.minXP)) * 100
     : 100;
 
+  const claimPlatinumReward = useCallback(async () => {
+    if (claimingReward || platinumCode) return;
+    setClaimingReward(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please sign in to claim your Platinum reward");
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("claim-platinum-reward");
+      if (error) throw error;
+      if (data?.discount_code) {
+        setPlatinumCode(data.discount_code);
+        if (data.already_claimed) {
+          toast.info("Your Platinum reward code was already generated!");
+        } else {
+          toast.success("Your exclusive discount code has been generated! 🎉");
+        }
+      } else if (data?.error) {
+        toast.error(data.error);
+      }
+    } catch (err) {
+      console.error("Claim error:", err);
+      toast.error("Could not generate your reward code. Try again later.");
+    } finally {
+      setClaimingReward(false);
+    }
+  }, [claimingReward, platinumCode]);
+
   const updateProgress = useCallback((newProgress: GameProgress) => {
     setProgress(newProgress);
     saveLocalProgress(newProgress);
@@ -166,6 +198,11 @@ export default function PerfumerGamePage() {
         setTimeout(() => {
           setRankUpInfo({ name: newRank.name, icon: newRank.icon, color: newRank.color, idx });
           playCelebrationChime();
+
+          // Auto-claim Platinum reward
+          if (newRank.name === "Platinum Nez") {
+            claimPlatinumReward();
+          }
         }, 600);
       }
     }
@@ -686,8 +723,47 @@ export default function PerfumerGamePage() {
                       You've earned 2 Free 100ml Custom Fragrances
                     </p>
                     <p className="text-[11px] text-muted-foreground mt-1 font-body">
-                      50% personalized to your scent profile. Check your email for your exclusive redemption code.
+                      50% personalized to your scent profile.
                     </p>
+                    {claimingReward && (
+                      <div className="flex items-center gap-2 mt-3 justify-center text-xs text-muted-foreground">
+                        <Loader2 className="w-3 h-3 animate-spin" /> Generating your code...
+                      </div>
+                    )}
+                    {platinumCode && (
+                      <div className="mt-3">
+                        <p className="text-[10px] text-muted-foreground font-display mb-1">YOUR DISCOUNT CODE:</p>
+                        <div className="flex items-center gap-2 justify-center">
+                          <code className="px-3 py-1.5 rounded-lg bg-background border border-border text-sm font-mono font-bold text-primary tracking-wider">
+                            {platinumCode}
+                          </code>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigator.clipboard.writeText(platinumCode);
+                              toast.success("Code copied!");
+                            }}
+                            className="p-1.5 rounded-lg bg-muted/20 hover:bg-muted/40 transition"
+                          >
+                            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                          </button>
+                        </div>
+                        <p className="text-[9px] text-muted-foreground mt-2 font-body">
+                          Use at checkout for 2 free 100ml bottles. One-time use.
+                        </p>
+                      </div>
+                    )}
+                    {!claimingReward && !platinumCode && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          claimPlatinumReward();
+                        }}
+                        className="mt-3 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-display font-bold hover:bg-primary/90 transition flex items-center gap-1.5 mx-auto"
+                      >
+                        <Gift className="w-3.5 h-3.5" /> Claim Your Reward
+                      </button>
+                    )}
                   </motion.div>
                 )}
 
