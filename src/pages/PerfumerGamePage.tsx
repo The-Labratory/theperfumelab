@@ -388,6 +388,70 @@ export default function PerfumerGamePage() {
                   ))}
                 </div>
               </div>
+
+              {/* Knowledge Library */}
+              {(() => {
+                // Collect unique sources from completed challenges
+                const unlockedSources: { source: string; chapter: string; question: string }[] = [];
+                const seenSources = new Set<string>();
+                GAME_CHAPTERS.forEach((chapter) => {
+                  chapter.challenges.forEach((challenge, i) => {
+                    const key = `${chapter.id}-${i}`;
+                    if (progress.completedChallenges[key] && challenge.source && !seenSources.has(challenge.source)) {
+                      seenSources.add(challenge.source);
+                      unlockedSources.push({
+                        source: challenge.source,
+                        chapter: chapter.title,
+                        question: challenge.question.slice(0, 80),
+                      });
+                    }
+                  });
+                });
+
+                // Count total unique sources across all chapters
+                const totalSources = new Set(
+                  GAME_CHAPTERS.flatMap(ch => ch.challenges.map(c => c.source).filter(Boolean))
+                ).size;
+
+                return (
+                  <div className="mt-8 p-5 rounded-2xl bg-card border border-border/20">
+                    <h3 className="font-display text-sm font-bold text-foreground mb-1 flex items-center gap-2">
+                      <Library className="w-4 h-4 text-primary" /> Knowledge Library
+                    </h3>
+                    <p className="text-[10px] text-muted-foreground mb-4 font-body">
+                      Expert sources unlocked: {unlockedSources.length}/{totalSources}
+                    </p>
+
+                    {unlockedSources.length === 0 ? (
+                      <div className="text-center py-6">
+                        <BookOpen className="w-8 h-8 text-muted-foreground/30 mx-auto mb-2" />
+                        <p className="text-xs text-muted-foreground font-body">
+                          Complete challenges to unlock expert references and book citations.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
+                        {unlockedSources.map((item, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.03 }}
+                            className="p-3 rounded-xl bg-muted/5 border border-border/10"
+                          >
+                            <p className="text-xs font-body text-foreground/90 leading-relaxed">
+                              📚 {item.source}
+                            </p>
+                            <p className="text-[9px] text-muted-foreground mt-1 font-body truncate">
+                              From: <span className="text-primary/70">{item.chapter}</span> — {item.question}…
+                            </p>
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </motion.div>
           )}
 
