@@ -148,14 +148,26 @@ export default function PerfumerGamePage() {
     const isCorrect = selectedAnswer === challenge.correctAnswer;
 
     if (isCorrect && !progress.completedChallenges[key]) {
+      const oldRank = getCurrentRank(progress.xp);
+      const newXp = progress.xp + challenge.xpReward;
+      const newRank = getCurrentRank(newXp);
       const newProgress = {
         ...progress,
-        xp: progress.xp + challenge.xpReward,
+        xp: newXp,
         completedChallenges: { ...progress.completedChallenges, [key]: true },
       };
       updateProgress(newProgress);
       setXpAnim(true);
       setTimeout(() => setXpAnim(false), 1500);
+
+      // Rank-up detection
+      if (newRank.name !== oldRank.name) {
+        const idx = PERFUMER_RANKS.findIndex(r => r.name === newRank.name);
+        setTimeout(() => {
+          setRankUpInfo({ name: newRank.name, icon: newRank.icon, color: newRank.color, idx });
+          playCelebrationChime();
+        }, 600);
+      }
     }
   };
 
