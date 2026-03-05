@@ -29,6 +29,7 @@ const MilestonesPage = lazy(() => import("./pages/MilestonesPage"));
 const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
+const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -77,6 +78,7 @@ const AppContent = () => {
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/milestones" element={<MilestonesPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
+        <Route path="/game" element={<PerfumerGamePage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
 
