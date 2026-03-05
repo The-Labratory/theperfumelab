@@ -53,8 +53,10 @@ export default function PerfumerGamePage() {
   const [showResult, setShowResult] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [xpAnim, setXpAnim] = useState(false);
+  const [rankUpInfo, setRankUpInfo] = useState<{ name: string; icon: string; color: string; idx: number } | null>(null);
   const userIdRef = useRef<string | null>(null);
   const dbSaveTimer = useRef<ReturnType<typeof setTimeout>>();
+  const prevRankRef = useRef(getCurrentRank(loadLocalProgress().xp).name);
 
   // Load progress from DB for logged-in users
   useEffect(() => {
