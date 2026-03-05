@@ -14,6 +14,7 @@ import ParticleField from "@/components/ParticleField";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { useRealtimeSaleNotifications } from "@/hooks/useRealtimeSaleNotifications";
 
 const TIERS = [
   { name: "Bronze", code: "bronze", commission: "20%", requirement: "0 referrals", color: "from-amber-700 to-amber-900", icon: Award },
