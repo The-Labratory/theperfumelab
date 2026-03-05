@@ -715,6 +715,36 @@ export type Database = {
           },
         ]
       }
+      game_progress: {
+        Row: {
+          completed_challenges: Json
+          created_at: string
+          current_chapter: number
+          id: string
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          completed_challenges?: Json
+          created_at?: string
+          current_chapter?: number
+          id?: string
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          completed_challenges?: Json
+          created_at?: string
+          current_chapter?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
       gifts: {
         Row: {
           blend_intensity: string | null
