@@ -41,6 +41,9 @@ const AffiliatePage = () => {
   const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "referrals" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
 
+  // Real-time sale notifications with sound
+  useRealtimeSaleNotifications(affiliate?.id || null);
+
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
