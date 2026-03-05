@@ -55,6 +55,8 @@ export default function PerfumerGamePage() {
   const [showHint, setShowHint] = useState(false);
   const [xpAnim, setXpAnim] = useState(false);
   const [rankUpInfo, setRankUpInfo] = useState<{ name: string; icon: string; color: string; idx: number } | null>(null);
+  const [platinumCode, setPlatinumCode] = useState<string | null>(null);
+  const [claimingReward, setClaimingReward] = useState(false);
   const userIdRef = useRef<string | null>(null);
   const dbSaveTimer = useRef<ReturnType<typeof setTimeout>>();
   const prevRankRef = useRef(getCurrentRank(loadLocalProgress().xp).name);
