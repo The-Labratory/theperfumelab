@@ -1167,6 +1167,27 @@ export type Database = {
         }
         Relationships: []
       }
+      platinum_rewards: {
+        Row: {
+          claimed_at: string
+          discount_code: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          claimed_at?: string
+          discount_code: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          claimed_at?: string
+          discount_code?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       production_orders: {
         Row: {
           batch_id: string | null
