@@ -64,12 +64,6 @@ Deno.serve(async (req) => {
       }
 
       case "lock_version": {
-        if (!user) {
-          return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
         const { data, error } = await supabase.rpc("lock_formula_version", {
           _formula_id: formula_id,
         });
