@@ -44,6 +44,15 @@ const EmployeeManager = lazy(() => import("./pages/admin/EmployeeManager"));
 const PyramidManager = lazy(() => import("./pages/admin/PyramidManager"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 
+// Super Admin
+const SuperAdminLayout = lazy(() => import("./pages/superadmin/SuperAdminLayout"));
+const SuperAdminDashboard = lazy(() => import("./pages/superadmin/SuperAdminDashboard"));
+const SACustomersPage = lazy(() => import("./pages/superadmin/CustomersPage"));
+const SAAgentsPage = lazy(() => import("./pages/superadmin/AgentsPage"));
+const SAAuditLogsPage = lazy(() => import("./pages/superadmin/AuditLogsPage"));
+const SASecurityEventsPage = lazy(() => import("./pages/superadmin/SecurityEventsPage"));
+const SASystemSettingsPage = lazy(() => import("./pages/superadmin/SystemSettingsPage"));
+
 const queryClient = new QueryClient();
 
 const Loader = () => (
@@ -93,6 +102,16 @@ const AppContent = () => {
           <Route path="partners" element={<PartnerManager />} />
           <Route path="employees" element={<EmployeeManager />} />
           <Route path="pyramid" element={<PyramidManager />} />
+        </Route>
+
+        {/* Super Admin */}
+        <Route path="/superadmin" element={<SuperAdminLayout />}>
+          <Route index element={<SuperAdminDashboard />} />
+          <Route path="customers" element={<SACustomersPage />} />
+          <Route path="agents" element={<SAAgentsPage />} />
+          <Route path="audit-logs" element={<SAAuditLogsPage />} />
+          <Route path="security-events" element={<SASecurityEventsPage />} />
+          <Route path="system-settings" element={<SASystemSettingsPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
