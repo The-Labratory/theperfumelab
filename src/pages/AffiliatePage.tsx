@@ -66,6 +66,13 @@ const AffiliatePage = () => {
             .eq("affiliate_id", data.id)
             .order("created_at", { ascending: false });
           setReferrals(refs || []);
+          // Fetch sales for calendar
+          const { data: sales } = await supabase
+            .from("affiliate_sales")
+            .select("created_at, notes")
+            .eq("user_id", session.user.id)
+            .order("created_at", { ascending: true });
+          setSalesData(sales || []);
         }
       }
       setLoading(false);
@@ -373,7 +380,7 @@ const AffiliatePage = () => {
 
             {/* Tabs */}
             <div className="flex gap-2 mb-6 overflow-x-auto">
-              {(["overview", "my-network", "pyramid", "referrals", "payouts"] as const).map(t => (
+              {(["overview", "my-network", "pyramid", "earnings", "referrals", "payouts"] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
