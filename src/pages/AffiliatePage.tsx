@@ -8,6 +8,7 @@ import {
 import AffiliatePyramidChart from "@/components/affiliate/AffiliatePyramidChart";
 import AffiliateNetworkPyramid from "@/components/affiliate/AffiliateNetworkPyramid";
 import MyNetworkManager from "@/components/affiliate/MyNetworkManager";
+import EarningsCalendar from "@/components/affiliate/EarningsCalendar";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -38,8 +39,9 @@ const AffiliatePage = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "referrals" | "payouts">("overview");
+  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "earnings" | "referrals" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
+  const [salesData, setSalesData] = useState<any[]>([]);
 
   // Real-time sale notifications with sound
   useRealtimeSaleNotifications(affiliate?.id || null);
@@ -64,6 +66,13 @@ const AffiliatePage = () => {
             .eq("affiliate_id", data.id)
             .order("created_at", { ascending: false });
           setReferrals(refs || []);
+          // Fetch sales for calendar
+          const { data: sales } = await supabase
+            .from("affiliate_sales")
+            .select("created_at, notes")
+            .eq("user_id", session.user.id)
+            .order("created_at", { ascending: true });
+          setSalesData(sales || []);
         }
       }
       setLoading(false);
@@ -371,7 +380,7 @@ const AffiliatePage = () => {
 
             {/* Tabs */}
             <div className="flex gap-2 mb-6 overflow-x-auto">
-              {(["overview", "my-network", "pyramid", "referrals", "payouts"] as const).map(t => (
+              {(["overview", "my-network", "pyramid", "earnings", "referrals", "payouts"] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
@@ -429,6 +438,17 @@ const AffiliatePage = () => {
                       totalReferrals={affiliate.total_referrals || 0}
                     />
                   </div>
+                </motion.div>
+              )}
+
+              {tab === "earnings" && (
+                <motion.div key="earnings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass-surface rounded-xl p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <DollarSign className="w-5 h-5 text-primary" />
+                    <h3 className="font-display text-base font-semibold tracking-wide text-foreground">Earnings Calendar</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body mb-6">Track your daily commissions and maintain your sales streak for bonus rewards.</p>
+                  <EarningsCalendar sales={salesData} commissionRate={affiliate.commission_rate || 10} />
                 </motion.div>
               )}
 
