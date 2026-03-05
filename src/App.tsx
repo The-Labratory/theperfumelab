@@ -52,6 +52,7 @@ const SAAgentsPage = lazy(() => import("./pages/superadmin/AgentsPage"));
 const SAAuditLogsPage = lazy(() => import("./pages/superadmin/AuditLogsPage"));
 const SASecurityEventsPage = lazy(() => import("./pages/superadmin/SecurityEventsPage"));
 const SASystemSettingsPage = lazy(() => import("./pages/superadmin/SystemSettingsPage"));
+const SAPyramidBuilderPage = lazy(() => import("./pages/superadmin/PyramidBuilderPage"));
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,7 @@ const AppContent = () => {
           <Route path="audit-logs" element={<SAAuditLogsPage />} />
           <Route path="security-events" element={<SASecurityEventsPage />} />
           <Route path="system-settings" element={<SASystemSettingsPage />} />
+          <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
