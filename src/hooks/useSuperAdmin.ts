@@ -60,13 +60,13 @@ export function useSuperAdmin() {
 
   const logSecurityEvent = async (eventType: string, details: Record<string, unknown> = {}) => {
     try {
-      await supabase.from("security_events").insert({
+      await supabase.from("security_events").insert([{
         event_type: eventType,
         severity: "medium",
         user_id: user?.id,
         endpoint: window.location.pathname,
-        details,
-      });
+        details: details as any,
+      }]);
     } catch {}
   };
 
