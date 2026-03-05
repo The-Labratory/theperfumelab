@@ -1296,6 +1296,7 @@ export type Database = {
           id: string
           is_public: boolean | null
           scent_personality: string | null
+          team_id: string | null
           total_likes_received: number | null
           updated_at: string
           user_id: string
@@ -1311,6 +1312,7 @@ export type Database = {
           id?: string
           is_public?: boolean | null
           scent_personality?: string | null
+          team_id?: string | null
           total_likes_received?: number | null
           updated_at?: string
           user_id: string
@@ -1326,11 +1328,20 @@ export type Database = {
           id?: string
           is_public?: boolean | null
           scent_personality?: string | null
+          team_id?: string | null
           total_likes_received?: number | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       saved_blends: {
         Row: {
@@ -1380,6 +1391,111 @@ export type Database = {
           total_price?: number | null
           user_id?: string | null
           volume?: number
+        }
+        Relationships: []
+      }
+      security_events: {
+        Row: {
+          correlation_id: string | null
+          created_at: string
+          details: Json | null
+          endpoint: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          severity: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string
+          details?: Json | null
+          endpoint?: string | null
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string
+          details?: Json | null
+          endpoint?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      system_settings: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      teams: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          metadata: Json | null
+          name: string
+          owner_id: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          name: string
+          owner_id: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          name?: string
+          owner_id?: string
+          slug?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1561,7 +1677,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       lock_formula_version: { Args: { _formula_id: string }; Returns: Json }
+      log_security_event: {
+        Args: {
+          _details?: Json
+          _endpoint?: string
+          _event_type: string
+          _severity?: string
+          _user_id?: string
+        }
+        Returns: undefined
+      }
       owns_pyramid_node: {
         Args: { _node_id: string; _user_id: string }
         Returns: boolean
@@ -1569,7 +1696,13 @@ export type Database = {
       validate_formula: { Args: { _formula_id: string }; Returns: Json }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role:
+        | "admin"
+        | "user"
+        | "super_admin"
+        | "team_admin"
+        | "agent"
+        | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1697,7 +1830,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: [
+        "admin",
+        "user",
+        "super_admin",
+        "team_admin",
+        "agent",
+        "viewer",
+      ],
     },
   },
 } as const
