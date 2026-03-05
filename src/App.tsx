@@ -29,6 +29,7 @@ const MilestonesPage = lazy(() => import("./pages/MilestonesPage"));
 const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
+const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
