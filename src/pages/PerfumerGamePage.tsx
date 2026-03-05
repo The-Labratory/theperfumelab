@@ -121,6 +121,35 @@ export default function PerfumerGamePage() {
     ? ((progress.xp - rank.minXP) / (nextRank.minXP - rank.minXP)) * 100
     : 100;
 
+  const claimPlatinumReward = useCallback(async () => {
+    if (claimingReward || platinumCode) return;
+    setClaimingReward(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please sign in to claim your Platinum reward");
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("claim-platinum-reward");
+      if (error) throw error;
+      if (data?.discount_code) {
+        setPlatinumCode(data.discount_code);
+        if (data.already_claimed) {
+          toast.info("Your Platinum reward code was already generated!");
+        } else {
+          toast.success("Your exclusive discount code has been generated! 🎉");
+        }
+      } else if (data?.error) {
+        toast.error(data.error);
+      }
+    } catch (err) {
+      console.error("Claim error:", err);
+      toast.error("Could not generate your reward code. Try again later.");
+    } finally {
+      setClaimingReward(false);
+    }
+  }, [claimingReward, platinumCode]);
+
   const updateProgress = useCallback((newProgress: GameProgress) => {
     setProgress(newProgress);
     saveLocalProgress(newProgress);
