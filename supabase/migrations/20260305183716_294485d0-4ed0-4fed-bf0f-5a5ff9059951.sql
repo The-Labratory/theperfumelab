@@ -1,0 +1,6 @@
+
+-- Add new roles to enum
+ALTER TYPE public.app_role ADD VALUE IF NOT EXISTS 'super_admin';
+ALTER TYPE public.app_role ADD VALUE IF NOT EXISTS 'team_admin';
+ALTER TYPE public.app_role ADD VALUE IF NOT EXISTS 'agent';
+ALTER TYPE public.app_role ADD VALUE IF NOT EXISTS 'viewer';

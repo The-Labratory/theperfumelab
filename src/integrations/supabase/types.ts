@@ -1569,7 +1569,13 @@ export type Database = {
       validate_formula: { Args: { _formula_id: string }; Returns: Json }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role:
+        | "admin"
+        | "user"
+        | "super_admin"
+        | "team_admin"
+        | "agent"
+        | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1697,7 +1703,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: [
+        "admin",
+        "user",
+        "super_admin",
+        "team_admin",
+        "agent",
+        "viewer",
+      ],
     },
   },
 } as const
