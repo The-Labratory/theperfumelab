@@ -621,6 +621,64 @@ export default function PerfumerGamePage() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Rank-Up Celebration Overlay */}
+      <AnimatePresence>
+        {rankUpInfo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-md"
+            onClick={() => setRankUpInfo(null)}
+          >
+            <div className="relative">
+              <ConfettiBurst trigger={!!rankUpInfo} intensity={Math.min(rankUpInfo.idx, 5)} />
+              <motion.div
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0 }}
+                transition={{ type: "spring", damping: 12, stiffness: 200 }}
+                className="text-center p-10 rounded-3xl bg-card border border-border/30 shadow-2xl max-w-sm mx-4"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [0, 1.3, 1] }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="text-7xl mb-4"
+                >
+                  {rankUpInfo.icon}
+                </motion.div>
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="text-xs font-display tracking-widest text-muted-foreground uppercase mb-2"
+                >
+                  Rank Unlocked
+                </motion.p>
+                <motion.h2
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="font-display text-3xl font-black"
+                  style={{ color: rankUpInfo.color }}
+                >
+                  {rankUpInfo.name}
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                  className="text-xs text-muted-foreground mt-3 font-body"
+                >
+                  Tap anywhere to continue
+                </motion.p>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
