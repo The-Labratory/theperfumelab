@@ -76,6 +76,7 @@ export default function PyramidBuilderPage() {
       const active = data.find((c: any) => c.is_active) || data[0];
       setCurrent({
         ...active,
+        data_source_mode: active.data_source_mode as "manual" | "data_driven",
         config: active.config as any,
         colors: active.colors as any,
         visibility_rules: active.visibility_rules as any,
