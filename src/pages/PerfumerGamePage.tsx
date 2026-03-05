@@ -723,8 +723,47 @@ export default function PerfumerGamePage() {
                       You've earned 2 Free 100ml Custom Fragrances
                     </p>
                     <p className="text-[11px] text-muted-foreground mt-1 font-body">
-                      50% personalized to your scent profile. Check your email for your exclusive redemption code.
+                      50% personalized to your scent profile.
                     </p>
+                    {claimingReward && (
+                      <div className="flex items-center gap-2 mt-3 justify-center text-xs text-muted-foreground">
+                        <Loader2 className="w-3 h-3 animate-spin" /> Generating your code...
+                      </div>
+                    )}
+                    {platinumCode && (
+                      <div className="mt-3">
+                        <p className="text-[10px] text-muted-foreground font-display mb-1">YOUR DISCOUNT CODE:</p>
+                        <div className="flex items-center gap-2 justify-center">
+                          <code className="px-3 py-1.5 rounded-lg bg-background border border-border text-sm font-mono font-bold text-primary tracking-wider">
+                            {platinumCode}
+                          </code>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigator.clipboard.writeText(platinumCode);
+                              toast.success("Code copied!");
+                            }}
+                            className="p-1.5 rounded-lg bg-muted/20 hover:bg-muted/40 transition"
+                          >
+                            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                          </button>
+                        </div>
+                        <p className="text-[9px] text-muted-foreground mt-2 font-body">
+                          Use at checkout for 2 free 100ml bottles. One-time use.
+                        </p>
+                      </div>
+                    )}
+                    {!claimingReward && !platinumCode && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          claimPlatinumReward();
+                        }}
+                        className="mt-3 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-display font-bold hover:bg-primary/90 transition flex items-center gap-1.5 mx-auto"
+                      >
+                        <Gift className="w-3.5 h-3.5" /> Claim Your Reward
+                      </button>
+                    )}
                   </motion.div>
                 )}
 
