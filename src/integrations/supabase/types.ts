@@ -1167,6 +1167,65 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_sales_reports: {
+        Row: {
+          affiliate_partner_id: string
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          id: string
+          notes: string | null
+          product_name: string
+          quantity: number
+          reviewed_at: string | null
+          reviewed_by: string | null
+          sale_amount: number
+          sale_date: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_partner_id: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          notes?: string | null
+          product_name: string
+          quantity?: number
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sale_amount?: number
+          sale_date?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_partner_id?: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          notes?: string | null
+          product_name?: string
+          quantity?: number
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sale_amount?: number
+          sale_date?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_sales_reports_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platinum_rewards: {
         Row: {
           claimed_at: string
@@ -1342,6 +1401,86 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pyramid_chart_config_versions: {
+        Row: {
+          config_id: string
+          config_snapshot: Json
+          id: string
+          notes: string | null
+          published_at: string
+          published_by: string | null
+          version: number
+        }
+        Insert: {
+          config_id: string
+          config_snapshot: Json
+          id?: string
+          notes?: string | null
+          published_at?: string
+          published_by?: string | null
+          version: number
+        }
+        Update: {
+          config_id?: string
+          config_snapshot?: Json
+          id?: string
+          notes?: string | null
+          published_at?: string
+          published_by?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pyramid_chart_config_versions_config_id_fkey"
+            columns: ["config_id"]
+            isOneToOne: false
+            referencedRelation: "pyramid_chart_configs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pyramid_chart_configs: {
+        Row: {
+          colors: Json | null
+          config: Json
+          created_at: string
+          created_by: string | null
+          data_source_mode: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+          visibility_rules: Json | null
+        }
+        Insert: {
+          colors?: Json | null
+          config?: Json
+          created_at?: string
+          created_by?: string | null
+          data_source_mode?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+          visibility_rules?: Json | null
+        }
+        Update: {
+          colors?: Json | null
+          config?: Json
+          created_at?: string
+          created_by?: string | null
+          data_source_mode?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+          visibility_rules?: Json | null
+        }
+        Relationships: []
       }
       saved_blends: {
         Row: {
