@@ -65,6 +65,7 @@ export const PERFUMER_RANKS = [
   { name: "Composer", minXP: 600, icon: "🎼", color: "hsl(var(--accent))" },
   { name: "Master Perfumer", minXP: 1000, icon: "👑", color: "hsl(45, 93%, 47%)" },
   { name: "Grand Nez", minXP: 1500, icon: "✨", color: "hsl(300, 70%, 60%)" },
+  { name: "Platinum Nez", minXP: 2100, icon: "💎", color: "hsl(220, 90%, 72%)" },
 ];
 
 export const GAME_CHAPTERS: GameChapter[] = [
@@ -373,6 +374,107 @@ export const GAME_CHAPTERS: GameChapter[] = [
         hint: "Night-blooming white florals (tuberose, jasmine) produce indole — a molecule that smells both floral and animalic, giving them their narcotic, intoxicating quality. Jasmine sambac (used in Dior J'adore) is headier than Jasmine grandiflorum. Oud adds dark mystery, while Ambroxan provides a clean, amber radiance. This architecture follows the philosophy of Jean-Claude Ellena: 'Construct by contrast.'",
         source: "Jean-Claude Ellena, 'Perfume: The Alchemy of Scent' (2011); indole chemistry from Firmenich research",
         xpReward: 50,
+      },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  // CHAPTER 6 — Grand Nez Finale: Professional-Level Mastery
+  // Synthesis, GC-MS analysis, formulation economics, and
+  // advanced regulatory knowledge from industry professionals
+  // ═══════════════════════════════════════════════════════════
+  {
+    id: 6,
+    title: "The Grand Nez Finale",
+    subtitle: "Synthesis, analytics, and the business of scent",
+    story: "You stand at the pinnacle. The title of 'Grand Nez' — French for 'Great Nose' — is reserved for the ~400 master perfumers working worldwide. To earn it, you must think beyond artistry: understand the chemistry of synthesis, read a gas chromatogram, calculate production economics, and navigate global regulations. This is where art meets science meets business. Complete this chapter to unlock Platinum Nez status and claim your reward: two complimentary 100ml custom fragrances, 50% personalized to your scent profile.",
+    icon: "💎",
+    rankUnlock: "Grand Nez",
+    unlockXP: 1500,
+    challenges: [
+      {
+        type: "story",
+        question: "Gas Chromatography–Mass Spectrometry (GC-MS) is the gold standard for analyzing perfume compositions. In GC-MS, a fragrance sample is vaporized and carried through a capillary column. What separates the individual molecules?",
+        options: [
+          "Their color and density",
+          "Their boiling points and polarity — lighter, less polar molecules elute first",
+          "A human nose ranks them by smell",
+          "An AI algorithm sorts them digitally",
+        ],
+        correctAnswer: "Their boiling points and polarity — lighter, less polar molecules elute first",
+        hint: "In a GC column (typically 30m long, 0.25mm diameter), molecules separate based on their interaction with the stationary phase. A 'chromatogram' shows peaks at different retention times — each peak is a molecule. Mass spectrometry then identifies each molecule by fragmenting it and matching the mass pattern to a library (e.g., NIST/Wiley). This is how perfumers reverse-engineer competitor fragrances.",
+        source: "Robert P. Adams, 'Identification of Essential Oil Components by GC/MS' (4th ed., 2007); NIST Mass Spectral Library",
+        xpReward: 55,
+      },
+      {
+        type: "blend",
+        question: "Iso E Super (chemical name: 1-(2,3,8,8-tetramethyl-1,2,3,4,5,6,7,8-octahydronaphthalen-2-yl)ethanone) is one of the most widely used synthetic aroma chemicals in modern perfumery. Geza Schoen used it as virtually the sole ingredient in 'Molecule 01.' What is its olfactory character?",
+        options: [
+          "Sharp, pungent, like vinegar",
+          "A velvety, cedarwood-like warmth with a 'skin scent' effect that seems to disappear and reappear",
+          "Intensely sweet like cotton candy",
+          "Fishy and marine",
+        ],
+        correctAnswer: "A velvety, cedarwood-like warmth with a 'skin scent' effect that seems to disappear and reappear",
+        hint: "Iso E Super (IFF, MW 234 Da) has a unique 'phantom' quality — anosmia fluctuations mean it seems to come and go. It's used at 10–40% in modern compositions as a diffusion booster and woody base. Perfumers call it a 'volume pedal' — it amplifies everything around it without imposing its own character strongly.",
+        source: "IFF (International Flavors & Fragrances) technical bulletin; Geza Schoen, Escentric Molecules (2006)",
+        xpReward: 55,
+      },
+      {
+        type: "story",
+        question: "A niche perfume house produces a 100ml EDP with a raw material cost of €18, packaging €12, labor €10, and overhead €5. Using the industry-standard 4.5x luxury markup, what should the retail price be?",
+        options: [
+          "€45 (1x cost)",
+          "€90 (2x cost)",
+          "€202.50 (4.5x cost)",
+          "€450 (10x cost)",
+        ],
+        correctAnswer: "€202.50 (4.5x cost)",
+        hint: "Total COGS = €18 + €12 + €10 + €5 = €45. A 4.5x markup (standard for luxury niche) yields €202.50 retail. This gives a ~78% gross margin, which must cover distribution (15–25%), marketing (10–20%), R&D (5–10%), and net profit. Mass-market brands use 8–15x; luxury houses like Chanel or Louis Vuitton can command 20–30x on iconic products.",
+        source: "Industry economics from The Fragrance Foundation; LVMH annual reports; niche brand financial benchmarks",
+        xpReward: 60,
+      },
+      {
+        type: "identify",
+        question: "Headspace technology captures the scent of living flowers (or any object) without picking them. NASA originally developed this technique. How does it work?",
+        options: [
+          "A glass dome is placed over the subject, and volatile molecules are trapped on an adsorbent material (Tenax), then analyzed by GC-MS",
+          "A microphone records the sound waves of the scent",
+          "UV light is used to photograph the scent molecules",
+          "The flower is frozen and ground into powder",
+        ],
+        correctAnswer: "A glass dome is placed over the subject, and volatile molecules are trapped on an adsorbent material (Tenax), then analyzed by GC-MS",
+        hint: "Roman Kaiser (Givaudan) pioneered 'headspace' in perfumery in the 1970s–80s, capturing the scent of rare tropical flowers in situ. The trapped volatiles are thermally desorbed and analyzed by GC-MS, revealing the exact molecular fingerprint of a living flower. IFF's 'Living Flower Technology' and Firmenich's 'NaturePrint' use similar approaches.",
+        source: "Roman Kaiser, 'Meaningful Scents Around the World' (Wiley, 2006); Givaudan headspace research",
+        xpReward: 60,
+      },
+      {
+        type: "blend",
+        question: "EU Cosmetics Regulation (EC 1223/2009) requires 26 specific allergens to be listed on perfume labels if they exceed certain thresholds. What are the concentration thresholds that trigger mandatory labeling?",
+        options: [
+          "Any detectable amount must be listed",
+          "0.001% in leave-on products, 0.01% in rinse-off products",
+          "5% in all products",
+          "Only if the customer requests it",
+        ],
+        correctAnswer: "0.001% in leave-on products, 0.01% in rinse-off products",
+        hint: "The 26 EU-listed allergens include linalool, limonene, citral, geraniol, eugenol, and coumarin — all common in fine fragrances. At these thresholds (10 ppm leave-on, 100 ppm rinse-off), virtually every fine fragrance must list several allergens. IFRA's 51st Amendment (2024) further tightened some limits and added new restricted materials.",
+        source: "EU Cosmetics Regulation EC 1223/2009, Annex III; IFRA 51st Amendment (2024); SCCS (Scientific Committee on Consumer Safety) opinions",
+        xpReward: 60,
+      },
+      {
+        type: "story",
+        question: "Coumarin (C₉H₆O₂), first synthesized by William Perkin in 1868, has a characteristic hay-like, vanilla-adjacent scent. It is the backbone of the fougère accord and appears in ~40% of all marketed fragrances. From which natural source was coumarin first isolated?",
+        options: [
+          "Rose petals (Rosa damascena)",
+          "Tonka beans (Dipteryx odorata) — discovered in 1820 by A. Vogel",
+          "Sandalwood bark (Santalum album)",
+          "Lemon peel (Citrus limon)",
+        ],
+        correctAnswer: "Tonka beans (Dipteryx odorata) — discovered in 1820 by A. Vogel",
+        hint: "Coumarin was first isolated from tonka beans (from the Orinoco region of Venezuela) by A. Vogel in 1820, and first synthesized by Perkin in 1868 via the Perkin reaction (salicylaldehyde + acetic anhydride). It's now produced synthetically at ~$20/kg. Tonka beans contain up to 10% coumarin by weight. Fun fact: coumarin is banned from food in the US (FDA) but widely used in perfumery.",
+        source: "William Perkin synthesis (1868); Vogel isolation (1820); FDA 21 CFR 189.130; Arctander (1960)",
+        xpReward: 60,
       },
     ],
   },
