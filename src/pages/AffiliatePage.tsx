@@ -8,6 +8,7 @@ import {
 import AffiliatePyramidChart from "@/components/affiliate/AffiliatePyramidChart";
 import AffiliateNetworkPyramid from "@/components/affiliate/AffiliateNetworkPyramid";
 import MyNetworkManager from "@/components/affiliate/MyNetworkManager";
+import EarningsCalendar from "@/components/affiliate/EarningsCalendar";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
@@ -38,8 +39,9 @@ const AffiliatePage = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "referrals" | "payouts">("overview");
+  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "earnings" | "referrals" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
+  const [salesData, setSalesData] = useState<any[]>([]);
 
   // Real-time sale notifications with sound
   useRealtimeSaleNotifications(affiliate?.id || null);
