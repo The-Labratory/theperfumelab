@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Lock, CheckCircle, XCircle, Lightbulb, Trophy, Star, Sparkles, BookOpen, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { GAME_CHAPTERS, PERFUMER_RANKS, type GameChapter, type GameChallenge } from "@/data/gameData";
+import { supabase } from "@/integrations/supabase/client";
 
 const STORAGE_KEY = "perfumer-game-progress";
 
@@ -14,7 +15,7 @@ interface GameProgress {
   currentChapter: number;
 }
 
-function loadProgress(): GameProgress {
+function loadLocalProgress(): GameProgress {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) return JSON.parse(saved);
@@ -22,7 +23,7 @@ function loadProgress(): GameProgress {
   return { xp: 0, completedChallenges: {}, currentChapter: 1 };
 }
 
-function saveProgress(p: GameProgress) {
+function saveLocalProgress(p: GameProgress) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
 }
 
@@ -42,7 +43,7 @@ function getNextRank(xp: number) {
 }
 
 export default function PerfumerGamePage() {
-  const [progress, setProgress] = useState<GameProgress>(loadProgress);
+  const [progress, setProgress] = useState<GameProgress>(loadLocalProgress);
   const [view, setView] = useState<"map" | "chapter" | "challenge">("map");
   const [activeChapter, setActiveChapter] = useState<GameChapter | null>(null);
   const [challengeIndex, setChallengeIndex] = useState(0);
@@ -50,6 +51,62 @@ export default function PerfumerGamePage() {
   const [showResult, setShowResult] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [xpAnim, setXpAnim] = useState(false);
+  const userIdRef = useRef<string | null>(null);
+  const dbSaveTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Load progress from DB for logged-in users
+  useEffect(() => {
+    const loadFromDb = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+      userIdRef.current = session.user.id;
+
+      const { data } = await supabase
+        .from("game_progress")
+        .select("xp, completed_challenges, current_chapter")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+
+      if (data) {
+        const dbProgress: GameProgress = {
+          xp: data.xp,
+          completedChallenges: (data.completed_challenges as Record<string, boolean>) || {},
+          currentChapter: data.current_chapter,
+        };
+        // Merge: take whichever has more XP
+        const local = loadLocalProgress();
+        const merged = dbProgress.xp >= local.xp ? dbProgress : local;
+        setProgress(merged);
+        saveLocalProgress(merged);
+      } else {
+        // First time: push local progress to DB
+        const local = loadLocalProgress();
+        if (local.xp > 0) {
+          await supabase.from("game_progress").upsert({
+            user_id: session.user.id,
+            xp: local.xp,
+            completed_challenges: local.completedChallenges,
+            current_chapter: local.currentChapter,
+          });
+        }
+      }
+    };
+    loadFromDb();
+  }, []);
+
+  const saveToDb = useCallback((p: GameProgress) => {
+    if (!userIdRef.current) return;
+    clearTimeout(dbSaveTimer.current);
+    dbSaveTimer.current = setTimeout(async () => {
+      await supabase.from("game_progress").upsert({
+        user_id: userIdRef.current!,
+        xp: p.xp,
+        completed_challenges: p.completedChallenges,
+        current_chapter: p.currentChapter,
+        updated_at: new Date().toISOString(),
+      });
+    }, 500);
+  }, []);
 
   const rank = getCurrentRank(progress.xp);
   const nextRank = getNextRank(progress.xp);
@@ -59,8 +116,9 @@ export default function PerfumerGamePage() {
 
   const updateProgress = useCallback((newProgress: GameProgress) => {
     setProgress(newProgress);
-    saveProgress(newProgress);
-  }, []);
+    saveLocalProgress(newProgress);
+    saveToDb(newProgress);
+  }, [saveToDb]);
 
   const openChapter = (chapter: GameChapter) => {
     if (progress.xp < chapter.unlockXP) return;
