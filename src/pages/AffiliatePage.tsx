@@ -441,6 +441,17 @@ const AffiliatePage = () => {
                 </motion.div>
               )}
 
+              {tab === "earnings" && (
+                <motion.div key="earnings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass-surface rounded-xl p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <DollarSign className="w-5 h-5 text-primary" />
+                    <h3 className="font-display text-base font-semibold tracking-wide text-foreground">Earnings Calendar</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body mb-6">Track your daily commissions and maintain your sales streak for bonus rewards.</p>
+                  <EarningsCalendar sales={salesData} commissionRate={affiliate.commission_rate || 10} />
+                </motion.div>
+              )}
+
               {tab === "referrals" && (
                 <motion.div key="referrals" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass-surface rounded-xl p-6">
                   <h3 className="font-display text-base font-semibold tracking-wide text-foreground mb-4">Your Referrals</h3>
