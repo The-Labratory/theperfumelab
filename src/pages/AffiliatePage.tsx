@@ -8,6 +8,7 @@ import {
 import AffiliatePyramidChart from "@/components/affiliate/AffiliatePyramidChart";
 import AffiliateNetworkPyramid from "@/components/affiliate/AffiliateNetworkPyramid";
 import MyNetworkManager from "@/components/affiliate/MyNetworkManager";
+import PartnerSalesPortal from "@/components/affiliate/PartnerSalesPortal";
 import EarningsCalendar from "@/components/affiliate/EarningsCalendar";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -39,7 +40,7 @@ const AffiliatePage = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "earnings" | "referrals" | "payouts">("overview");
+  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "earnings" | "referrals" | "my-sales" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
   const [salesData, setSalesData] = useState<any[]>([]);
 
@@ -380,7 +381,7 @@ const AffiliatePage = () => {
 
             {/* Tabs */}
             <div className="flex gap-2 mb-6 overflow-x-auto">
-              {(["overview", "my-network", "pyramid", "earnings", "referrals", "payouts"] as const).map(t => (
+              {(["overview", "my-network", "pyramid", "earnings", "my-sales", "referrals", "payouts"] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
@@ -484,6 +485,13 @@ const AffiliatePage = () => {
                       ))}
                     </div>
                   )}
+                </motion.div>
+              )}
+
+              {tab === "my-sales" && affiliate && user && (
+                <motion.div key="my-sales" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <h3 className="font-display text-lg font-semibold tracking-wide text-foreground mb-4">My Sales Reports</h3>
+                  <PartnerSalesPortal affiliatePartnerId={affiliate.id} userId={user.id} />
                 </motion.div>
               )}
 
