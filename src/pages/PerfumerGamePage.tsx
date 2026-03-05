@@ -169,6 +169,11 @@ export default function PerfumerGamePage() {
         setTimeout(() => {
           setRankUpInfo({ name: newRank.name, icon: newRank.icon, color: newRank.color, idx });
           playCelebrationChime();
+
+          // Auto-claim Platinum reward
+          if (newRank.name === "Platinum Nez") {
+            claimPlatinumReward();
+          }
         }, 600);
       }
     }
