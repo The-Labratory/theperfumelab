@@ -672,10 +672,43 @@ export default function PerfumerGamePage() {
                 >
                   {rankUpInfo.name}
                 </motion.h2>
+
+                {/* Platinum Nez reward */}
+                {rankUpInfo.name === "Platinum Nez" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="mt-5 p-4 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20"
+                  >
+                    <p className="text-lg mb-1">🎁</p>
+                    <p className="text-sm font-display font-bold text-foreground">
+                      You've earned 2 Free 100ml Custom Fragrances
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-1 font-body">
+                      50% personalized to your scent profile. Check your email for your exclusive redemption code.
+                    </p>
+                  </motion.div>
+                )}
+
+                {/* Grand Nez congratulation */}
+                {rankUpInfo.name === "Grand Nez" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="mt-4 p-3 rounded-xl bg-accent/5 border border-accent/20"
+                  >
+                    <p className="text-[11px] text-muted-foreground font-body">
+                      You've joined the ~400 Grand Nez worldwide. One final chapter awaits — complete it for <span className="text-primary font-bold">Platinum Nez</span> and exclusive rewards.
+                    </p>
+                  </motion.div>
+                )}
+
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
+                  transition={{ delay: rankUpInfo.name === "Platinum Nez" ? 1.2 : 0.7 }}
                   className="text-xs text-muted-foreground mt-3 font-body"
                 >
                   Tap anywhere to continue
