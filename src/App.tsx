@@ -30,6 +30,7 @@ const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
 const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
+const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -59,6 +60,7 @@ const SAEmployeeRequestsPage = lazy(() => import("./pages/superadmin/EmployeeReq
 const SADatabaseExplorerPage = lazy(() => import("./pages/superadmin/DatabaseExplorerPage"));
 const SAStorageManagerPage = lazy(() => import("./pages/superadmin/StorageManagerPage"));
 const SAPermissionsPage = lazy(() => import("./pages/superadmin/PermissionsPage"));
+const SAReferralManagementPage = lazy(() => import("./pages/superadmin/ReferralManagementPage"));
 
 const queryClient = new QueryClient();
 
