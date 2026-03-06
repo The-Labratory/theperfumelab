@@ -97,6 +97,7 @@ const AppContent = () => {
         <Route path="/milestones" element={<MilestonesPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
         <Route path="/game" element={<PerfumerGamePage />} />
+        <Route path="/network" element={<ReferralNetworkPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -128,6 +129,7 @@ const AppContent = () => {
           <Route path="database" element={<SADatabaseExplorerPage />} />
           <Route path="storage" element={<SAStorageManagerPage />} />
           <Route path="permissions" element={<SAPermissionsPage />} />
+          <Route path="referrals" element={<SAReferralManagementPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
