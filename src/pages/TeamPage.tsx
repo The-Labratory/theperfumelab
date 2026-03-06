@@ -45,7 +45,6 @@ function buildTree(employees: Employee[], departments: Department[]): TreeNode[]
     }
   });
 
-  // Sort children by hierarchy_level then sort_order
   const sortChildren = (nodes: TreeNode[]) => {
     nodes.sort((a, b) => a.hierarchy_level - b.hierarchy_level);
     nodes.forEach(n => sortChildren(n.children));
@@ -55,25 +54,22 @@ function buildTree(employees: Employee[], departments: Department[]): TreeNode[]
 }
 
 function OrgNode({ node, depth = 0 }: { node: TreeNode; depth?: number }) {
-  const [expanded, setExpanded] = useState(depth < 2);
+  const [expanded, setExpanded] = useState(depth < 1);
   const hasChildren = node.children.length > 0;
   const initials = node.full_name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
 
-  const sizeClass = depth === 0
-    ? "p-5 min-w-[280px]"
-    : depth === 1
-    ? "p-4 min-w-[240px]"
-    : "p-3 min-w-[200px]";
-
-  const avatarSize = depth === 0 ? "w-16 h-16 text-lg" : depth === 1 ? "w-12 h-12 text-sm" : "w-10 h-10 text-xs";
+  const isRoot = depth === 0;
+  const avatarSize = isRoot ? "w-14 h-14 text-base" : depth === 1 ? "w-11 h-11 text-sm" : "w-9 h-9 text-xs";
 
   return (
     <div className="flex flex-col items-center">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: depth * 0.05 }}
-        className={`relative glass-surface rounded-xl border border-border/30 ${sizeClass} cursor-pointer group hover:border-primary/40 transition-all`}
+        transition={{ delay: depth * 0.04 }}
+        className={`relative rounded-xl border border-border/30 bg-card/80 backdrop-blur-sm cursor-pointer group hover:border-primary/40 transition-all shadow-sm hover:shadow-md ${
+          isRoot ? "px-6 py-5 min-w-[260px]" : depth === 1 ? "px-5 py-4 min-w-[220px]" : "px-4 py-3 min-w-[180px]"
+        }`}
         onClick={() => hasChildren && setExpanded(!expanded)}
         style={{ borderLeftColor: node.department?.color || "hsl(var(--border))", borderLeftWidth: "3px" }}
       >
@@ -81,43 +77,62 @@ function OrgNode({ node, depth = 0 }: { node: TreeNode; depth?: number }) {
           {node.avatar_url ? (
             <img src={node.avatar_url} alt={node.full_name} className={`${avatarSize} rounded-full object-cover ring-2 ring-border/30`} />
           ) : (
-            <div className={`${avatarSize} rounded-full flex items-center justify-center font-display font-bold ring-2 ring-border/30`}
-              style={{ backgroundColor: node.department?.color ? `${node.department.color}22` : "hsl(var(--muted))", color: node.department?.color || "hsl(var(--primary))" }}>
+            <div
+              className={`${avatarSize} rounded-full flex items-center justify-center font-display font-bold ring-2 ring-border/30 shrink-0`}
+              style={{
+                backgroundColor: node.department?.color ? `${node.department.color}18` : "hsl(var(--muted))",
+                color: node.department?.color || "hsl(var(--primary))",
+              }}
+            >
               {initials}
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className={`font-display font-bold text-foreground truncate ${depth === 0 ? "text-lg" : "text-sm"}`}>{node.full_name}</p>
+            <p className={`font-display font-bold text-foreground truncate ${isRoot ? "text-base" : "text-sm"}`}>
+              {node.full_name}
+            </p>
             <p className="text-xs text-muted-foreground truncate">{node.job_title}</p>
             {node.department && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full mt-1 inline-block" style={{ backgroundColor: `${node.department.color}22`, color: node.department.color }}>
+              <span
+                className="text-[10px] px-1.5 py-0.5 rounded-full mt-1 inline-block"
+                style={{ backgroundColor: `${node.department.color}18`, color: node.department.color }}
+              >
                 {node.department.name}
               </span>
             )}
           </div>
           {hasChildren && (
-            <div className="text-muted-foreground">
+            <div className="text-muted-foreground shrink-0">
               {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
             </div>
           )}
         </div>
 
-        {/* Contact info on hover */}
         {(node.email || node.phone) && (
-          <div className="mt-2 space-y-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            {node.email && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><Mail className="w-3 h-3" />{node.email}</p>}
-            {node.phone && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" />{node.phone}</p>}
+          <div className="mt-2 space-y-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            {node.email && (
+              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <Mail className="w-3 h-3 shrink-0" />
+                <span className="truncate">{node.email}</span>
+              </p>
+            )}
+            {node.phone && (
+              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <Phone className="w-3 h-3 shrink-0" />
+                {node.phone}
+              </p>
+            )}
           </div>
         )}
 
         {hasChildren && (
-          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[9px] text-muted-foreground bg-muted px-1.5 rounded-full">
+          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 text-[9px] text-muted-foreground bg-muted border border-border/30 px-1.5 py-0.5 rounded-full leading-none">
             {node.children.length}
           </div>
         )}
       </motion.div>
 
-      {/* Children */}
+      {/* Children tree */}
       <AnimatePresence>
         {expanded && hasChildren && (
           <motion.div
@@ -126,14 +141,21 @@ function OrgNode({ node, depth = 0 }: { node: TreeNode; depth?: number }) {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            {/* Connector line */}
             <div className="flex justify-center">
-              <div className="w-px h-6 bg-border/50" />
+              <div className="w-px h-8 bg-border/40" />
             </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              {node.children.map(child => (
+
+            {/* Horizontal connector bar */}
+            {node.children.length > 1 && (
+              <div className="flex justify-center px-8">
+                <div className="h-px bg-border/40 w-full max-w-[calc(100%-2rem)]" />
+              </div>
+            )}
+
+            <div className="flex flex-wrap justify-center gap-6 pt-0">
+              {node.children.map((child) => (
                 <div key={child.id} className="flex flex-col items-center">
-                  <div className="w-px h-3 bg-border/50" />
+                  <div className="w-px h-4 bg-border/40" />
                   <OrgNode node={child} depth={depth + 1} />
                 </div>
               ))}
@@ -169,7 +191,6 @@ export default function TeamPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
@@ -181,12 +202,11 @@ export default function TeamPage() {
             <p className="text-muted-foreground max-w-md mx-auto">Meet the people behind The Perfume Lab</p>
           </motion.div>
 
-          {/* Department Legend */}
           {departments.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 mb-10">
+            <div className="flex flex-wrap justify-center gap-4 mb-10">
               {departments.map(d => (
                 <div key={d.id} className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: d.color }} />
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.name}
                 </div>
               ))}
