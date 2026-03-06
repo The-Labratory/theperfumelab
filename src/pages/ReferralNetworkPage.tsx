@@ -146,9 +146,8 @@ export default function ReferralNetworkPage() {
   const loadAllData = async (userId: string) => {
     setLoading(true);
     try {
-      const [profileRes, relRes, downlineRes, directCountRes, invitesRes, rankHistRes, commissionsRes, ranksRes] = await Promise.all([
+      const [profileRes, downlineRes, directCountRes, invitesRes, rankHistRes, commissionsRes, ranksRes] = await Promise.all([
         supabase.from("profiles").select("*").eq("user_id", userId).maybeSingle(),
-        supabase.from("referral_relationships" as any).select("*").eq("user_id", userId).maybeSingle(),
         supabase.rpc("get_downline", { _user_id: userId }),
         supabase.rpc("count_direct_referrals", { _user_id: userId }),
         (supabase.from("referral_invites" as any) as any).select("*").eq("inviter_user_id", userId).order("created_at", { ascending: false }).limit(50),
@@ -157,12 +156,16 @@ export default function ReferralNetworkPage() {
         (supabase.from("rank_rules" as any) as any).select("*").eq("is_active", true).order("rank_level", { ascending: true }),
       ]);
 
+      // Fetch relationship separately with type cast
+      const relRes = await (supabase.from("referral_relationships" as any) as any).select("*").eq("user_id", userId).maybeSingle();
+
       setProfile(profileRes.data);
-      setMyRelationship(relRes.data);
+      const relData = relRes.data as any;
+      setMyRelationship(relData);
 
       // Load inviter profile if exists
-      if (relRes.data?.parent_user_id) {
-        const { data: inviter } = await supabase.from("profiles").select("display_name, referral_code, avatar_url").eq("user_id", relRes.data.parent_user_id).maybeSingle();
+      if (relData?.parent_user_id) {
+        const { data: inviter } = await supabase.from("profiles").select("display_name, referral_code, avatar_url").eq("user_id", relData.parent_user_id).maybeSingle();
         setInviterProfile(inviter);
       }
 
