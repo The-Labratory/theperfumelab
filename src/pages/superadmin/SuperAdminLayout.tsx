@@ -2,7 +2,7 @@ import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { LayoutDashboard, Users, UserCheck, Shield, ScrollText, AlertTriangle, Settings, LogOut, Lock, Crown, Triangle, Database, HardDrive, KeyRound } from "lucide-react";
+import { LayoutDashboard, Users, UserCheck, Shield, ScrollText, AlertTriangle, Settings, LogOut, Lock, Crown, Triangle, Database, HardDrive, KeyRound, GitBranch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,7 @@ const superAdminNav = [
   { title: "Audit Logs", url: "/superadmin/audit-logs", icon: ScrollText },
   { title: "Security Events", url: "/superadmin/security-events", icon: AlertTriangle },
   { title: "System Settings", url: "/superadmin/system-settings", icon: Settings },
+  { title: "Referral Network", url: "/superadmin/referrals", icon: GitBranch },
   { title: "Pyramid Builder", url: "/superadmin/analytics/pyramid-builder", icon: Triangle },
 ];
 
