@@ -56,6 +56,9 @@ const SASecurityEventsPage = lazy(() => import("./pages/superadmin/SecurityEvent
 const SASystemSettingsPage = lazy(() => import("./pages/superadmin/SystemSettingsPage"));
 const SAPyramidBuilderPage = lazy(() => import("./pages/superadmin/PyramidBuilderPage"));
 const SAEmployeeRequestsPage = lazy(() => import("./pages/superadmin/EmployeeRequestsPage"));
+const SADatabaseExplorerPage = lazy(() => import("./pages/superadmin/DatabaseExplorerPage"));
+const SAStorageManagerPage = lazy(() => import("./pages/superadmin/StorageManagerPage"));
+const SAPermissionsPage = lazy(() => import("./pages/superadmin/PermissionsPage"));
 
 const queryClient = new QueryClient();
 
@@ -120,6 +123,9 @@ const AppContent = () => {
           <Route path="system-settings" element={<SASystemSettingsPage />} />
           <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
           <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
+          <Route path="database" element={<SADatabaseExplorerPage />} />
+          <Route path="storage" element={<SAStorageManagerPage />} />
+          <Route path="permissions" element={<SAPermissionsPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

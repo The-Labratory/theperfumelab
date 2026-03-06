@@ -2,7 +2,7 @@ import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { LayoutDashboard, Users, UserCheck, Shield, ScrollText, AlertTriangle, Settings, LogOut, Lock, Crown, Triangle } from "lucide-react";
+import { LayoutDashboard, Users, UserCheck, Shield, ScrollText, AlertTriangle, Settings, LogOut, Lock, Crown, Triangle, Database, HardDrive, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,9 @@ const superAdminNav = [
   { title: "Employee Requests", url: "/superadmin/employee-requests", icon: UserCheck },
   { title: "Customers", url: "/superadmin/customers", icon: Users },
   { title: "Agents", url: "/superadmin/agents", icon: UserCheck },
+  { title: "Permissions", url: "/superadmin/permissions", icon: KeyRound },
+  { title: "Database Explorer", url: "/superadmin/database", icon: Database },
+  { title: "Storage Manager", url: "/superadmin/storage", icon: HardDrive },
   { title: "Audit Logs", url: "/superadmin/audit-logs", icon: ScrollText },
   { title: "Security Events", url: "/superadmin/security-events", icon: AlertTriangle },
   { title: "System Settings", url: "/superadmin/system-settings", icon: Settings },
