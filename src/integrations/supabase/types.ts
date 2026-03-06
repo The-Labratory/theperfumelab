@@ -406,6 +406,71 @@ export type Database = {
         }
         Relationships: []
       }
+      employee_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          assigned_department_id: string | null
+          assigned_role: Database["public"]["Enums"]["app_role"] | null
+          bank_card_url: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          id_document_url: string | null
+          notes: string | null
+          phone: string | null
+          rejection_reason: string | null
+          requested_by: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          assigned_department_id?: string | null
+          assigned_role?: Database["public"]["Enums"]["app_role"] | null
+          bank_card_url?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          id_document_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          rejection_reason?: string | null
+          requested_by: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          assigned_department_id?: string | null
+          assigned_role?: Database["public"]["Enums"]["app_role"] | null
+          bank_card_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          id_document_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          rejection_reason?: string | null
+          requested_by?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_requests_assigned_department_id_fkey"
+            columns: ["assigned_department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           avatar_url: string | null
