@@ -166,7 +166,7 @@ const GatewayPage = () => {
         </motion.div>
       </div>
 
-      <WalkingAlchemist />
+      
 
       <motion.p
         initial={{ opacity: 0 }}
