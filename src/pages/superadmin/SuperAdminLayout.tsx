@@ -13,6 +13,7 @@ import { useState } from "react";
 
 const superAdminNav = [
   { title: "Dashboard", url: "/superadmin", icon: LayoutDashboard },
+  { title: "Employee Requests", url: "/superadmin/employee-requests", icon: UserCheck },
   { title: "Customers", url: "/superadmin/customers", icon: Users },
   { title: "Agents", url: "/superadmin/agents", icon: UserCheck },
   { title: "Audit Logs", url: "/superadmin/audit-logs", icon: ScrollText },

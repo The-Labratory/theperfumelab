@@ -42,7 +42,9 @@ const AuditLogPage = lazy(() => import("./pages/admin/AuditLogPage"));
 const PartnerManager = lazy(() => import("./pages/admin/PartnerManager"));
 const EmployeeManager = lazy(() => import("./pages/admin/EmployeeManager"));
 const PyramidManager = lazy(() => import("./pages/admin/PyramidManager"));
+const EmployeeOnboardingPage = lazy(() => import("./pages/admin/EmployeeOnboardingPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 
 // Super Admin
 const SuperAdminLayout = lazy(() => import("./pages/superadmin/SuperAdminLayout"));
@@ -53,6 +55,7 @@ const SAAuditLogsPage = lazy(() => import("./pages/superadmin/AuditLogsPage"));
 const SASecurityEventsPage = lazy(() => import("./pages/superadmin/SecurityEventsPage"));
 const SASystemSettingsPage = lazy(() => import("./pages/superadmin/SystemSettingsPage"));
 const SAPyramidBuilderPage = lazy(() => import("./pages/superadmin/PyramidBuilderPage"));
+const SAEmployeeRequestsPage = lazy(() => import("./pages/superadmin/EmployeeRequestsPage"));
 
 const queryClient = new QueryClient();
 
@@ -91,6 +94,7 @@ const AppContent = () => {
         <Route path="/game" element={<PerfumerGamePage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* Admin Back Office */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -103,6 +107,7 @@ const AppContent = () => {
           <Route path="partners" element={<PartnerManager />} />
           <Route path="employees" element={<EmployeeManager />} />
           <Route path="pyramid" element={<PyramidManager />} />
+          <Route path="onboarding" element={<EmployeeOnboardingPage />} />
         </Route>
 
         {/* Super Admin */}
@@ -114,6 +119,7 @@ const AppContent = () => {
           <Route path="security-events" element={<SASecurityEventsPage />} />
           <Route path="system-settings" element={<SASystemSettingsPage />} />
           <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
+          <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
