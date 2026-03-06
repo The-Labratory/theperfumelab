@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, User, LogOut, Search, ChevronDown, FlaskConical, Compass, ShoppingBag, Users } from "lucide-react";
@@ -22,7 +22,7 @@ interface NavGroup {
   children?: DropdownItem[];
 }
 
-const Navbar = React.forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
+const Navbar = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -444,8 +444,6 @@ const Navbar = React.forwardRef<HTMLElement, Record<string, never>>((_props, ref
       </AnimatePresence>
     </motion.nav>
   );
-});
-
-Navbar.displayName = "Navbar";
+};
 
 export default Navbar;
