@@ -23,7 +23,7 @@ const superAdminNav = [
   { title: "Security Events", url: "/superadmin/security-events", icon: AlertTriangle },
   { title: "System Settings", url: "/superadmin/system-settings", icon: Settings },
   { title: "Referral Network", url: "/superadmin/referrals", icon: GitBranch },
-  { title: "Pyramid Builder", url: "/superadmin/analytics/pyramid-builder", icon: Triangle },
+  { title: "Network Builder", url: "/superadmin/analytics/pyramid-builder", icon: Triangle },
 ];
 
 export default function SuperAdminLayout() {

@@ -40,7 +40,7 @@ const AffiliatePage = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"overview" | "my-network" | "pyramid" | "earnings" | "referrals" | "my-sales" | "payouts">("overview");
+  const [tab, setTab] = useState<"overview" | "my-network" | "network" | "earnings" | "referrals" | "my-sales" | "payouts">("overview");
   const [referrals, setReferrals] = useState<any[]>([]);
   const [salesData, setSalesData] = useState<any[]>([]);
 
@@ -247,7 +247,7 @@ const AffiliatePage = () => {
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-20">
               <div className="text-center mb-12">
                 <span className="text-[10px] font-display tracking-[0.3em] text-accent mb-3 block">OUR NETWORK</span>
-                <h2 className="font-display text-3xl sm:text-4xl font-black tracking-wider text-foreground">Join the Pyramid</h2>
+                <h2 className="font-display text-3xl sm:text-4xl font-black tracking-wider text-foreground">Join the Affiliate Network</h2>
                 <p className="text-sm text-muted-foreground font-body max-w-lg mx-auto mt-3">See our growing network of affiliates. Claim your spot and start earning.</p>
               </div>
               <div className="glass-surface rounded-2xl p-8 sm:p-12 border border-accent/10">
@@ -381,7 +381,7 @@ const AffiliatePage = () => {
 
             {/* Tabs */}
             <div className="flex gap-2 mb-6 overflow-x-auto">
-              {(["overview", "my-network", "pyramid", "earnings", "my-sales", "referrals", "payouts"] as const).map(t => (
+              {(["overview", "my-network", "network", "earnings", "my-sales", "referrals", "payouts"] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
@@ -389,7 +389,7 @@ const AffiliatePage = () => {
                     tab === t ? "bg-primary/10 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {t === "my-network" ? "My Network" : t.charAt(0).toUpperCase() + t.slice(1)}
+                  {t === "my-network" ? "My Network" : t === "network" ? "Affiliate Network" : t.charAt(0).toUpperCase() + t.slice(1)}
                 </button>
               ))}
             </div>
@@ -427,8 +427,8 @@ const AffiliatePage = () => {
                 </motion.div>
               )}
 
-              {tab === "pyramid" && (
-                <motion.div key="pyramid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
+              {tab === "network" && (
+                <motion.div key="network" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
                   <div className="glass-surface rounded-xl p-6">
                     <AffiliateNetworkPyramid />
                   </div>
