@@ -94,6 +94,7 @@ const AppContent = () => {
         <Route path="/game" element={<PerfumerGamePage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* Admin Back Office */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -106,6 +107,7 @@ const AppContent = () => {
           <Route path="partners" element={<PartnerManager />} />
           <Route path="employees" element={<EmployeeManager />} />
           <Route path="pyramid" element={<PyramidManager />} />
+          <Route path="onboarding" element={<EmployeeOnboardingPage />} />
         </Route>
 
         {/* Super Admin */}
@@ -117,6 +119,7 @@ const AppContent = () => {
           <Route path="security-events" element={<SASecurityEventsPage />} />
           <Route path="system-settings" element={<SASystemSettingsPage />} />
           <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
+          <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
