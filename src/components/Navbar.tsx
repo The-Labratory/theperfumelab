@@ -23,7 +23,7 @@ interface NavGroup {
   children?: DropdownItem[];
 }
 
-const Navbar = () => {
+export default function Navbar() {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -447,4 +447,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+
