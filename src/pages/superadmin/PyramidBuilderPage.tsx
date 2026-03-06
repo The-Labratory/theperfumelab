@@ -227,7 +227,7 @@ export default function PyramidBuilderPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Triangle className="w-6 h-6 text-primary" />
-          <h1 className="text-2xl font-display font-bold text-foreground">Pyramid Builder</h1>
+          <h1 className="text-2xl font-display font-bold text-foreground">Network Builder</h1>
           {current.is_active && <Badge className="bg-green-500/10 text-green-500 border-green-500/30">Active</Badge>}
         </div>
         <div className="flex gap-2">

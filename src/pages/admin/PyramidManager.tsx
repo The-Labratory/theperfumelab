@@ -93,7 +93,7 @@ export default function PyramidManager() {
 
   return (
     <div>
-      <h1 className="text-2xl font-display font-bold text-foreground mb-6">Affiliate Pyramid</h1>
+      <h1 className="text-2xl font-display font-bold text-foreground mb-6">Affiliate Network</h1>
 
       <div className="flex justify-end mb-4">
         <Button onClick={() => { setEditing({ ...defaultNode }); setDialogOpen(true); }} className="gap-2">

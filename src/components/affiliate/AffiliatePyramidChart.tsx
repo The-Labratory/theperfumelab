@@ -225,7 +225,7 @@ export default function AffiliatePyramidChart({ currentTier = "starter", totalEa
       <div>
         <div className="flex items-center gap-3 mb-3">
           <Crown className="w-6 h-6 text-accent" />
-          <h3 className="font-display text-xl font-bold tracking-wide text-foreground">The Pyramid</h3>
+          <h3 className="font-display text-xl font-bold tracking-wide text-foreground">Affiliate Network</h3>
         </div>
         <p className="text-xs text-muted-foreground font-body mb-8">
           LAW el HARIRI sits at the apex. Climb closer to the top and unlock <span className="text-accent font-bold">legendary rewards</span> no one else gets.
