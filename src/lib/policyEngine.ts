@@ -3,6 +3,16 @@
 
 export type AppRole = 'super_admin' | 'admin' | 'team_admin' | 'agent' | 'user' | 'viewer';
 
+// Authority levels for role hierarchy comparison
+export const ROLE_AUTHORITY: Record<AppRole, number> = {
+  super_admin: 100,
+  admin: 80,
+  team_admin: 60,
+  agent: 40,
+  user: 10,
+  viewer: 0,
+};
+
 export interface PolicyContext {
   userId: string;
   roles: AppRole[];
@@ -117,4 +127,12 @@ export function isSuperAdmin(roles: AppRole[]): boolean {
 export function getHighestRole(roles: AppRole[]): AppRole {
   const priority: AppRole[] = ['super_admin', 'admin', 'team_admin', 'agent', 'user', 'viewer'];
   return priority.find(r => roles.includes(r)) || 'viewer';
+}
+
+export function getAuthorityLevel(roles: AppRole[]): number {
+  return Math.max(0, ...roles.map(r => ROLE_AUTHORITY[r] || 0));
+}
+
+export function hasAuthorityOver(actorRoles: AppRole[], targetRoles: AppRole[]): boolean {
+  return getAuthorityLevel(actorRoles) > getAuthorityLevel(targetRoles);
 }
