@@ -42,7 +42,9 @@ const AuditLogPage = lazy(() => import("./pages/admin/AuditLogPage"));
 const PartnerManager = lazy(() => import("./pages/admin/PartnerManager"));
 const EmployeeManager = lazy(() => import("./pages/admin/EmployeeManager"));
 const PyramidManager = lazy(() => import("./pages/admin/PyramidManager"));
+const EmployeeOnboardingPage = lazy(() => import("./pages/admin/EmployeeOnboardingPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 
 // Super Admin
 const SuperAdminLayout = lazy(() => import("./pages/superadmin/SuperAdminLayout"));
@@ -53,6 +55,7 @@ const SAAuditLogsPage = lazy(() => import("./pages/superadmin/AuditLogsPage"));
 const SASecurityEventsPage = lazy(() => import("./pages/superadmin/SecurityEventsPage"));
 const SASystemSettingsPage = lazy(() => import("./pages/superadmin/SystemSettingsPage"));
 const SAPyramidBuilderPage = lazy(() => import("./pages/superadmin/PyramidBuilderPage"));
+const SAEmployeeRequestsPage = lazy(() => import("./pages/superadmin/EmployeeRequestsPage"));
 
 const queryClient = new QueryClient();
 
