@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Lock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,16 +15,37 @@ const PRODUCTION_ORIGIN = "https://theperfumelab.de";
 export default function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const referralCode = searchParams.get("ref") || "";
+  const redirectTo = searchParams.get("redirect") || "/";
+
   useEffect(() => {
+    // If there's a referral code, default to signup mode
+    if (referralCode) setMode("signup");
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate("/");
+      if (session) {
+        // If signed in and has referral code, process it then redirect
+        if (referralCode) {
+          supabase.rpc("process_referral_signup", {
+            _new_user_id: session.user.id,
+            _referral_code: referralCode,
+          }).then(({ data }) => {
+            const result = data as any;
+            if (result?.success) toast.success("You've been linked to your inviter's network!");
+            navigate(redirectTo);
+          });
+        } else {
+          navigate(redirectTo);
+        }
+      }
     });
-  }, [navigate]);
+  }, [navigate, referralCode, redirectTo]);
 
   const getRedirectOrigin = () => {
     if (window.location.hostname === "theperfumelab.de" || window.location.hostname === "www.theperfumelab.de") {
@@ -45,14 +66,28 @@ export default function AuthPage() {
         toast.success("Check your email for a password reset link");
         setMode("login");
       } else if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: getRedirectOrigin() } });
+        const { data: signupData, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: getRedirectOrigin() } });
         if (error) throw error;
+        // If auto-confirmed and we have a referral code, process it
+        if (signupData.user && referralCode) {
+          await supabase.rpc("process_referral_signup", {
+            _new_user_id: signupData.user.id,
+            _referral_code: referralCode,
+          });
+        }
         toast.success(t("auth.checkEmail"));
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data: loginData, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        // Process referral on login if code present and not yet linked
+        if (loginData.user && referralCode) {
+          await supabase.rpc("process_referral_signup", {
+            _new_user_id: loginData.user.id,
+            _referral_code: referralCode,
+          });
+        }
         toast.success(t("auth.signedIn"));
-        navigate("/");
+        navigate(redirectTo);
       }
     } catch (err: any) {
       toast.error(err.message || t("auth.error"));
