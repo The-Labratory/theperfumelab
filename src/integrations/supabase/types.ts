@@ -1637,6 +1637,30 @@ export type Database = {
         }
         Relationships: []
       }
+      system_permissions: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          permission: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          permission: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          permission?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
       system_settings: {
         Row: {
           category: string
@@ -1756,16 +1780,19 @@ export type Database = {
       }
       user_roles: {
         Row: {
+          authority_level: number
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
+          authority_level?: number
           id?: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
+          authority_level?: number
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
@@ -1862,6 +1889,7 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      get_user_authority_level: { Args: { _user_id: string }; Returns: number }
       get_waitlist_count: { Args: never; Returns: number }
       get_weekly_leaderboard: {
         Args: { _limit?: number }
