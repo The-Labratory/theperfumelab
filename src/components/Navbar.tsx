@@ -444,8 +444,6 @@ const Navbar = () => {
       </AnimatePresence>
     </motion.nav>
   );
-});
-
-Navbar.displayName = "Navbar";
+};
 
 export default Navbar;
