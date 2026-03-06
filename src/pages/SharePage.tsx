@@ -44,7 +44,7 @@ interface SavedBlend {
   name: string | null;
   harmony_score: number | null;
   concentration: string;
-  scent_notes: any[];
+  scent_notes: { emoji?: string; name?: string }[];
   created_at: string;
 }
 
@@ -132,7 +132,12 @@ const SharePage = () => {
   const handleShare = async (b: SavedBlend) => {
     const text = shareText(b);
     if (navigator.share) {
-      try { await navigator.share({ title: `Blend No. ${String(b.blend_number).padStart(4, "0")}`, text }); markCardShared(); } catch {}
+      try {
+        await navigator.share({ title: `Blend No. ${String(b.blend_number).padStart(4, "0")}`, text });
+        markCardShared();
+      } catch (_err) {
+        // User cancelled share or share API unavailable — fall through silently
+      }
     } else {
       await navigator.clipboard.writeText(text);
       markCardShared();
@@ -429,7 +434,7 @@ const SharePage = () => {
 const IdentityCard = ({ blend, onShare }: { blend: SavedBlend; onShare: () => void }) => {
   const rank = getRank(blend.harmony_score ?? 0);
   const num = String(blend.blend_number).padStart(4, "0");
-  const emojis = (blend.scent_notes || []).map((n: any) => n.emoji || "🔮");
+  const emojis = (blend.scent_notes || []).map((n) => n.emoji || "🔮");
 
   return (
     <div className="relative rounded-2xl border border-primary/20 p-6 sm:p-8"

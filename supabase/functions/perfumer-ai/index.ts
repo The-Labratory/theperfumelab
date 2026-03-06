@@ -167,7 +167,8 @@ Keep responses under 80 words. Be poetic but precise. Use fragrance terminology.
 If the blend is unbalanced, suggest specific fixes. If it's good, praise it.
 Always address the user as "Alchemist".`;
 
-      const notesList = notes.map((n: any) => `${n.name} (${n.layer}, intensity: ${n.intensity}%, warmth: ${n.warmth}%)`).join(", ");
+      const notesList = (notes as { name: string; layer: string; intensity: number; warmth: number }[])
+        .map((n) => `${n.name} (${n.layer}, intensity: ${n.intensity}%, warmth: ${n.warmth}%)`).join(", ");
       userPrompt = `Analyze this blend: ${notesList}. Concentration: ${concentration}. 
 Provide: 1) Brief assessment of balance 2) One specific suggestion to improve it.`;
     }

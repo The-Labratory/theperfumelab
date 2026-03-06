@@ -11,7 +11,7 @@ import { toast } from "sonner";
 interface GiftData {
   blend_name: string | null;
   blend_story: string | null;
-  blend_notes: any;
+  blend_notes: { name: string; emoji: string; layer: string; reason?: string }[];
   blend_mood: string | null;
   blend_intensity: string | null;
   scent_letter: string | null;
@@ -183,13 +183,13 @@ const GiftRevealPage = () => {
               >
                 <div className="space-y-3">
                   {(["top", "heart", "base"] as const).map((layer, li) => {
-                    const layerNotes = notes.filter((n: any) => n.layer === layer);
+                    const layerNotes = notes.filter((n) => n.layer === layer);
                     if (layerNotes.length === 0) return null;
                     return (
                       <motion.div key={layer} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 2 + li * 0.3 }}>
                         <span className="text-[9px] font-display tracking-widest text-muted-foreground uppercase">{layer}</span>
                         <div className="flex flex-wrap gap-1.5 mt-1">
-                          {layerNotes.map((n: any) => (
+                          {layerNotes.map((n) => (
                             <span key={n.name} className="glass-surface rounded-lg px-3 py-1.5 text-xs font-body text-foreground">
                               {n.emoji} {n.name}
                             </span>

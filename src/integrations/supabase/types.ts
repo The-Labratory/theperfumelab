@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      employee_invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invite_code: string
+          invited_by: string
+          role: Database["public"]["Enums"]["app_role"]
+          status: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invite_code?: string
+          invited_by: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invite_code?: string
+          invited_by?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+        }
+        Relationships: []
+      }
+      employees: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          department: string | null
+          email: string
+          hired_at: string | null
+          id: string
+          name: string
+          rejection_note: string | null
+          status: string
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          department?: string | null
+          email: string
+          hired_at?: string | null
+          id?: string
+          name: string
+          rejection_note?: string | null
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string
+          hired_at?: string | null
+          id?: string
+          name?: string
+          rejection_note?: string | null
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       gifts: {
         Row: {
           blend_intensity: string | null
@@ -200,6 +284,39 @@ export type Database = {
         }
         Relationships: []
       }
+      referrals: {
+        Row: {
+          converted_at: string | null
+          created_at: string
+          id: string
+          referee_email: string
+          referee_user_id: string | null
+          referral_code: string
+          referrer_id: string
+          status: string
+        }
+        Insert: {
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          referee_email: string
+          referee_user_id?: string | null
+          referral_code?: string
+          referrer_id: string
+          status?: string
+        }
+        Update: {
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          referee_email?: string
+          referee_user_id?: string | null
+          referral_code?: string
+          referrer_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string
@@ -235,6 +352,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_employee_invite: {
+        Args: { _invite_code: string; _user_id: string }
+        Returns: Json
+      }
       get_alltime_leaderboard: {
         Args: { _limit?: number }
         Returns: {
@@ -282,6 +403,19 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      get_referral_tree: {
+        Args: { _root_user_id: string; _max_depth?: number }
+        Returns: {
+          id: string
+          referrer_id: string
+          referee_user_id: string | null
+          referee_email: string
+          referral_code: string
+          status: string
+          depth: number
+          created_at: string
+        }[]
+      }
       get_waitlist_count: { Args: never; Returns: number }
       get_weekly_leaderboard: {
         Args: { _limit?: number }
@@ -301,9 +435,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      register_referral: {
+        Args: { _referral_code: string; _referee_user_id: string; _referee_email: string }
+        Returns: Json
+      }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "superadmin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -431,7 +569,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "superadmin", "user"],
     },
   },
 } as const
