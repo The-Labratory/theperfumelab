@@ -376,6 +376,104 @@ export type Database = {
           },
         ]
       }
+      commission_ledger: {
+        Row: {
+          commission_amount: number
+          commission_pct: number
+          created_at: string
+          id: string
+          level: number
+          paid_at: string | null
+          rule_id: string | null
+          sale_amount: number
+          source_order_id: string | null
+          source_user_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          commission_amount?: number
+          commission_pct?: number
+          created_at?: string
+          id?: string
+          level?: number
+          paid_at?: string | null
+          rule_id?: string | null
+          sale_amount?: number
+          source_order_id?: string | null
+          source_user_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          commission_amount?: number
+          commission_pct?: number
+          created_at?: string
+          id?: string
+          level?: number
+          paid_at?: string | null
+          rule_id?: string | null
+          sale_amount?: number
+          source_order_id?: string | null
+          source_user_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commission_ledger_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "commission_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      commission_rules: {
+        Row: {
+          commission_pct: number
+          created_at: string
+          id: string
+          is_active: boolean
+          level: number
+          max_depth: number | null
+          min_personal_sales: number | null
+          min_qualified_referrals: number | null
+          min_team_volume: number | null
+          rule_name: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          commission_pct?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          level?: number
+          max_depth?: number | null
+          min_personal_sales?: number | null
+          min_qualified_referrals?: number | null
+          min_team_volume?: number | null
+          rule_name: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          commission_pct?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          level?: number
+          max_depth?: number | null
+          min_personal_sales?: number | null
+          min_qualified_referrals?: number | null
+          min_team_volume?: number | null
+          rule_name?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       departments: {
         Row: {
           color: string | null
@@ -779,6 +877,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fraud_flags: {
+        Row: {
+          created_at: string
+          details: Json | null
+          flag_type: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          flag_type: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          flag_type?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       game_progress: {
         Row: {
@@ -1419,6 +1553,7 @@ export type Database = {
           favorite_families: string[] | null
           id: string
           is_public: boolean | null
+          referral_code: string | null
           scent_personality: string | null
           team_id: string | null
           total_likes_received: number | null
@@ -1435,6 +1570,7 @@ export type Database = {
           favorite_families?: string[] | null
           id?: string
           is_public?: boolean | null
+          referral_code?: string | null
           scent_personality?: string | null
           team_id?: string | null
           total_likes_received?: number | null
@@ -1451,6 +1587,7 @@ export type Database = {
           favorite_families?: string[] | null
           id?: string
           is_public?: boolean | null
+          referral_code?: string | null
           scent_personality?: string | null
           team_id?: string | null
           total_likes_received?: number | null
@@ -1544,6 +1681,141 @@ export type Database = {
           name?: string
           updated_at?: string
           visibility_rules?: Json | null
+        }
+        Relationships: []
+      }
+      rank_rules: {
+        Row: {
+          badge_color: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          min_direct_referrals: number | null
+          min_personal_sales: number | null
+          min_qualified_downline: number | null
+          min_team_sales: number | null
+          rank_level: number
+          rank_name: string
+        }
+        Insert: {
+          badge_color?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          min_direct_referrals?: number | null
+          min_personal_sales?: number | null
+          min_qualified_downline?: number | null
+          min_team_sales?: number | null
+          rank_level?: number
+          rank_name: string
+        }
+        Update: {
+          badge_color?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          min_direct_referrals?: number | null
+          min_personal_sales?: number | null
+          min_qualified_downline?: number | null
+          min_team_sales?: number | null
+          rank_level?: number
+          rank_name?: string
+        }
+        Relationships: []
+      }
+      referral_events: {
+        Row: {
+          created_at: string
+          details: Json | null
+          event_type: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          event_type: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          event_type?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      referral_invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          invite_code: string
+          invited_email: string | null
+          invited_user_id: string | null
+          inviter_user_id: string
+          ip_address: string | null
+          status: string
+          user_agent: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invite_code?: string
+          invited_email?: string | null
+          invited_user_id?: string | null
+          inviter_user_id: string
+          ip_address?: string | null
+          status?: string
+          user_agent?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invite_code?: string
+          invited_email?: string | null
+          invited_user_id?: string | null
+          inviter_user_id?: string
+          ip_address?: string | null
+          status?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      referral_relationships: {
+        Row: {
+          confirmed_at: string | null
+          created_at: string
+          depth: number
+          id: string
+          parent_user_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          confirmed_at?: string | null
+          created_at?: string
+          depth?: number
+          id?: string
+          parent_user_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          confirmed_at?: string | null
+          created_at?: string
+          depth?: number
+          id?: string
+          parent_user_id?: string | null
+          status?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -1778,6 +2050,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_rank_history: {
+        Row: {
+          achieved_at: string
+          id: string
+          qualification_snapshot: Json | null
+          rank_level: number
+          rank_name: string
+          user_id: string
+        }
+        Insert: {
+          achieved_at?: string
+          id?: string
+          qualification_snapshot?: Json | null
+          rank_level?: number
+          rank_name: string
+          user_id: string
+        }
+        Update: {
+          achieved_at?: string
+          id?: string
+          qualification_snapshot?: Json | null
+          rank_level?: number
+          rank_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           authority_level: number
@@ -1842,6 +2141,9 @@ export type Database = {
         Args: { _batch_size_ml?: number; _formula_id: string }
         Returns: Json
       }
+      check_invite_rate_limit: { Args: { _user_id: string }; Returns: boolean }
+      count_direct_referrals: { Args: { _user_id: string }; Returns: number }
+      count_total_downline: { Args: { _user_id: string }; Returns: number }
       get_alltime_leaderboard: {
         Args: { _limit?: number }
         Returns: {
@@ -1851,6 +2153,16 @@ export type Database = {
           created_at: string
           harmony_score: number
           note_count: number
+        }[]
+      }
+      get_downline: {
+        Args: { _max_depth?: number; _user_id: string }
+        Returns: {
+          depth: number
+          display_name: string
+          parent_user_id: string
+          referral_code: string
+          user_id: string
         }[]
       }
       get_gift_by_share_code: {
@@ -1924,6 +2236,10 @@ export type Database = {
       owns_pyramid_node: {
         Args: { _node_id: string; _user_id: string }
         Returns: boolean
+      }
+      process_referral_signup: {
+        Args: { _new_user_id: string; _referral_code: string }
+        Returns: Json
       }
       validate_formula: { Args: { _formula_id: string }; Returns: Json }
     }
