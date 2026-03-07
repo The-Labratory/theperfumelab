@@ -5,6 +5,9 @@ const ADMIN_EMAILS = [
   "loranshariri@gmail.com",
 ];
 
+// Only this email gets super_admin
+const SUPER_ADMIN_EMAIL = "hariri@lenzohariri.com";
+
 Deno.serve(async (req) => {
   // This function is triggered by auth webhook on user signup
   // It checks if the new user's email is in the admin list and assigns the admin role
