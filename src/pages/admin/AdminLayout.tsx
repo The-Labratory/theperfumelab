@@ -21,6 +21,7 @@ const adminNav = [
   { title: "Employees", url: "/admin/employees", icon: Users },
   { title: "Employee Onboarding", url: "/admin/onboarding", icon: UserPlus },
   { title: "Affiliate Pyramid", url: "/admin/pyramid", icon: Triangle },
+  { title: "Affiliate Management", url: "/admin/affiliates", icon: Users },
 ];
 
 export default function AdminLayout() {

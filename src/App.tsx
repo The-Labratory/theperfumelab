@@ -107,6 +107,8 @@ const AppContent = () => {
         <Route path="/partner-program" element={<PartnerProgramPage />} />
         <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
         <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
+        <Route path="/creator-portal" element={<CreatorPortalPage />} />
+        <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -122,6 +124,7 @@ const AppContent = () => {
           <Route path="partners" element={<PartnerManager />} />
           <Route path="employees" element={<EmployeeManager />} />
           <Route path="pyramid" element={<PyramidManager />} />
+          <Route path="affiliates" element={<AffiliateAdminPage />} />
           <Route path="onboarding" element={<EmployeeOnboardingPage />} />
         </Route>
 
