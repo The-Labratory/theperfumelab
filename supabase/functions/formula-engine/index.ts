@@ -41,6 +41,36 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
     const { action, formula_id, batch_size_ml } = await req.json();
 
+    // Verify the authenticated user owns the formula before any mutation
+    const userId = claimsData.claims.sub;
+    if (formula_id) {
+      const { data: formula, error: fErr } = await supabase
+        .from("formulas")
+        .select("user_id")
+        .eq("id", formula_id)
+        .single();
+      if (fErr || !formula) {
+        return new Response(JSON.stringify({ error: "Formula not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      // Allow if formula has no owner (shared/template) or user is the owner
+      if (formula.user_id && formula.user_id !== userId) {
+        // Check if user is admin
+        const { data: isAdmin } = await supabase.rpc("has_role", {
+          _user_id: userId,
+          _role: "admin",
+        });
+        if (!isAdmin) {
+          return new Response(JSON.stringify({ error: "Forbidden" }), {
+            status: 403,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+    }
+
     switch (action) {
       case "validate": {
         const { data, error } = await supabase.rpc("validate_formula", {
