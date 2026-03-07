@@ -9,8 +9,8 @@ import ParticleField from "@/components/ParticleField";
 import { Button } from "@/components/ui/button";
 
 const BENEFITS = [
-  { icon: DollarSign, title: "20% Base Commission", desc: "Earn on every sale from day one — no minimums." },
-  { icon: Crown, title: "Up to 50% Platinum", desc: "Top partners earn 50% on every referral purchase." },
+  { icon: DollarSign, title: "50% B2C Commission", desc: "Earn 50% on every direct consumer sale — no minimums." },
+  { icon: Crown, title: "20% B2B Commission", desc: "Business partners earn 20% on every order and reorder." },
   { icon: Gift, title: "Free Sample Kit", desc: "Creators who post get a complimentary fragrance kit." },
   { icon: Users, title: "Bring 3 → Get 1 Free", desc: "Recruit 3 affiliates and receive a full-size perfume." },
   { icon: Package, title: "Starter Pack Included", desc: "Get photos, scripts, captions — everything you need to sell." },
@@ -18,19 +18,18 @@ const BENEFITS = [
 ];
 
 const TIERS = [
-  { name: "Standard", commission: "20%", requirement: "Join the program", color: "border-muted-foreground/30" },
-  { name: "Gold", commission: "35%", requirement: "25+ referred sales", color: "border-accent/50" },
-  { name: "Platinum", commission: "50%", requirement: "100+ referred sales", color: "border-primary/50", featured: true },
+  { name: "B2C Partner", commission: "50%", requirement: "Direct consumer sales", color: "border-primary/50", featured: true },
+  { name: "B2B Partner", commission: "20%", requirement: "Business / wholesale orders", color: "border-accent/50" },
 ];
 
 const TESTIMONIALS = [
   { name: "Sarah M.", role: "Beauty Creator", quote: "I earned €400 in my first month just sharing my honest reviews. The starter pack made it so easy." },
-  { name: "Karim D.", role: "Fragrance Enthusiast", quote: "The 50% Platinum rate is real. I built a small team and now earn passively every week." },
+  { name: "Karim D.", role: "Fragrance Enthusiast", quote: "The 50% B2C rate is incredible. I earn on every sale and it adds up fast." },
   { name: "Lina T.", role: "Instagram Influencer", quote: "The free sample kit helped me create authentic content. My audience loved it and sales followed naturally." },
 ];
 
 const FAQ = [
-  { q: "How much can I earn?", a: "You start at 20% commission on every sale. As you grow, you can earn up to 50% as a Platinum partner. Most active affiliates earn €200–€1,000/month." },
+  { q: "How much can I earn?", a: "B2C partners earn 50% commission on every direct consumer sale. B2B partners earn 20% on every order and reorder. Most active affiliates earn €200–€1,000/month." },
   { q: "How do I get paid?", a: "Commissions are tracked in real time on your dashboard. You can request a payout via bank transfer once your balance reaches €50." },
   { q: "Do I need a big following?", a: "Not at all! Many of our top partners started with fewer than 500 followers. Authentic recommendations convert better than big audiences." },
   { q: "What is the 'Bring 3 Get 1 Free' offer?", a: "When you recruit 3 new affiliates who each make at least one sale, you receive a full-size luxury perfume of your choice — completely free." },
@@ -51,8 +50,8 @@ const PartnerProgramPage = () => {
             <Sparkles className="w-3.5 h-3.5" /> PARTNER PROGRAM
           </div>
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-wider text-foreground leading-tight mb-6">
-            Earn Up To <span className="text-accent">50%</span> Commission<br />
-            Promoting Luxury Perfumes
+            Earn <span className="text-accent">50%</span> B2C or <span className="text-accent">20%</span> B2B<br />
+            Commission on Every Sale
           </h1>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
             Join The Perfume Lab partner program. Share your love for fragrance, earn generous commissions, and unlock exclusive rewards.

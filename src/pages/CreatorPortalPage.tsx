@@ -66,7 +66,7 @@ END CARD:
 const FAQ_ITEMS = [
   { q: "How do I request a free sample kit?", a: "Fill out the sample request form below with your social media links. We review requests within 48 hours and ship to approved creators within 5 business days." },
   { q: "What content should I create?", a: "Authentic, genuine content works best. Unboxings, reviews, GRWM videos, and comparison posts perform really well. Use our script library for inspiration." },
-  { q: "How much can I earn as a creator?", a: "You earn 20% commission on every sale through your link. Top creators earn €500-€2,000/month. Platinum partners earn up to 50%." },
+  { q: "How much can I earn as a creator?", a: "You earn 50% commission on every B2C sale through your link. B2B partners earn 20% on every order and reorder. Top creators earn €500-€2,000/month." },
   { q: "Can I use the product photos for my content?", a: "Absolutely! All photos and assets in the Starter Pack are free to use. We encourage you to mix them with your own content for authenticity." },
   { q: "How do I track my performance?", a: "Your Affiliate Dashboard shows real-time stats: clicks, sales, commission earned, and your current rank." },
   { q: "Do I need a minimum following?", a: "No! We work with creators of all sizes. Micro-influencers often have higher engagement and conversion rates." },

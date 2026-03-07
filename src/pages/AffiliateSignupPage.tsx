@@ -156,7 +156,7 @@ const AffiliateSignupPage = () => {
                 Join the Partner Program
               </h1>
               <p className="font-body text-sm text-muted-foreground">
-                Start earning 20% commission today. It's free and takes 60 seconds.
+                Start earning 50% B2C or 20% B2B commission today. It's free and takes 60 seconds.
               </p>
             </div>
 
