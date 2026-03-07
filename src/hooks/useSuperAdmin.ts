@@ -13,10 +13,7 @@ export function useSuperAdmin() {
       setUser(session?.user ?? null);
       if (session?.user) {
         if (_event === 'SIGNED_IN') {
-          await supabase.rpc("assign_admin_if_allowed", {
-            _user_id: session.user.id,
-            _email: session.user.email || "",
-          });
+          await supabase.rpc("assign_admin_if_allowed");
         }
         await loadRoles(session.user.id);
       } else {
