@@ -37,17 +37,15 @@ const GiftRevealPage = () => {
     if (!shareCode) return;
     const fetchGift = async () => {
       const { data, error } = await supabase
-        .from("gifts")
-        .select("blend_name, blend_story, blend_notes, blend_mood, blend_intensity, scent_letter, personal_message, gifter_name, recipient_name, is_duo, revealed_at, reaction_emoji, reaction_message")
-        .eq("share_code", shareCode)
-        .single();
+        .rpc("get_gift_by_share_code", { _share_code: shareCode });
 
-      if (error || !data) {
+      if (error || !data || (Array.isArray(data) && data.length === 0)) {
         setLoading(false);
         return;
       }
-      setGift(data);
-      if (data.reaction_emoji) setReactionSent(true);
+      const giftData = Array.isArray(data) ? data[0] : data;
+      setGift(giftData);
+      if (giftData.reaction_emoji) setReactionSent(true);
       setLoading(false);
     };
     fetchGift();
