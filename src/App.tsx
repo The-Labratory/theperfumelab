@@ -34,6 +34,8 @@ const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
 const PartnerProgramPage = lazy(() => import("./pages/PartnerProgramPage"));
 const AffiliateSignupPage = lazy(() => import("./pages/AffiliateSignupPage"));
 const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPackPage"));
+const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
+const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -47,6 +49,7 @@ const PartnerManager = lazy(() => import("./pages/admin/PartnerManager"));
 const EmployeeManager = lazy(() => import("./pages/admin/EmployeeManager"));
 const PyramidManager = lazy(() => import("./pages/admin/PyramidManager"));
 const EmployeeOnboardingPage = lazy(() => import("./pages/admin/EmployeeOnboardingPage"));
+const AffiliateAdminPage = lazy(() => import("./pages/admin/AffiliateAdminPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 
@@ -104,6 +107,8 @@ const AppContent = () => {
         <Route path="/partner-program" element={<PartnerProgramPage />} />
         <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
         <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
+        <Route path="/creator-portal" element={<CreatorPortalPage />} />
+        <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -119,6 +124,7 @@ const AppContent = () => {
           <Route path="partners" element={<PartnerManager />} />
           <Route path="employees" element={<EmployeeManager />} />
           <Route path="pyramid" element={<PyramidManager />} />
+          <Route path="affiliates" element={<AffiliateAdminPage />} />
           <Route path="onboarding" element={<EmployeeOnboardingPage />} />
         </Route>
 
