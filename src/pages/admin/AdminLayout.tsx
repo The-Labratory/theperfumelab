@@ -40,7 +40,7 @@ export default function AdminLayout() {
       if (session?.user) {
         // Auto-assign admin role for allowed emails
         if (_event === 'SIGNED_IN') {
-          await supabase.rpc("assign_admin_if_allowed", { _user_id: session.user.id, _email: session.user.email || "" });
+          await supabase.rpc("assign_admin_if_allowed");
         }
         checkAdmin(session.user.id);
       } else {
