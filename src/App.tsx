@@ -31,6 +31,9 @@ const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
 const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
 const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
+const PartnerProgramPage = lazy(() => import("./pages/PartnerProgramPage"));
+const AffiliateSignupPage = lazy(() => import("./pages/AffiliateSignupPage"));
+const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPackPage"));
 
 // Admin
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -98,6 +101,9 @@ const AppContent = () => {
         <Route path="/affiliate" element={<AffiliatePage />} />
         <Route path="/game" element={<PerfumerGamePage />} />
         <Route path="/network" element={<ReferralNetworkPage />} />
+        <Route path="/partner-program" element={<PartnerProgramPage />} />
+        <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
+        <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
