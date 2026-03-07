@@ -361,7 +361,7 @@ const PartnerPage = () => {
             >
               Become an Affiliate <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-            <p className="text-[10px] text-muted-foreground font-body mt-3 tracking-wide">Free to join · No minimum sales · Earn up to 50% commission</p>
+            <p className="text-[10px] text-muted-foreground font-body mt-3 tracking-wide">Free to join · No minimum sales · 50% B2C · 20% B2B on every reorder</p>
           </motion.div>
         </motion.div>
 

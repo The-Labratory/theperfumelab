@@ -38,7 +38,7 @@ const PRICE_MATRIX: Record<string, { original: number; sale: number; variantId: 
   "100-edt":    { original: 119.98, sale: 89.98, variantId: "gid://shopify/ProductVariant/46594665939282" },
 };
 
-const B2B_DISCOUNT = 50; // 50% flat discount for B2B
+const B2B_DISCOUNT = 20; // 20% B2B discount (matching 20% B2B commission rate)
 
 function getPriceKey(volume: number, concentration: Concentration): string {
   return `${volume}-${concentration.id}`;
