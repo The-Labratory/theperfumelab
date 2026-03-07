@@ -24,7 +24,7 @@ const TIERS = [
 
 const TESTIMONIALS = [
   { name: "Sarah M.", role: "Beauty Creator", quote: "I earned €400 in my first month just sharing my honest reviews. The starter pack made it so easy." },
-  { name: "Karim D.", role: "Fragrance Enthusiast", quote: "The 50% Platinum rate is real. I built a small team and now earn passively every week." },
+  { name: "Karim D.", role: "Fragrance Enthusiast", quote: "The 50% B2C rate is incredible. I earn on every sale and it adds up fast." },
   { name: "Lina T.", role: "Instagram Influencer", quote: "The free sample kit helped me create authentic content. My audience loved it and sales followed naturally." },
 ];
 

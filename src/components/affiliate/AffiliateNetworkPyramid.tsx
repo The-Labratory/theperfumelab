@@ -53,24 +53,12 @@ const AppContext = createContext<AppCtx>({ isAdmin: false, currentUserId: null, 
 
 // Rank system based on total transactions (sales)
 const RANKS = [
-  { name: "Starter", minSales: 0, commission: 10, icon: Zap, color: "text-muted-foreground", 
-    perks: ["Basic affiliate link", "Community access", "Weekly tips newsletter"],
-    tagline: "Your journey begins here 🔥", gradient: "from-muted/30 to-muted/10" },
-  { name: "Bronze", minSales: 5, commission: 15, icon: Shield, color: "text-[hsl(30_60%_50%)]",
-    perks: ["15% commission rate", "Priority support", "Monthly bonus drops", "Early product access"],
-    tagline: "Rising through the ranks ⚔️", gradient: "from-[hsl(30_60%_50%)]/20 to-[hsl(30_40%_30%)]/10" },
-  { name: "Silver", minSales: 15, commission: 20, icon: Star, color: "text-[hsl(220_20%_65%)]",
-    perks: ["20% commission rate", "Custom referral page", "Exclusive scent samples", "Team building tools", "Silver badge on profile"],
-    tagline: "Becoming legendary 🌟", gradient: "from-[hsl(220_20%_65%)]/20 to-[hsl(220_15%_45%)]/10" },
-  { name: "Gold", minSales: 30, commission: 30, icon: Award, color: "text-[hsl(45_93%_47%)]",
-    perks: ["30% commission rate", "VIP event invitations", "Free product monthly", "Gold-tier analytics dashboard", "Personal account manager", "Exclusive Gold collection access"],
-    tagline: "Elite status unlocked 👑", gradient: "from-[hsl(45_93%_47%)]/20 to-[hsl(45_80%_35%)]/10" },
-  { name: "Platinum", minSales: 60, commission: 40, icon: Gem, color: "text-primary",
-    perks: ["40% commission rate", "Revenue share on team sales", "Custom co-branded products", "Platinum retreat access", "Dedicated marketing team", "First access to new launches", "Quarterly luxury gift box"],
-    tagline: "Top 1% — Unstoppable 💎", gradient: "from-primary/20 to-primary/5" },
-  { name: "Diamond", minSales: 100, commission: 50, icon: Crown, color: "text-accent",
-    perks: ["50% maximum commission", "Equity partnership options", "Global ambassador status", "All-expenses-paid annual summit", "Custom fragrance line", "Lifetime VIP membership", "Direct CEO access", "Legacy wealth building"],
-    tagline: "The pinnacle of excellence 🏆", gradient: "from-accent/25 to-accent/5" },
+  { name: "B2C Partner", minSales: 0, commission: 50, icon: Crown, color: "text-primary", 
+    perks: ["50% commission on all B2C sales", "Personal affiliate link", "Starter pack included", "Real-time dashboard", "Priority support"],
+    tagline: "Earn 50% on every consumer sale 🔥", gradient: "from-primary/20 to-primary/5" },
+  { name: "B2B Partner", minSales: 0, commission: 20, icon: Award, color: "text-accent",
+    perks: ["20% commission on every order & reorder", "Wholesale pricing access", "Dedicated account manager", "Bulk order support", "Custom co-branded options"],
+    tagline: "20% on every business reorder 🏆", gradient: "from-accent/25 to-accent/5" },
 ];
 
 function getRank(totalSales: number) {
