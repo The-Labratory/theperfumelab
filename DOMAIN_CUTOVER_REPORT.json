@@ -1,0 +1,68 @@
+{
+  "repository": "The-Labratory/scentra-world-builder",
+  "domain": "theperfumelab.de",
+  "timestamp_utc": "2026-03-08T17:56:00Z",
+  "actions": [
+    {
+      "step": "A_prechecks_repository_and_permissions",
+      "status": "blocked",
+      "details": "Unable to reach GitHub API/Lovable from this execution environment (HTTP 403 from envoy), so repo permission/admin checks and Lovable domain Recover actions could not be executed."
+    },
+    {
+      "step": "B_dns_state_observation",
+      "status": "observed",
+      "details": {
+        "root_a": "185.158.133.1",
+        "www_a": "185.158.133.1",
+        "_lovable_txt": null,
+        "_lovable_www_txt": null,
+        "ttl_seconds": 300
+      }
+    },
+    {
+      "step": "C_dns_propagation_check",
+      "status": "partial",
+      "details": "A records resolve to Lovable target. TXT verification records are not currently visible in authoritative/public DNS responses from this environment."
+    },
+    {
+      "step": "D_lovable_recover_and_ssl",
+      "status": "blocked",
+      "details": "Could not access Lovable UI/API to click Recover or verify certificate issuance logs."
+    },
+    {
+      "step": "E_live_site_validation",
+      "status": "blocked",
+      "details": "HTTPS header check from this environment failed with CONNECT tunnel 403 before origin response; unable to validate live content or certificate chain end-to-end."
+    }
+  ],
+  "dns_changes": [
+    {
+      "host": "@",
+      "type": "A",
+      "value": "185.158.133.1",
+      "status": "visible"
+    },
+    {
+      "host": "www",
+      "type": "A",
+      "value": "185.158.133.1",
+      "status": "visible"
+    },
+    {
+      "host": "_lovable",
+      "type": "TXT",
+      "value": "lovable_verify=6f1e1e6658c9da6c5ef2cf4aa39475edc24ff6b4e45e3a402601f33dde3611b",
+      "status": "not_visible"
+    },
+    {
+      "host": "_lovable.www",
+      "type": "TXT",
+      "value": "lovable_verify=1828dad777255682d4351b0ed57ce2729250c35d1f4577d44552f2d2bc9b7476",
+      "status": "not_visible"
+    }
+  ],
+  "lovable_recover": "error",
+  "ssl_issued": false,
+  "site_live": false,
+  "notes": "To complete cutover: add/verify both TXT records in authoritative DNS, then run Lovable Domains > Recover for apex and www; re-check HTTPS from an unrestricted network."
+}
