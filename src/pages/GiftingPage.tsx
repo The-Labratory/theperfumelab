@@ -56,25 +56,26 @@ const GiftingPage = () => {
     setIsGenerating(true);
     try {
       const giftMode = mode === "duo" ? "duo" : "gift";
-      const bodyPayload: any = {
-        notes: {
-          personality,
-          occasion,
-          mood,
-          memory: memory || undefined,
-          zodiac: zodiac || undefined,
-          relationshipDepth,
-          gifterName: gifterName || undefined,
-          recipientName: recipientName || undefined,
-        },
+      const notesPayload: Record<string, string | undefined> = {
+        personality,
+        occasion,
+        mood,
+        memory: memory || undefined,
+        zodiac: zodiac || undefined,
+        relationshipDepth,
+        gifterName: gifterName || undefined,
+        recipientName: recipientName || undefined,
+      };
+      if (mode === "duo") {
+        notesPayload.duoPartnerName = duoPartnerName || undefined;
+        notesPayload.duoPartnerPersonality = duoPartnerPersonality;
+        notesPayload.duoPartnerMood = duoPartnerMood;
+      }
+      const bodyPayload = {
+        notes: notesPayload,
         concentration: "Eau de Parfum",
         mode: giftMode,
       };
-      if (mode === "duo") {
-        bodyPayload.notes.duoPartnerName = duoPartnerName || undefined;
-        bodyPayload.notes.duoPartnerPersonality = duoPartnerPersonality;
-        bodyPayload.notes.duoPartnerMood = duoPartnerMood;
-      }
 
       const { data, error } = await supabase.functions.invoke("perfumer-ai", {
         body: bodyPayload,
