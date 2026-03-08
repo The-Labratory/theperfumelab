@@ -1,0 +1,98 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "worlds": "Dünyalar",
+    "lab": "Parfüm Laboratuvarı",
+    "formulation": "Formülasyon",
+    "collection": "Koleksiyon",
+    "gifting": "Hediye",
+    "store": "Mağaza",
+    "dna": "Koku DNA'sı",
+    "affiliate": "Ortaklar",
+    "game": "Parfümcü Yolculuğu",
+    "backOffice": "Yönetim",
+    "login": "Giriş Yap",
+    "signup": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "account": "Hesap"
+  },
+  "hero": {
+    "badge": "Sadece 100 Kurucu Üye Kabul Edilir",
+    "title": "Parfüm Laboratuvarı",
+    "subtitle": "Özel Bir Parfümeri Deneyimi",
+    "description": "Usta parfümörlerin özel araçları. Artık sizin ellerinizde.",
+    "note": "Her kompozisyon bireysel olarak harmanlanır. Hiçbir iki formül asla aynı değildir.",
+    "cta": "Erişim İste",
+    "journey": "Yolculuğunuza Başlayın"
+  },
+  "features": {
+    "identity": "Koku Kimliğiniz",
+    "identityDesc": "Eşsiz koku arketipinizi ve kişisel imzanızı keşfetmek için rehberli bir yolculuk.",
+    "worlds": "Altı Koku Dünyası",
+    "worldsDesc": "Küratörlü koku alemleri — her biri kendi paleti, havası ve hammaddeleriyle.",
+    "atelier": "Atölye",
+    "atelierDesc": "Hassasiyetle bestelyin. Her karışım küçük haftalık partiler halinde elle üretilir."
+  },
+  "cta": {
+    "title": "İmzanız Sizi Bekliyor",
+    "description": "Binlerce olası kombinasyon. Tartışmasız size ait olan bir tane. Yapay zeka destekli Koku Laboratuvarımız sizi her katmandan geçirir — üst, kalp, taban — vizyonunuz bir şişeye dönüşene kadar.",
+    "note": "Çoğu yaratıcı sadece birinde duramaz.",
+    "lab": "Koku Laboratuvarına Girin",
+    "browse": "Koleksiyonu Keşfedin"
+  },
+  "footer": {
+    "copyright": "© 2026 Parfüm Laboratuvarı — Her kompozisyon atölyemizde bireysel olarak harmanlanır."
+  },
+  "auth": {
+    "signIn": "Giriş Yap",
+    "signUp": "Hesap Oluştur",
+    "email": "E-posta",
+    "password": "Şifre",
+    "confirmPassword": "Şifreyi Onayla",
+    "forgotPassword": "Şifrenizi mi unuttunuz?",
+    "noAccount": "Hesabınız yok mu?",
+    "hasAccount": "Zaten hesabınız var mı?",
+    "signInCta": "Hesabınıza giriş yapın",
+    "signUpCta": "Hesabınızı oluşturun",
+    "backToSite": "← Siteye Dön",
+    "checkEmail": "Hesabınızı onaylamak için e-postanızı kontrol edin.",
+    "signedIn": "Başarıyla giriş yapıldı",
+    "signedOut": "Çıkış yapıldı",
+    "error": "Kimlik doğrulama başarısız",
+    "or": "veya",
+    "google": "Google ile devam et"
+  },
+  "admin": {
+    "dashboard": "Kontrol Paneli",
+    "ingredients": "Bileşenler",
+    "interactions": "Etkileşimler",
+    "formulas": "Formüller",
+    "ifra": "IFRA Kuralları",
+    "audit": "Denetim Günlüğü",
+    "partners": "Ortaklar",
+    "backToSite": "← Siteye Dön",
+    "backOffice": "Yönetim",
+    "accessDenied": "Erişim Reddedildi",
+    "adminRequired": "Yönetici yetkileri gereklidir.",
+    "signedInAs": "Olarak giriş yapıldı"
+  },
+  "partners": {
+    "title": "Ortaklık Başvuruları",
+    "company": "Şirket",
+    "contact": "İletişim",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "type": "İş Türü",
+    "volume": "Tahmini Hacim",
+    "status": "Durum",
+    "date": "Tarih",
+    "message": "Mesaj",
+    "website": "Web Sitesi",
+    "noApplications": "Henüz ortaklık başvurusu yok.",
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "pending": "Beklemede",
+    "approved": "Onaylandı",
+    "rejected": "Reddedildi"
+  }
+}

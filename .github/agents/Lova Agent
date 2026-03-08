@@ -1,0 +1,152 @@
+Objective —
+Create a new GitHub App (“lovable-agent”) and supporting automation so the app can safely perform repository automation tasks in The-Labratory/scentra-world-builder. After setup, verify the app can: read repository files, create & merge pull requests, create repository secrets, delete files from branches, and push commits. Provide full verification, credentials (stored securely), and a final JSON report.
+
+Preconditions / Permissions required
+
+You must be an organization owner or have permissions to install GitHub Apps into The-Labratory.
+
+Do not proceed if you lack admin/install permissions — create an Issue describing required approvals instead.
+
+Store every secret (private key, tokens) only in a secure vault (GitHub Secrets or company secret manager). Never post secrets into PR descriptions, commit messages, or public channels.
+
+Summary of the steps to perform
+
+Create GitHub App (“lovable-agent”) in the org
+
+Name: lovable-agent (or lovable.bot)
+
+Homepage URL: https://theperfumelab.de (or your org site)
+
+Callback URL: none required for App-to-App (leave blank) unless you plan OAuth. If required, set callback to your service URL.
+
+Webhook URL: set a placeholder https://hooks.example.com/github for now (you may replace with an actual webhook endpoint).
+
+Webhook secret: generate a secure random string; store in the secure vault.
+
+Permissions (Repository permissions) — grant minimal required scopes:
+
+Contents: Read & Write (to create/modify files and branches)
+
+Pull requests: Read & Write (create/merge PRs)
+
+Metadata: Read-only (default)
+
+Actions / Secrets: Secrets: Read & Write (or “Actions: Read & Write” if your UI groups Actions) — required to create repository secrets via the API.
+
+Checks / Statuses: Read & Write (optional, to view CI statuses and comments)
+
+Workflows: Read & Write (if you need to trigger or modify GitHub Actions workflows)
+
+Subscribe to webhook events: push, pull_request, pull_request_review, pull_request_review_comment, check_run, workflow_run, installation, installation_repositories.
+
+Generate & download the private key for the App. Store the private key securely (vault), never in repo.
+
+Install the App on the organization
+
+Install the app on The-Labratory and accept the repository permissions.
+
+During install, select specifically The-Labratory/scentra-world-builder (or all repos only if you want global access). Record the installation id and app id. Save in vault (metadata only; not private key).
+
+Create a service user / integration service (optional)
+
+If you prefer a dedicated service, create a small serverless lambda or microservice that will hold the App private key (from step 1) and produce installation tokens for API calls. This service will run automation scripts, sign requests, and avoid storing tokens on developer machines.
+
+Authenticate as the App & get installation access token
+
+Use the App private key to create a JWT (signed). Exchange JWT for an installation access token for the add-lovable repo installation. This token will be used to call GitHub REST APIs. Use the official library (@octokit/auth-app / @octokit/rest) or equivalent.
+
+Example Node.js steps (for the agent to perform):
+
+// pseudo-code (Agent should implement securely)
+const { createAppAuth } = require("@octokit/auth-app");
+const { Octokit } = require("@octokit/rest");
+
+const auth = createAppAuth({
+  appId: APP_ID,
+  privateKey: PRIVATE_KEY_PEM,
+  installationId: INSTALLATION_ID
+});
+
+// get installation token
+const installationAuthentication = await auth({ type: "installation" });
+const octokit = new Octokit({ auth: installationAuthentication.token });
+
+Agent capabilities to implement
+
+Read file content at add-lovable branch: GET /repos/{owner}/{repo}/contents/{path}?ref=add-lovable
+
+Decide whether file content is secret (regex: ^[0-9a-fA-F]{16,64}$). If secret:
+
+Create repository secret LOVABLE_TOKEN via Actions Secrets API:
+
+Get public key: GET /repos/{owner}/{repo}/actions/secrets/public-key
+
+Encrypt secret using that public key (libsodium, base64).
+
+Create secret: PUT /repos/{owner}/{repo}/actions/secrets/LOVABLE_TOKEN.
+
+Remove file lovable from add-lovable branch by creating a commit that deletes it (use the contents API or create a normal commit on the branch that removes the path).
+
+Add placeholder lovable.README explaining migration (optional but recommended).
+
+If not secret:
+
+Create a Pull Request from add-lovable → main with title and description.
+
+For both flows:
+
+Create PR (if not using direct merge). Wait for checks. If checks pass, merge PR. If checks fail, comment and escalate. Never force-merge failing CI without explicit instruction.
+
+After merge, delete remote branch add-lovable (optional).
+
+Log every action (timestamps, API responses, PR link, merge commit sha).
+
+CI / checks handling (policy)
+
+If CI checks fail, do not merge. Post a comment summarizing failing jobs with links and request maintainers. If the repo has a required review policy, request maintainer approval; do not bypass.
+
+Verification steps
+
+If secret path taken:
+
+Confirm LOVABLE_TOKEN appears in repository secrets (via API listing). Confirm lovable file not present on main.
+
+If non-secret path:
+
+Confirm lovable is present on main and contents match exactly.
+
+Provide evidence: PR URL, merge URL, merge commit SHA, Installation ID, App ID (metadata), and confirmation of secret creation (no secret value).
+
+Provide a JSON summary with keys:
+
+{
+  "repository":"The-Labratory/scentra-world-builder",
+  "app_id": "...",
+  "installation_id": "...",
+  "decision":"secret"|"non-secret",
+  "secret_name": "LOVABLE_TOKEN" | null,
+  "pr_url": "...",
+  "merge_commit_sha": "...",
+  "branch_deleted": true|false,
+  "notes": "..."
+}
+
+Deliverables
+
+The new GitHub App configured & installed. Submit app id, installation id, webhook secret, and location of private key (vault location).
+
+A secure step-by-step script (or automation) that demonstrates how to produce an installation token and create the repository secret (Node or Python sample).
+
+Final JSON summary and links to PR/merge.
+
+If any permission problems occurred, create a GitHub Issue in the repo describing exactly which permission is missing and what admin action is required.
+
+Security & governance
+
+Do not commit secrets anywhere. Use repository secrets and vaults only.
+
+If the token is compromised or exposed during the process, rotate it immediately and update the consumer application.
+
+Do not rewrite main’s history (no force pushes) without explicit approval from org owners.
+
+If you understand, execute these steps now and report progress after each major step. Do not attempt destructive operations (force-push, history rewrite) without explicit human approval.

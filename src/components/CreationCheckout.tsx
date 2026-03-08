@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Users, User, Package, Sparkles, Loader2, Tag } from "lucide-react";
+import { ShoppingCart, Users, User, Package, Sparkles, Loader2, Tag, FileText } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import type { Note, Concentration } from "@/data/scentNotes";
 import { toast } from "sonner";
+import PackingSlip, { type PackingSlipData } from "@/components/PackingSlip";
 
 interface SelectedNote extends Note {
   intensity: number;
@@ -37,7 +38,7 @@ const PRICE_MATRIX: Record<string, { original: number; sale: number; variantId: 
   "100-edt":    { original: 119.98, sale: 89.98, variantId: "gid://shopify/ProductVariant/46594665939282" },
 };
 
-const B2B_DISCOUNT = 50; // 50% flat discount for B2B
+const B2B_DISCOUNT = 20; // 20% B2B discount (matching 20% B2B commission rate)
 
 function getPriceKey(volume: number, concentration: Concentration): string {
   return `${volume}-${concentration.id}`;
@@ -48,6 +49,7 @@ const CreationCheckout = ({ selected, concentration, volume, onClose }: Creation
   const [quantity, setQuantity] = useState(1);
   const [b2bQuantity, setB2bQuantity] = useState(10);
   const [isAdding, setIsAdding] = useState(false);
+  const [showSlip, setShowSlip] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
   const priceKey = getPriceKey(volume, concentration);
@@ -113,7 +115,7 @@ const CreationCheckout = ({ selected, concentration, volume, onClose }: Creation
       toast.success("Custom blend added to cart!", {
         description: `${qty}× ${volume}ml ${concentration.name}`,
       });
-      onClose();
+      setShowSlip(true);
     } catch {
       toast.error("Failed to add to cart");
     } finally {
@@ -265,6 +267,35 @@ const CreationCheckout = ({ selected, concentration, volume, onClose }: Creation
           Want to become a partner? <a href="/partner" className="text-primary hover:underline">Apply here</a> to manage your B2B orders.
         </p>
       )}
+
+      <AnimatePresence>
+        {showSlip && (
+          <PackingSlip
+            data={{
+              orderNumber: String(Date.now()).slice(-6),
+              date: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+              customer: { name: customerType === "b2b" ? "B2B Partner" : "Creator" },
+              items: [{
+                name: `Custom Blend: ${blendSummary.slice(0, 60)}${blendSummary.length > 60 ? "…" : ""}`,
+                variant: `${volume}ml ${concentration.percentage}`,
+                quantity: qty,
+                unitPrice: unitPrice,
+              }],
+              blend: {
+                blendName: blendSummary,
+                concentration: concentration.name,
+                volume: `${volume}ml`,
+                notes: selected.map(n => n.name),
+              },
+              subtotal: totalPrice,
+              discount: savings > 0 ? savings : undefined,
+              total: totalPrice,
+              currency: "EUR",
+            }}
+            onClose={() => { setShowSlip(false); onClose(); }}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

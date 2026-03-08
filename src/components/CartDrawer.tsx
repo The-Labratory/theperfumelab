@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, CreditCard, Shield } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, CreditCard, Shield, FileText } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import PackingSlip from "@/components/PackingSlip";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showSlip, setShowSlip] = useState(false);
   const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
@@ -89,9 +92,14 @@ export const CartDrawer = () => {
                   <span className="text-xl font-bold font-display">{items[0]?.price.currencyCode || '€'} {totalPrice.toFixed(2)}</span>
                 </div>
                 
-                <Button onClick={handleCheckout} className="w-full glow-primary font-display tracking-wider" size="lg" disabled={items.length === 0 || isLoading || isSyncing}>
-                  {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CreditCard className="w-4 h-4 mr-2" />Secure Checkout</>}
-                </Button>
+                <div className="flex gap-2">
+                  <Button onClick={() => setShowSlip(true)} variant="outline" className="flex-1 font-display tracking-wider" size="lg">
+                    <FileText className="w-4 h-4 mr-1.5" /> Packing Slip
+                  </Button>
+                  <Button onClick={handleCheckout} className="flex-1 glow-primary font-display tracking-wider" size="lg" disabled={items.length === 0 || isLoading || isSyncing}>
+                    {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CreditCard className="w-4 h-4 mr-1.5" />Checkout</>}
+                  </Button>
+                </div>
 
                 {/* Payment methods & trust badges */}
                 <div className="flex items-center justify-center gap-3 pt-1">
@@ -111,6 +119,28 @@ export const CartDrawer = () => {
           )}
         </div>
       </SheetContent>
+
+      <AnimatePresence>
+        {showSlip && items.length > 0 && (
+          <PackingSlip
+            data={{
+              orderNumber: String(Date.now()).slice(-6),
+              date: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+              customer: { name: "Customer" },
+              items: items.map(item => ({
+                name: item.product.node.title,
+                variant: item.selectedOptions.map(o => o.value).join(" • "),
+                quantity: item.quantity,
+                unitPrice: parseFloat(item.price.amount),
+              })),
+              subtotal: totalPrice,
+              total: totalPrice,
+              currency: items[0]?.price.currencyCode === "EUR" ? "EUR" : "USD",
+            }}
+            onClose={() => setShowSlip(false)}
+          />
+        )}
+      </AnimatePresence>
     </Sheet>
   );
 };
