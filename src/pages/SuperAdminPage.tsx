@@ -154,8 +154,8 @@ const SuperAdminPage = () => {
 
   const revokeInvite = async (inviteId: string) => {
     const { error } = await supabase
-      .from("employee_invites")
-      .update({ status: "revoked" })
+      .from("referral_invites")
+      .update({ status: "revoked" } as any)
       .eq("id", inviteId);
     if (error) { toast.error("Could not revoke invite."); return; }
     toast.success("Invite revoked.");
