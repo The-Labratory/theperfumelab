@@ -1,45 +1,80 @@
 
 
-# Expand Scent Lab Notes Library
+# Master Perfumer AI & Full Application Audit — Fix Plan
 
-## Overview
-Massively expand the available fragrance notes in the Scent Lab from 12 to 48+ notes, inspired by the actual ingredients used across Scentra's perfume collection. The notes will be organized into the existing three layers (Top, Heart, Base) and also increase the max-per-layer limit to accommodate the larger palette.
+## Issues Found
 
-## Changes
+### 1. Edge Function: JSON Parsing Fragility (Critical)
+The `perfumer-ai` edge function returns raw AI text in `data.content`. The Gifting, Seance, and SEO flows then `JSON.parse()` this content. If the AI model wraps its response in markdown code fences (e.g., ` ```json ... ``` `), parsing fails silently and the user sees "Could not generate blend" errors.
 
-### 1. Expand the `availableNotes` array in `ScentLabPage.tsx`
+**Fix:** Strip markdown code fences from the AI response in the edge function before returning `content`.
 
-Replace the current 12 notes (4 per layer) with a comprehensive library of ~48 notes (16 per layer):
+### 2. Edge Function: SEO Mode Not Supported (Bug)
+`SEOPageGeneratorPage` sends `{ messages: [...] }` to `perfumer-ai`, but the edge function only accepts `mode` values of `analyze`, `gift`, `duo`, or `seance`. It ignores the `messages` field entirely and returns a 400 error. The SEO page falls through to a local fallback template every time.
 
-**Top Notes (16):**
-- Bergamot, Lemon Zest, Pink Pepper, Grapefruit, Blood Orange, Green Apple, Pear, Black Currant, Sparkling Citrus, Mandarin, Cardamom, Ginger, Saffron, Mint, Eucalyptus, Aldehydes
+**Fix:** Add a `messages` pass-through mode to the edge function that forwards arbitrary chat messages to the AI gateway.
 
-**Heart Notes (16):**
-- Rose, Jasmine, Iris, Lavender, Violet, Lilac, Peony, Tuberose, White Florals, Coffee, Cinnamon, Nutmeg, Geranium, Magnolia, Orange Blossom, Ylang-Ylang
+### 3. Edge Function: Model Update
+Currently uses `google/gemini-2.5-flash`. Per platform guidelines, the default should be `google/gemini-3-flash-preview`.
 
-**Base Notes (16):**
-- Vanilla, Sandalwood, White Musk, Amber, Patchouli, Cedarwood, Vetiver, Oud, Tonka Bean, Benzoin, Cashmere Wood, Dark Cherry, Almond, Cocoa, Leather, Smoky Incense
+**Fix:** Update the model string in the edge function.
 
-### 2. Update blend limits
-- Increase max notes per layer from 2 to 3
-- Increase total blend size from 6 to 9
+### 4. AIPerfumer Component: Poor Auth Error Handling
+When unauthenticated users tap "Master Perfumer AI", the edge function returns 401 but the component shows a generic "AI Perfumer is temporarily unavailable" toast. Users don't know they need to log in.
 
-### 3. Add scrollable grid for note palette
-- Make the note palette section scrollable since 16 notes per layer won't fit without scrolling
-- Use a `ScrollArea` component for the note grid
-- Adjust grid to `grid-cols-3` or `grid-cols-4` to fit more notes compactly
+**Fix:** Check the error response and show "Please sign in to use the AI Perfumer" when 401.
 
-### 4. Update harmony score calculation
-- Adjust the formula to account for the new max of 9 notes instead of 6
+### 5. AIPerfumer Component: Missing 429/402 Handling
+Rate limit (429) and payment (402) errors from the edge function are not surfaced with specific messages.
 
-## Technical Details
+**Fix:** Add specific toast messages for 429 and 402 status codes.
 
-All changes are confined to a single file: `src/pages/ScentLabPage.tsx`.
+### 6. GiftingPage & ScentSeance: Same Auth & Error Handling Gaps
+Same issues as AIPerfumer — no specific handling for 401, 429, or 402.
 
-- The `availableNotes` array will be expanded with carefully chosen colors (HSL values) for each note to maintain the visual aesthetic
-- The `addNote` function's layer limit check changes from `>= 2` to `>= 3`
-- The harmony score formula denominator changes from 6 to 9
-- The blend counter display changes from `/6` to `/9`
-- A `ScrollArea` import will be added from `@/components/ui/scroll-area`
-- The note grid will be wrapped in a `ScrollArea` with a fixed max height
+### 7. FormulationLabPage: Same Pattern
+The `requestAiEvolution` function has the same generic error handling.
+
+---
+
+## Implementation Plan
+
+### A. Update `supabase/functions/perfumer-ai/index.ts`
+- Strip markdown code fences (` ```json `, ` ``` `) from AI response content before returning
+- Add a `"messages"` mode that forwards raw messages to the AI gateway (for SEO and future use)
+- Update model to `google/gemini-3-flash-preview`
+- Return error status codes in the JSON body so `supabase.functions.invoke` can surface them
+
+### B. Update `src/components/AIPerfumer.tsx`
+- Detect 401 errors and show "Sign in to use AI Perfumer"
+- Detect 429/402 and show appropriate messages
+- Handle `data.error` field from edge function responses
+
+### C. Update `src/pages/GiftingPage.tsx`
+- Same auth and rate-limit error handling improvements
+- Improve JSON parse error resilience (strip code fences client-side as fallback)
+
+### D. Update `src/components/ScentSeance.tsx`
+- Same error handling improvements
+- Same JSON parse resilience
+
+### E. Update `src/pages/FormulationLabPage.tsx`
+- Same error handling pattern
+
+### F. Update `src/pages/SEOPageGeneratorPage.tsx`
+- Use the new `messages` mode properly
+- Parse `data.content` instead of `data.choices[0].message.content`
+
+---
+
+## Summary of Changes
+
+| File | Change |
+|------|--------|
+| `supabase/functions/perfumer-ai/index.ts` | Strip code fences, add messages mode, update model, surface error codes |
+| `src/components/AIPerfumer.tsx` | Auth-aware error handling (401/429/402) |
+| `src/pages/GiftingPage.tsx` | Auth-aware error handling, JSON parse resilience |
+| `src/components/ScentSeance.tsx` | Auth-aware error handling, JSON parse resilience |
+| `src/pages/FormulationLabPage.tsx` | Auth-aware error handling |
+| `src/pages/SEOPageGeneratorPage.tsx` | Fix to use correct response shape |
 
