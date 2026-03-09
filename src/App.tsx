@@ -154,6 +154,18 @@ const AppContent = () => {
           <Route path="referrals" element={<SAReferralManagementPage />} />
         </Route>
 
+        {/* Business Portal */}
+        <Route path="/my-business" element={<BusinessLayout />}>
+          <Route index element={<BusinessDashboard />} />
+          <Route path="sales" element={<BusinessSales />} />
+          <Route path="inventory" element={<BusinessInventory />} />
+          <Route path="customers" element={<BusinessCustomers />} />
+          <Route path="network" element={<BusinessNetwork />} />
+          <Route path="marketing" element={<BusinessMarketing />} />
+          <Route path="goals" element={<BusinessGoals />} />
+          <Route path="reports" element={<BusinessReports />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
