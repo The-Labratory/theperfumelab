@@ -163,6 +163,23 @@ export const availableNotes: Note[] = [
   { id: "styrax", name: "Styrax", emoji: "🍂", layer: "base", color: "hsl(22 45% 32%)" },
   { id: "elemi-resin", name: "Elemi Resin", emoji: "💧", layer: "base", color: "hsl(45 40% 50%)" },
   { id: "white-amber", name: "White Amber", emoji: "🤍", layer: "base", color: "hsl(35 30% 75%)" },
+  { id: "cashmeran", name: "Cashmeran", emoji: "🧶", layer: "base", color: "hsl(18 25% 50%)" },
+  { id: "iso-e-super", name: "Iso E Super", emoji: "💠", layer: "base", color: "hsl(200 20% 60%)" },
+  { id: "ambroxan", name: "Ambroxan", emoji: "🔷", layer: "base", color: "hsl(210 30% 55%)" },
+  { id: "orris-root", name: "Orris Root", emoji: "🌾", layer: "base", color: "hsl(260 25% 55%)" },
+  { id: "dragon-blood", name: "Dragon's Blood", emoji: "🐉", layer: "base", color: "hsl(0 60% 30%)" },
+  { id: "opoponax", name: "Opoponax", emoji: "🪨", layer: "base", color: "hsl(25 40% 30%)" },
+  { id: "hay-absolute", name: "Hay Absolute", emoji: "🌾", layer: "base", color: "hsl(45 45% 45%)" },
+  { id: "dried-fruits", name: "Dried Fruits", emoji: "🍇", layer: "base", color: "hsl(15 50% 35%)" },
+  { id: "brown-sugar", name: "Brown Sugar", emoji: "🍬", layer: "base", color: "hsl(25 55% 35%)" },
+  { id: "maple", name: "Maple", emoji: "🍁", layer: "base", color: "hsl(20 60% 40%)" },
+  { id: "rum-absolute", name: "Rum Absolute", emoji: "🥃", layer: "base", color: "hsl(28 50% 30%)" },
+  { id: "immortelle", name: "Immortelle", emoji: "🌻", layer: "base", color: "hsl(45 60% 45%)" },
+  { id: "hemp", name: "Hemp", emoji: "🌿", layer: "base", color: "hsl(95 30% 35%)" },
+  { id: "moss", name: "Moss", emoji: "🌿", layer: "base", color: "hsl(110 25% 30%)" },
+  { id: "earth", name: "Wet Earth", emoji: "🪨", layer: "base", color: "hsl(20 30% 25%)" },
+  { id: "mushroom", name: "Mushroom", emoji: "🍄", layer: "base", color: "hsl(30 20% 40%)" },
+  { id: "seaweed", name: "Seaweed", emoji: "🌊", layer: "base", color: "hsl(160 30% 30%)" },
 ];
 
 export interface Concentration {
