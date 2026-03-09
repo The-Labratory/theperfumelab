@@ -97,6 +97,7 @@ export default function Navbar() {
         { path: "/team", label: "Team", description: "Meet the makers" },
       ],
     },
+    ...(user ? [{ label: "My Business", path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
     ...(isAdmin ? [{ label: t("nav.backOffice"), path: "/admin" }] : []),
   ];
 
