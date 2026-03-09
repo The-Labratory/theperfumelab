@@ -1422,6 +1422,177 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_customers: {
+        Row: {
+          affiliate_partner_id: string
+          created_at: string
+          customer_email: string | null
+          customer_name: string
+          customer_phone: string | null
+          customer_type: string
+          id: string
+          last_purchase_at: string | null
+          notes: string | null
+          tags: string[] | null
+          total_orders: number
+          total_purchases: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_partner_id: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name: string
+          customer_phone?: string | null
+          customer_type?: string
+          id?: string
+          last_purchase_at?: string | null
+          notes?: string | null
+          tags?: string[] | null
+          total_orders?: number
+          total_purchases?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_partner_id?: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string
+          customer_phone?: string | null
+          customer_type?: string
+          id?: string
+          last_purchase_at?: string | null
+          notes?: string | null
+          tags?: string[] | null
+          total_orders?: number
+          total_purchases?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_customers_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_goals: {
+        Row: {
+          affiliate_partner_id: string
+          created_at: string
+          current_value: number
+          goal_type: string
+          id: string
+          notes: string | null
+          period: string
+          period_end: string
+          period_start: string
+          set_by: string | null
+          target_value: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_partner_id: string
+          created_at?: string
+          current_value?: number
+          goal_type?: string
+          id?: string
+          notes?: string | null
+          period?: string
+          period_end?: string
+          period_start?: string
+          set_by?: string | null
+          target_value?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_partner_id?: string
+          created_at?: string
+          current_value?: number
+          goal_type?: string
+          id?: string
+          notes?: string | null
+          period?: string
+          period_end?: string
+          period_start?: string
+          set_by?: string | null
+          target_value?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_goals_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_inventory: {
+        Row: {
+          affiliate_partner_id: string
+          cost_price: number
+          created_at: string
+          id: string
+          low_stock_threshold: number
+          notes: string | null
+          product_name: string
+          quantity_in_stock: number
+          quantity_sold: number
+          sku: string | null
+          unit_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_partner_id: string
+          cost_price?: number
+          created_at?: string
+          id?: string
+          low_stock_threshold?: number
+          notes?: string | null
+          product_name: string
+          quantity_in_stock?: number
+          quantity_sold?: number
+          sku?: string | null
+          unit_price?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_partner_id?: string
+          cost_price?: number
+          created_at?: string
+          id?: string
+          low_stock_threshold?: number
+          notes?: string | null
+          product_name?: string
+          quantity_in_stock?: number
+          quantity_sold?: number
+          sku?: string | null
+          unit_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_inventory_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partner_sales_reports: {
         Row: {
           affiliate_partner_id: string
