@@ -15,6 +15,42 @@ interface AIPerfumerProps {
   concentration: string;
 }
 
+function handleAIError(data: any, error: any) {
+  if (error) {
+    const status = data?.status || error?.status;
+    if (status === 401) {
+      toast.error("Please sign in to use the AI Perfumer");
+      return true;
+    }
+    if (status === 429) {
+      toast.error("Too many requests — please wait a moment and try again");
+      return true;
+    }
+    if (status === 402) {
+      toast.error("AI credits exhausted. Please add credits to continue.");
+      return true;
+    }
+  }
+  if (data?.error) {
+    const msg = data.error as string;
+    if (data.status === 401 || msg.includes("Authentication")) {
+      toast.error("Please sign in to use the AI Perfumer");
+      return true;
+    }
+    if (data.status === 429) {
+      toast.error("Too many requests — please wait a moment and try again");
+      return true;
+    }
+    if (data.status === 402) {
+      toast.error("AI credits exhausted. Please add credits to continue.");
+      return true;
+    }
+    toast.error(msg);
+    return true;
+  }
+  return false;
+}
+
 const AIPerfumer = ({ notes, concentration }: AIPerfumerProps) => {
   const [advice, setAdvice] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +76,7 @@ const AIPerfumer = ({ notes, concentration }: AIPerfumerProps) => {
           mode: "analyze",
         },
       });
+      if (handleAIError(data, error)) return;
       if (error) throw error;
       setAdvice(data.content);
     } catch (err) {

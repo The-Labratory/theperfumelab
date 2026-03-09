@@ -80,7 +80,24 @@ const GiftingPage = () => {
       const { data, error } = await supabase.functions.invoke("perfumer-ai", {
         body: bodyPayload,
       });
-      if (error) throw error;
+
+      // Handle specific error codes from the edge function
+      if (data?.error || error) {
+        const status = data?.status || error?.status;
+        if (status === 401 || data?.error?.includes?.("Authentication")) {
+          toast.error("Please sign in to use AI Gifting");
+          return;
+        }
+        if (status === 429) {
+          toast.error("Too many requests — please wait a moment and try again");
+          return;
+        }
+        if (status === 402) {
+          toast.error("AI credits exhausted. Please add credits to continue.");
+          return;
+        }
+        if (error) throw error;
+      }
 
       try {
         const raw = JSON.parse(data.content);

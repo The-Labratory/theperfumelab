@@ -78,9 +78,16 @@ const SEOPageGeneratorPage = () => {
         },
       });
 
-      if (error) throw error;
+      // Handle specific error codes
+      if (data?.error || error) {
+        const status = data?.status || error?.status;
+        if (status === 401) { toast.error("Please sign in to generate SEO pages"); return; }
+        if (status === 429) { toast.error("Too many requests — please wait a moment"); return; }
+        if (status === 402) { toast.error("AI credits exhausted. Please add credits."); return; }
+        if (error) throw error;
+      }
 
-      const text = data?.choices?.[0]?.message?.content || data?.message?.content || "";
+      const text = data?.content || "";
       // Try to parse JSON from the response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("Could not parse AI response");

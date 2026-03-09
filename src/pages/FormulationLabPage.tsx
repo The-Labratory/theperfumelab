@@ -79,7 +79,23 @@ const FormulationLabPage = () => {
           concentration: concType,
         },
       });
-      if (error) throw error;
+      // Handle specific error codes
+      if (data?.error || error) {
+        const status = data?.status || error?.status;
+        if (status === 401 || data?.error?.includes?.("Authentication")) {
+          toast.error("Please sign in to use AI predictions");
+          return;
+        }
+        if (status === 429) {
+          toast.error("Too many requests — please wait a moment");
+          return;
+        }
+        if (status === 402) {
+          toast.error("AI credits exhausted. Please add credits.");
+          return;
+        }
+        if (error) throw error;
+      }
       setAiEvolution(data?.content || "No prediction available.");
     } catch {
       toast.error("AI prediction failed");
