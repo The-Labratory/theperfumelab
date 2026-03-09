@@ -150,7 +150,7 @@ const AffiliatePage = () => {
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border border-accent/20 mb-8"
           >
             <Zap className="w-4 h-4 text-accent" />
-            <span className="text-[10px] font-display tracking-[0.3em] text-accent">EARN UP TO 25% COMMISSION</span>
+            <span className="text-[10px] font-display tracking-[0.3em] text-accent">EARN UP TO 50% COMMISSION</span>
           </motion.div>
           <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-black tracking-wider gradient-text mb-6 leading-tight">
             Partner Program &<br />Affiliate Network

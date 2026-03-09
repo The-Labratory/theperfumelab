@@ -154,7 +154,7 @@ const GatewayPage = () => {
                 Become a <span className="text-accent">Partner</span>
               </h2>
               <p className="text-sm text-muted-foreground font-body leading-relaxed mb-6">
-                Join our affiliate network. Share, promote, and earn up to 25% commission on every sale.
+                Join our affiliate network. Share, promote, and earn up to 50% commission on every sale.
               </p>
               <div className="inline-flex items-center gap-2 text-accent font-display text-xs tracking-[0.2em] uppercase group-hover:gap-3 transition-all duration-300">
                 <Users className="w-3.5 h-3.5" />
