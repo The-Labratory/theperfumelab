@@ -72,7 +72,7 @@ export const STOREFRONT_PRODUCTS_QUERY = `
               }
             }
           }
-          variants(first: 10) {
+          variants(first: 50) {
             edges {
               node {
                 id

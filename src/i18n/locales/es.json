@@ -14,7 +14,8 @@
     "login": "Iniciar Sesión",
     "signup": "Registrarse",
     "logout": "Cerrar Sesión",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "myBusiness": "Mi Negocio"
   },
   "hero": {
     "badge": "Solo 100 Creadores Fundadores Aceptados",
@@ -94,5 +95,63 @@
     "pending": "Pendiente",
     "approved": "Aprobado",
     "rejected": "Rechazado"
+  },
+  "gateway": {
+    "choosePath": "Elige Tu Camino",
+    "customise": "Personaliza Tu Perfume",
+    "customiseDesc": "Crea tu aroma exclusivo con más de 200 ingredientes moleculares. Diseñado por ti, mezclado por artesanos.",
+    "startCreating": "Empieza a Crear",
+    "becomePartner": "Hazte Socio",
+    "partnerDesc": "Únete a nuestra red. Comparte, promociona y gana hasta un 50% de comisión en cada venta.",
+    "joinNow": "Únete Ahora"
+  },
+  "store": {
+    "title": "LA COLECCIÓN",
+    "subtitle": "Descubre nuestra colección exclusiva de fragancias",
+    "noProducts": "No se encontraron productos",
+    "addToCart": "Añadir",
+    "buyNow": "Comprar Ahora",
+    "backToStore": "Volver a la Tienda",
+    "outOfStock": "Esta variante no está disponible actualmente",
+    "addedToCart": "añadido al carrito"
+  },
+  "business": {
+    "title": "Mi Negocio",
+    "dashboard": "Panel",
+    "sales": "Ventas",
+    "inventory": "Inventario",
+    "customers": "Clientes",
+    "network": "Red",
+    "marketing": "Marketing",
+    "goals": "Objetivos",
+    "reports": "Informes",
+    "totalSales": "Ventas Totales",
+    "totalEarnings": "Ganancias Totales",
+    "totalCustomers": "Clientes Totales",
+    "totalReferrals": "Referencias Totales"
+  },
+  "gifting": {
+    "title": "Regala un Aroma",
+    "subtitle": "Crea un regalo de fragancia personalizado para alguien especial",
+    "personality": "Personalidad",
+    "occasion": "Ocasión",
+    "mood": "Estado de Ánimo",
+    "memory": "Recuerdo",
+    "details": "Detalles",
+    "duoPartner": "Compañero Dúo",
+    "generating": "Generando tu mezcla...",
+    "result": "Tu Mezcla de Regalo"
+  },
+  "lab": {
+    "title": "El Laboratorio de Aromas",
+    "subtitle": "Compón tu fragancia exclusiva",
+    "topNotes": "Notas de Salida",
+    "heartNotes": "Notas de Corazón",
+    "baseNotes": "Notas de Fondo",
+    "concentration": "Concentración",
+    "harmony": "Puntuación de Armonía",
+    "aiAnalysis": "Análisis IA",
+    "clearAll": "Borrar Todo",
+    "save": "Guardar Mezcla"
   }
 }

@@ -14,7 +14,8 @@
     "login": "Giriş Yap",
     "signup": "Kayıt Ol",
     "logout": "Çıkış Yap",
-    "account": "Hesap"
+    "account": "Hesap",
+    "myBusiness": "İşletmem"
   },
   "hero": {
     "badge": "Sadece 100 Kurucu Üye Kabul Edilir",
@@ -94,5 +95,63 @@
     "pending": "Beklemede",
     "approved": "Onaylandı",
     "rejected": "Reddedildi"
+  },
+  "gateway": {
+    "choosePath": "Yolunuzu Seçin",
+    "customise": "Parfümünüzü Tasarlayın",
+    "customiseDesc": "200'den fazla moleküler bileşenden imza kokunuzu yaratın. Sizin tarafınızdan tasarlanan, zanaatkarlar tarafından harmanlanır.",
+    "startCreating": "Yaratmaya Başla",
+    "becomePartner": "Ortak Olun",
+    "partnerDesc": "Ortaklık ağımıza katılın. Paylaşın, tanıtın ve her satıştan %50'ye varan komisyon kazanın.",
+    "joinNow": "Şimdi Katıl"
+  },
+  "store": {
+    "title": "KOLEKSİYON",
+    "subtitle": "Özel parfüm koleksiyonumuzu keşfedin",
+    "noProducts": "Ürün bulunamadı",
+    "addToCart": "Ekle",
+    "buyNow": "Şimdi Al",
+    "backToStore": "Mağazaya Dön",
+    "outOfStock": "Bu varyant şu anda stokta yok",
+    "addedToCart": "sepete eklendi"
+  },
+  "business": {
+    "title": "İşletmem",
+    "dashboard": "Kontrol Paneli",
+    "sales": "Satışlar",
+    "inventory": "Envanter",
+    "customers": "Müşteriler",
+    "network": "Ağ",
+    "marketing": "Pazarlama",
+    "goals": "Hedefler",
+    "reports": "Raporlar",
+    "totalSales": "Toplam Satış",
+    "totalEarnings": "Toplam Kazanç",
+    "totalCustomers": "Toplam Müşteri",
+    "totalReferrals": "Toplam Yönlendirme"
+  },
+  "gifting": {
+    "title": "Bir Koku Hediye Et",
+    "subtitle": "Özel birisi için kişiselleştirilmiş bir koku hediyesi yaratın",
+    "personality": "Kişilik",
+    "occasion": "Durum",
+    "mood": "Ruh Hali",
+    "memory": "Anı",
+    "details": "Detaylar",
+    "duoPartner": "İkili Ortak",
+    "generating": "Karışımınız oluşturuluyor...",
+    "result": "Hediye Karışımınız"
+  },
+  "lab": {
+    "title": "Koku Laboratuvarı",
+    "subtitle": "İmza kokunuzu besteleyin",
+    "topNotes": "Üst Notalar",
+    "heartNotes": "Kalp Notaları",
+    "baseNotes": "Alt Notalar",
+    "concentration": "Konsantrasyon",
+    "harmony": "Uyum Puanı",
+    "aiAnalysis": "Yapay Zeka Analizi",
+    "clearAll": "Tümünü Temizle",
+    "save": "Karışımı Kaydet"
   }
 }

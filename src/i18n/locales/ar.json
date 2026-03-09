@@ -14,7 +14,8 @@
     "login": "تسجيل الدخول",
     "signup": "إنشاء حساب",
     "logout": "تسجيل الخروج",
-    "account": "الحساب"
+    "account": "الحساب",
+    "myBusiness": "أعمالي"
   },
   "hero": {
     "badge": "١٠٠ مقعد فقط للمؤسسين",
@@ -94,5 +95,63 @@
     "pending": "قيد الانتظار",
     "approved": "تمت الموافقة",
     "rejected": "مرفوض"
+  },
+  "gateway": {
+    "choosePath": "اختر طريقك",
+    "customise": "صمّم عطرك",
+    "customiseDesc": "أنشئ عطرك المميز من أكثر من 200 مكون جزيئي. مصمم بواسطتك، ممزوج بأيدي حرفيين.",
+    "startCreating": "ابدأ الإبداع",
+    "becomePartner": "كن شريكاً",
+    "partnerDesc": "انضم إلى شبكتنا. شارك وروّج واكسب عمولة تصل إلى 50٪ على كل عملية بيع.",
+    "joinNow": "انضم الآن"
+  },
+  "store": {
+    "title": "المجموعة",
+    "subtitle": "اكتشف مجموعة عطورنا الحصرية",
+    "noProducts": "لا توجد منتجات",
+    "addToCart": "أضف",
+    "buyNow": "اشترِ الآن",
+    "backToStore": "العودة إلى المتجر",
+    "outOfStock": "هذا المنتج غير متوفر حالياً",
+    "addedToCart": "تمت الإضافة إلى السلة"
+  },
+  "business": {
+    "title": "أعمالي",
+    "dashboard": "لوحة التحكم",
+    "sales": "المبيعات",
+    "inventory": "المخزون",
+    "customers": "العملاء",
+    "network": "الشبكة",
+    "marketing": "التسويق",
+    "goals": "الأهداف",
+    "reports": "التقارير",
+    "totalSales": "إجمالي المبيعات",
+    "totalEarnings": "إجمالي الأرباح",
+    "totalCustomers": "إجمالي العملاء",
+    "totalReferrals": "إجمالي الإحالات"
+  },
+  "gifting": {
+    "title": "أهدِ عطراً",
+    "subtitle": "أنشئ هدية عطرية مخصصة لشخص مميز",
+    "personality": "الشخصية",
+    "occasion": "المناسبة",
+    "mood": "المزاج",
+    "memory": "الذكرى",
+    "details": "التفاصيل",
+    "duoPartner": "شريك الثنائي",
+    "generating": "جارٍ إنشاء مزيجك...",
+    "result": "مزيج هديتك"
+  },
+  "lab": {
+    "title": "مختبر العطور",
+    "subtitle": "ألّف عطرك المميز",
+    "topNotes": "النوتات العليا",
+    "heartNotes": "نوتات القلب",
+    "baseNotes": "نوتات القاعدة",
+    "concentration": "التركيز",
+    "harmony": "درجة الانسجام",
+    "aiAnalysis": "تحليل الذكاء الاصطناعي",
+    "clearAll": "مسح الكل",
+    "save": "حفظ المزيج"
   }
 }
