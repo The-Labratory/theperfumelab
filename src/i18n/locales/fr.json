@@ -14,7 +14,8 @@
     "login": "Connexion",
     "signup": "S'inscrire",
     "logout": "Déconnexion",
-    "account": "Compte"
+    "account": "Compte",
+    "myBusiness": "Mon Entreprise"
   },
   "hero": {
     "badge": "Seulement 100 Créateurs Fondateurs Acceptés",
