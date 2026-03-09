@@ -132,7 +132,7 @@ const AdminPage = () => {
           .order("created_at", { ascending: false })
           .limit(100);
         if (error) throw error;
-        setEmployees((data as Employee[]) ?? []);
+        setEmployees((data as unknown as Employee[]) ?? []);
       }
     } catch (e) {
       toast.error("Failed to load data.");

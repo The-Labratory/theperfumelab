@@ -170,9 +170,9 @@ const SuperAdminPage = () => {
     setTreeLoading(true);
     try {
       const { data, error } = await supabase
-        .rpc("get_referral_tree", { _root_user_id: treeRootId.trim() });
+        .rpc("get_downline", { _user_id: treeRootId.trim() });
       if (error) throw error;
-      setReferralNodes((data as ReferralNode[]) ?? []);
+      setReferralNodes((data as unknown as ReferralNode[]) ?? []);
     } catch (e) {
       toast.error("Failed to load referral tree.");
       console.error(e);

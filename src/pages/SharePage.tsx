@@ -77,8 +77,8 @@ const SharePage = () => {
           ...d,
           scent_notes: Array.isArray(d.scent_notes) ? d.scent_notes : [],
         }));
-        setBlends(mapped);
-        setSelectedBlend(mapped[0]);
+        setBlends(mapped as unknown as SavedBlend[]);
+        setSelectedBlend(mapped[0] as unknown as SavedBlend);
       }
 
       if (weeklyRes.data) setWeeklyLeaders(weeklyRes.data as LeaderboardEntry[]);
