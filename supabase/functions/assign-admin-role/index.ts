@@ -1,17 +1,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const ADMIN_EMAILS = [
-  "hariri@lenzohariri.com",
-  "loranshariri@gmail.com",
-];
-
-// Only this email gets super_admin
-const SUPER_ADMIN_EMAIL = "hariri@lenzohariri.com";
-
 Deno.serve(async (req) => {
   // This function is triggered by auth webhook on user signup
-  // It checks if the new user's email is in the admin list and assigns the admin role
-  
+  // It checks the admin_whitelist table to determine if the new user should get admin/super_admin roles
+
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
   }
@@ -25,16 +17,23 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ message: "No user data" }), { status: 200 });
     }
 
-    if (!ADMIN_EMAILS.includes(userEmail)) {
-      return new Response(JSON.stringify({ message: "Not an admin email" }), { status: 200 });
-    }
-
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Check if role already exists
+    // Check the admin_whitelist table instead of hardcoded emails
+    const { data: whitelistEntry } = await supabaseAdmin
+      .from("admin_whitelist")
+      .select("email, grants_super_admin")
+      .eq("email", userEmail)
+      .maybeSingle();
+
+    if (!whitelistEntry) {
+      return new Response(JSON.stringify({ message: "Not an admin email" }), { status: 200 });
+    }
+
+    // Assign admin role
     const { data: existing } = await supabaseAdmin
       .from("user_roles")
       .select("id")
@@ -42,15 +41,29 @@ Deno.serve(async (req) => {
       .eq("role", "admin")
       .maybeSingle();
 
-    if (existing) {
-      return new Response(JSON.stringify({ message: "Already admin" }), { status: 200 });
+    if (!existing) {
+      const { error } = await supabaseAdmin
+        .from("user_roles")
+        .insert({ user_id: userId, role: "admin" });
+      if (error) throw error;
     }
 
-    const { error } = await supabaseAdmin
-      .from("user_roles")
-      .insert({ user_id: userId, role: "admin" });
+    // Assign super_admin if whitelisted for it
+    if (whitelistEntry.grants_super_admin) {
+      const { data: existingSA } = await supabaseAdmin
+        .from("user_roles")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("role", "super_admin")
+        .maybeSingle();
 
-    if (error) throw error;
+      if (!existingSA) {
+        const { error } = await supabaseAdmin
+          .from("user_roles")
+          .insert({ user_id: userId, role: "super_admin" });
+        if (error) throw error;
+      }
+    }
 
     console.log(`Admin role assigned to ${userEmail}`);
     return new Response(JSON.stringify({ message: "Admin role assigned" }), { status: 200 });
