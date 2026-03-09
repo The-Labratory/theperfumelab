@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, User, LogOut, Search, ChevronDown, FlaskConical, Compass, ShoppingBag, Users } from "lucide-react";
+import { Menu, X, User, LogOut, Search, ChevronDown, FlaskConical, Compass, ShoppingBag, Users, Briefcase } from "lucide-react";
 import { CartDrawer } from "@/components/CartDrawer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
