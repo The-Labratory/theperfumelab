@@ -741,6 +741,13 @@ export type Database = {
             referencedRelation: "ingredients"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "formula_ingredients_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       formula_snapshots: {
@@ -1074,6 +1081,13 @@ export type Database = {
             referencedRelation: "ingredients"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ifra_restrictions_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       ingredient_interactions: {
@@ -1116,10 +1130,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "ingredient_interactions_ingredient_a_id_fkey"
+            columns: ["ingredient_a_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "ingredient_interactions_ingredient_b_id_fkey"
             columns: ["ingredient_b_id"]
             isOneToOne: false
             referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ingredient_interactions_ingredient_b_id_fkey"
+            columns: ["ingredient_b_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
             referencedColumns: ["id"]
           },
         ]
@@ -2197,6 +2225,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ingredients_public: {
+        Row: {
+          allergen_flags: string[] | null
+          boiling_point: number | null
+          cas_number: string | null
+          category: string | null
+          default_layer: string | null
+          freshness: number | null
+          functional_group: string | null
+          id: string | null
+          ifra_category: string | null
+          ifra_max_concentration: number | null
+          is_active: boolean | null
+          is_fixative: boolean | null
+          molecular_weight: number | null
+          name: string | null
+          odor_intensity: number | null
+          odor_profile: string | null
+          regulatory_notes: string | null
+          sweetness: number | null
+          vapor_pressure: number | null
+          volatility_index: number | null
+          warmth: number | null
+        }
+        Insert: {
+          allergen_flags?: string[] | null
+          boiling_point?: number | null
+          cas_number?: string | null
+          category?: string | null
+          default_layer?: string | null
+          freshness?: number | null
+          functional_group?: string | null
+          id?: string | null
+          ifra_category?: string | null
+          ifra_max_concentration?: number | null
+          is_active?: boolean | null
+          is_fixative?: boolean | null
+          molecular_weight?: number | null
+          name?: string | null
+          odor_intensity?: number | null
+          odor_profile?: string | null
+          regulatory_notes?: string | null
+          sweetness?: number | null
+          vapor_pressure?: number | null
+          volatility_index?: number | null
+          warmth?: number | null
+        }
+        Update: {
+          allergen_flags?: string[] | null
+          boiling_point?: number | null
+          cas_number?: string | null
+          category?: string | null
+          default_layer?: string | null
+          freshness?: number | null
+          functional_group?: string | null
+          id?: string | null
+          ifra_category?: string | null
+          ifra_max_concentration?: number | null
+          is_active?: boolean | null
+          is_fixative?: boolean | null
+          molecular_weight?: number | null
+          name?: string | null
+          odor_intensity?: number | null
+          odor_profile?: string | null
+          regulatory_notes?: string | null
+          sweetness?: number | null
+          vapor_pressure?: number | null
+          volatility_index?: number | null
+          warmth?: number | null
+        }
+        Relationships: []
       }
     }
     Functions: {
