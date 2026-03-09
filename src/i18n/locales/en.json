@@ -14,7 +14,8 @@
     "login": "Sign In",
     "signup": "Sign Up",
     "logout": "Sign Out",
-    "account": "Account"
+    "account": "Account",
+    "myBusiness": "My Business"
   },
   "hero": {
     "badge": "Only 100 Founding Creators Accepted",
