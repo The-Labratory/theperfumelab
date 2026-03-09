@@ -196,22 +196,48 @@ const AffiliatePage = () => {
                 <span className="text-[10px] font-display tracking-[0.3em] text-accent mb-3 block">COMMISSION TIERS</span>
                 <h2 className="font-display text-2xl sm:text-3xl font-black tracking-wider text-foreground">The More You Share, The More You Earn</h2>
               </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
                 {TIERS.map((tier, i) => (
                   <motion.div
                     key={tier.code}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass-surface rounded-xl p-6 text-center group hover:border-primary/30 transition-colors"
+                    transition={{ delay: i * 0.2, type: "spring", stiffness: 100 }}
+                    whileHover={{ scale: 1.04, y: -6 }}
+                    className={`relative glass-surface rounded-3xl p-8 text-center group overflow-hidden border border-primary/20 ${tier.glow} transition-all duration-500`}
                   >
-                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${tier.color} mx-auto mb-4 flex items-center justify-center`}>
-                      <tier.icon className="w-5 h-5 text-background" />
+                    {/* Animated glow orb */}
+                    <div className={`absolute -top-20 -right-20 w-48 h-48 rounded-full bg-gradient-to-br ${tier.color} blur-3xl opacity-30 group-hover:opacity-50 transition-opacity duration-700`} />
+                    <div className={`absolute -bottom-20 -left-20 w-36 h-36 rounded-full bg-gradient-to-tr ${tier.color} blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-700`} />
+                    
+                    <div className="relative z-10">
+                      <motion.div 
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                        className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${tier.color} mx-auto mb-5 flex items-center justify-center shadow-lg`}
+                      >
+                        <tier.icon className="w-10 h-10 text-background drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]" />
+                      </motion.div>
+                      
+                      <div className="text-3xl mb-2">{tier.emoji}</div>
+                      
+                      <h3 className="font-display text-lg font-bold tracking-wide text-foreground mb-2">{tier.name}</h3>
+                      
+                      <motion.p 
+                        initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+                        transition={{ delay: i * 0.2 + 0.3, type: "spring", stiffness: 200 }}
+                        className="font-display text-5xl sm:text-6xl font-black gradient-text mb-3"
+                      >
+                        {tier.commission}
+                      </motion.p>
+                      
+                      <p className="text-[10px] font-display tracking-[0.2em] text-muted-foreground uppercase mb-4">{tier.requirement}</p>
+                      
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-display tracking-wider">
+                        <Zap className="w-3 h-3" /> INSTANT SETUP
+                      </div>
                     </div>
-                    <h3 className="font-display text-base font-bold tracking-wide text-foreground mb-1">{tier.name}</h3>
-                    <p className="font-display text-3xl font-black gradient-text mb-2">{tier.commission}</p>
-                    <p className="text-[10px] font-display tracking-[0.2em] text-muted-foreground uppercase">{tier.requirement}</p>
                   </motion.div>
                 ))}
               </div>
