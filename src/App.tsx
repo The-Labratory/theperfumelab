@@ -68,6 +68,16 @@ const SAStorageManagerPage = lazy(() => import("./pages/superadmin/StorageManage
 const SAPermissionsPage = lazy(() => import("./pages/superadmin/PermissionsPage"));
 const SAReferralManagementPage = lazy(() => import("./pages/superadmin/ReferralManagementPage"));
 
+// Business Portal
+const BusinessLayout = lazy(() => import("./pages/business/BusinessLayout"));
+const BusinessDashboard = lazy(() => import("./pages/business/BusinessDashboard"));
+const BusinessSales = lazy(() => import("./pages/business/BusinessSales"));
+const BusinessInventory = lazy(() => import("./pages/business/BusinessInventory"));
+const BusinessCustomers = lazy(() => import("./pages/business/BusinessCustomers"));
+const BusinessNetwork = lazy(() => import("./pages/business/BusinessNetwork"));
+const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"));
+const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
+const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
 const queryClient = new QueryClient();
 
 const Loader = () => (
