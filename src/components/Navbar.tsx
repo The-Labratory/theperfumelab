@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, User, LogOut, Search, ChevronDown, FlaskConical, Compass, ShoppingBag, Users } from "lucide-react";
+import { Menu, X, User, LogOut, Search, ChevronDown, FlaskConical, Compass, ShoppingBag, Users, Briefcase } from "lucide-react";
 import { CartDrawer } from "@/components/CartDrawer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
@@ -97,6 +97,7 @@ export default function Navbar() {
         { path: "/team", label: "Team", description: "Meet the makers" },
       ],
     },
+    ...(user ? [{ label: "My Business", path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
     ...(isAdmin ? [{ label: t("nav.backOffice"), path: "/admin" }] : []),
   ];
 

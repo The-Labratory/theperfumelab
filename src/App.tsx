@@ -68,6 +68,16 @@ const SAStorageManagerPage = lazy(() => import("./pages/superadmin/StorageManage
 const SAPermissionsPage = lazy(() => import("./pages/superadmin/PermissionsPage"));
 const SAReferralManagementPage = lazy(() => import("./pages/superadmin/ReferralManagementPage"));
 
+// Business Portal
+const BusinessLayout = lazy(() => import("./pages/business/BusinessLayout"));
+const BusinessDashboard = lazy(() => import("./pages/business/BusinessDashboard"));
+const BusinessSales = lazy(() => import("./pages/business/BusinessSales"));
+const BusinessInventory = lazy(() => import("./pages/business/BusinessInventory"));
+const BusinessCustomers = lazy(() => import("./pages/business/BusinessCustomers"));
+const BusinessNetwork = lazy(() => import("./pages/business/BusinessNetwork"));
+const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"));
+const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
+const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
 const queryClient = new QueryClient();
 
 const Loader = () => (
@@ -142,6 +152,18 @@ const AppContent = () => {
           <Route path="storage" element={<SAStorageManagerPage />} />
           <Route path="permissions" element={<SAPermissionsPage />} />
           <Route path="referrals" element={<SAReferralManagementPage />} />
+        </Route>
+
+        {/* Business Portal */}
+        <Route path="/my-business" element={<BusinessLayout />}>
+          <Route index element={<BusinessDashboard />} />
+          <Route path="sales" element={<BusinessSales />} />
+          <Route path="inventory" element={<BusinessInventory />} />
+          <Route path="customers" element={<BusinessCustomers />} />
+          <Route path="network" element={<BusinessNetwork />} />
+          <Route path="marketing" element={<BusinessMarketing />} />
+          <Route path="goals" element={<BusinessGoals />} />
+          <Route path="reports" element={<BusinessReports />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
