@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Mail, Phone, ChevronDown, ChevronRight } from "lucide-react";
+import { Users, ChevronDown, ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
 interface Department {
@@ -17,11 +17,11 @@ interface Employee {
   job_title: string;
   department_id: string | null;
   manager_id: string | null;
-  email: string | null;
-  phone: string | null;
   avatar_url: string | null;
   bio: string | null;
   hierarchy_level: number;
+  sort_order: number | null;
+  is_active: boolean;
 }
 
 interface TreeNode extends Employee {
@@ -108,21 +108,10 @@ function OrgNode({ node, depth = 0 }: { node: TreeNode; depth?: number }) {
           )}
         </div>
 
-        {(node.email || node.phone) && (
-          <div className="mt-2 space-y-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            {node.email && (
-              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <Mail className="w-3 h-3 shrink-0" />
-                <span className="truncate">{node.email}</span>
-              </p>
-            )}
-            {node.phone && (
-              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <Phone className="w-3 h-3 shrink-0" />
-                {node.phone}
-              </p>
-            )}
-          </div>
+        {node.bio && (
+          <p className="mt-2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 line-clamp-2">
+            {node.bio}
+          </p>
         )}
 
         {hasChildren && (
@@ -178,10 +167,10 @@ export default function TeamPage() {
 
   const loadData = async () => {
     const [empRes, deptRes] = await Promise.all([
-      supabase.from("employees").select("*").eq("is_active", true).order("hierarchy_level").order("sort_order"),
+      supabase.from("employee_public_profiles" as any).select("*").eq("is_active", true).order("hierarchy_level").order("sort_order"),
       supabase.from("departments").select("*").order("sort_order"),
     ]);
-    setEmployees((empRes.data as Employee[]) || []);
+    setEmployees((empRes.data as unknown as Employee[]) || []);
     setDepartments((deptRes.data as Department[]) || []);
     setLoading(false);
   };

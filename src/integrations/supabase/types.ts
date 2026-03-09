@@ -633,6 +633,13 @@ export type Database = {
             foreignKeyName: "employees_manager_id_fkey"
             columns: ["manager_id"]
             isOneToOne: false
+            referencedRelation: "employee_public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
             referencedRelation: "employees"
             referencedColumns: ["id"]
           },
@@ -732,6 +739,13 @@ export type Database = {
             columns: ["ingredient_id"]
             isOneToOne: false
             referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_ingredients_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1067,6 +1081,13 @@ export type Database = {
             referencedRelation: "ingredients"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ifra_restrictions_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       ingredient_interactions: {
@@ -1109,10 +1130,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "ingredient_interactions_ingredient_a_id_fkey"
+            columns: ["ingredient_a_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "ingredient_interactions_ingredient_b_id_fkey"
             columns: ["ingredient_b_id"]
             isOneToOne: false
             referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ingredient_interactions_ingredient_b_id_fkey"
+            columns: ["ingredient_b_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients_public"
             referencedColumns: ["id"]
           },
         ]
@@ -2130,7 +2165,139 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      employee_public_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          department_id: string | null
+          full_name: string | null
+          hierarchy_level: number | null
+          id: string | null
+          is_active: boolean | null
+          job_title: string | null
+          manager_id: string | null
+          sort_order: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          department_id?: string | null
+          full_name?: string | null
+          hierarchy_level?: number | null
+          id?: string | null
+          is_active?: boolean | null
+          job_title?: string | null
+          manager_id?: string | null
+          sort_order?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          department_id?: string | null
+          full_name?: string | null
+          hierarchy_level?: number | null
+          id?: string | null
+          is_active?: boolean | null
+          job_title?: string | null
+          manager_id?: string | null
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "employee_public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ingredients_public: {
+        Row: {
+          allergen_flags: string[] | null
+          boiling_point: number | null
+          cas_number: string | null
+          category: string | null
+          default_layer: string | null
+          freshness: number | null
+          functional_group: string | null
+          id: string | null
+          ifra_category: string | null
+          ifra_max_concentration: number | null
+          is_active: boolean | null
+          is_fixative: boolean | null
+          molecular_weight: number | null
+          name: string | null
+          odor_intensity: number | null
+          odor_profile: string | null
+          regulatory_notes: string | null
+          sweetness: number | null
+          vapor_pressure: number | null
+          volatility_index: number | null
+          warmth: number | null
+        }
+        Insert: {
+          allergen_flags?: string[] | null
+          boiling_point?: number | null
+          cas_number?: string | null
+          category?: string | null
+          default_layer?: string | null
+          freshness?: number | null
+          functional_group?: string | null
+          id?: string | null
+          ifra_category?: string | null
+          ifra_max_concentration?: number | null
+          is_active?: boolean | null
+          is_fixative?: boolean | null
+          molecular_weight?: number | null
+          name?: string | null
+          odor_intensity?: number | null
+          odor_profile?: string | null
+          regulatory_notes?: string | null
+          sweetness?: number | null
+          vapor_pressure?: number | null
+          volatility_index?: number | null
+          warmth?: number | null
+        }
+        Update: {
+          allergen_flags?: string[] | null
+          boiling_point?: number | null
+          cas_number?: string | null
+          category?: string | null
+          default_layer?: string | null
+          freshness?: number | null
+          functional_group?: string | null
+          id?: string | null
+          ifra_category?: string | null
+          ifra_max_concentration?: number | null
+          is_active?: boolean | null
+          is_fixative?: boolean | null
+          molecular_weight?: number | null
+          name?: string | null
+          odor_intensity?: number | null
+          odor_profile?: string | null
+          regulatory_notes?: string | null
+          sweetness?: number | null
+          vapor_pressure?: number | null
+          volatility_index?: number | null
+          warmth?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       assign_admin_if_allowed:
@@ -2199,6 +2366,17 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      get_referral_tree: {
+        Args: { _max_depth?: number; _root_user_id: string }
+        Returns: {
+          depth: number
+          display_name: string
+          parent_user_id: string
+          referee_email: string
+          referral_code: string
+          user_id: string
+        }[]
       }
       get_user_authority_level: { Args: { _user_id: string }; Returns: number }
       get_waitlist_count: { Args: never; Returns: number }
