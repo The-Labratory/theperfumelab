@@ -141,11 +141,10 @@ const SuperAdminPage = () => {
     e.preventDefault();
     if (!inviteEmail.trim()) return;
     setInviting(true);
-    const { error } = await supabase.from("employee_invites").insert({
-      email: inviteEmail.trim(),
-      role: inviteRole,
-      invited_by: user!.id,
-    });
+    const { error } = await supabase.from("referral_invites").insert({
+      invited_email: inviteEmail.trim(),
+      inviter_user_id: user!.id,
+    } as any);
     setInviting(false);
     if (error) { toast.error(error.message); return; }
     toast.success(`Invite sent to ${inviteEmail.trim()}.`);
