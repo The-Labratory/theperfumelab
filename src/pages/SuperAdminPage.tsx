@@ -106,12 +106,12 @@ const SuperAdminPage = () => {
 
       } else if (t === "invites") {
         const { data, error } = await supabase
-          .from("employee_invites")
+          .from("referral_invites")
           .select("*")
           .order("created_at", { ascending: false })
           .limit(100);
         if (error) throw error;
-        setInvites((data as InviteRow[]) ?? []);
+        setInvites((data as unknown as InviteRow[]) ?? []);
       }
     } catch (e) {
       toast.error("Failed to load data.");
