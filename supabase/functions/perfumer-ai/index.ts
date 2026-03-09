@@ -18,7 +18,7 @@ function stripCodeFences(text: string): string {
 /**
  * Advanced AI Gateway: Handles model selection and automatic failover
  */
-async function callAI(messages: any[], model = "google/gemini-2-flash-preview") {
+async function callAI(messages: any[], model = "google/gemini-3-flash-preview") {
   const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
     method: "POST",
     headers: { 
