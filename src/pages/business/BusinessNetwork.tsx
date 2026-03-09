@@ -21,7 +21,7 @@ export default function BusinessNetwork() {
 
         <TabsContent value="manage">
           <div className="glass-surface rounded-xl p-6 border border-border/30">
-            <MyNetworkManager />
+            <MyNetworkManager affiliateId={affiliate?.id} />
           </div>
         </TabsContent>
 

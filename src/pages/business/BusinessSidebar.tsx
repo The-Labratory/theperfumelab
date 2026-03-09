@@ -60,7 +60,7 @@ export function BusinessSidebar({ affiliate }: { affiliate: any }) {
           </div>
         )}
 
-        <SidebarGroup defaultOpen>
+        <SidebarGroup>
           <SidebarGroupLabel className="font-display text-[10px] tracking-[0.2em]">
             {!collapsed && "MANAGEMENT"}
           </SidebarGroupLabel>
