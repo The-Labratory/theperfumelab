@@ -94,28 +94,59 @@ const PartnerProgramPage = () => {
       </section>
 
       {/* Commission Tiers */}
-      <section className="relative z-10 px-4 sm:px-6 pb-20 max-w-4xl mx-auto">
+      <section className="relative z-10 px-4 sm:px-6 pb-20 max-w-5xl mx-auto">
         <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           className="font-display text-2xl sm:text-3xl font-bold text-center text-foreground mb-4">
           Commission Tiers
         </motion.h2>
-        <p className="font-body text-sm text-muted-foreground text-center mb-10">
+        <p className="font-body text-sm text-muted-foreground text-center mb-12">
           The more you sell, the more you earn. Platinum partners unlock 50% on every sale.
         </p>
-        <div className="grid sm:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
           {TIERS.map((t, i) => (
-            <motion.div key={t.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.15 }}
-              className={`glass-surface rounded-2xl p-6 border-2 ${t.color} text-center relative ${t.featured ? "ring-1 ring-primary/20" : ""}`}
+            <motion.div key={t.name} initial={{ opacity: 0, y: 30, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }} transition={{ delay: i * 0.2, type: "spring", stiffness: 100 }}
+              whileHover={{ scale: 1.03, y: -4 }}
+              className={`relative rounded-3xl p-8 border-2 ${t.color} text-center overflow-hidden bg-gradient-to-b ${t.gradient} backdrop-blur-sm ${t.glow} transition-shadow duration-500`}
             >
+              {/* Animated background orb */}
+              <div className={`absolute -top-16 -right-16 w-40 h-40 rounded-full bg-gradient-to-br ${t.gradient} blur-3xl opacity-60 animate-pulse`} />
+              
               {t.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-display tracking-widest">
-                  MOST POPULAR
-                </div>
+                <motion.div 
+                  initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: "spring" }}
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-display tracking-[0.2em] shadow-[0_0_20px_hsl(var(--primary)/0.4)]"
+                >
+                  ⭐ MOST POPULAR
+                </motion.div>
               )}
-              <h3 className="font-display text-lg font-bold text-foreground tracking-wider mb-2">{t.name}</h3>
-              <div className="font-display text-4xl font-black text-accent mb-2">{t.commission}</div>
-              <p className="font-body text-xs text-muted-foreground">{t.requirement}</p>
+              
+              <div className="relative z-10">
+                <motion.div 
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${t.gradient} border ${t.color} flex items-center justify-center mx-auto mb-5`}
+                >
+                  <Crown className={`w-8 h-8 ${t.iconColor} drop-shadow-[0_0_8px_currentColor]`} />
+                </motion.div>
+                
+                <h3 className="font-display text-xl font-bold text-foreground tracking-wider mb-3">{t.name}</h3>
+                
+                <motion.div 
+                  initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 + 0.3, type: "spring", stiffness: 200 }}
+                  className="mb-3"
+                >
+                  <span className="font-display text-6xl font-black bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">{t.commission}</span>
+                </motion.div>
+                
+                <p className="font-body text-sm text-muted-foreground">{t.requirement}</p>
+                
+                <div className="mt-6 flex items-center justify-center gap-2 text-xs font-display tracking-wider text-primary/80">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Instant Setup · No Minimums</span>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
