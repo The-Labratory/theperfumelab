@@ -108,21 +108,10 @@ function OrgNode({ node, depth = 0 }: { node: TreeNode; depth?: number }) {
           )}
         </div>
 
-        {(node.email || node.phone) && (
-          <div className="mt-2 space-y-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            {node.email && (
-              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <Mail className="w-3 h-3 shrink-0" />
-                <span className="truncate">{node.email}</span>
-              </p>
-            )}
-            {node.phone && (
-              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <Phone className="w-3 h-3 shrink-0" />
-                {node.phone}
-              </p>
-            )}
-          </div>
+        {node.bio && (
+          <p className="mt-2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 line-clamp-2">
+            {node.bio}
+          </p>
         )}
 
         {hasChildren && (
