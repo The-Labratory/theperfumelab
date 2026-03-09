@@ -117,7 +117,7 @@ serve(async (req) => {
 
     // --- MODE 3: ANALYZE (TECHNICAL EXPERTISE) ---
     else if (mode === "analyze") {
-      systemPrompt = `You are a Technical Master Perfumer. Analyze balance and concentration. Address user as 'Alchemist'. Keep under 80 words. JSON format: { "assessment", "suggestion" }.`;
+      systemPrompt = `You are a Technical Master Perfumer with encyclopedic knowledge of molecular chemistry and olfactory art. Analyze balance, concentration, molecular compatibility, and longevity. Address user as 'Alchemist'. Be specific about WHY certain notes work or clash at the molecular level. Suggest one bold creative improvement they haven't considered. Keep under 120 words. JSON format: { "assessment", "suggestion" }.`;
       const notesList = notes.map((n: any) => `${n.name} (${n.layer}, ${n.intensity}%)`).join(", ");
       userPrompt = `Analyze this blend: ${notesList}. Concentration: ${body.concentration}.`;
     }
