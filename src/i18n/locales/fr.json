@@ -95,5 +95,63 @@
     "pending": "En attente",
     "approved": "Approuvé",
     "rejected": "Rejeté"
+  },
+  "gateway": {
+    "choosePath": "Choisissez Votre Voie",
+    "customise": "Personnalisez Votre Parfum",
+    "customiseDesc": "Créez votre senteur signature à partir de plus de 200 ingrédients moléculaires. Conçu par vous, mélangé par des artisans.",
+    "startCreating": "Commencer à Créer",
+    "becomePartner": "Devenir Partenaire",
+    "partnerDesc": "Rejoignez notre réseau. Partagez, promouvez et gagnez jusqu'à 50% de commission sur chaque vente.",
+    "joinNow": "Rejoindre"
+  },
+  "store": {
+    "title": "LA COLLECTION",
+    "subtitle": "Découvrez notre collection exclusive de fragrances",
+    "noProducts": "Aucun produit trouvé",
+    "addToCart": "Ajouter",
+    "buyNow": "Acheter",
+    "backToStore": "Retour à la Boutique",
+    "outOfStock": "Cette variante est actuellement en rupture de stock",
+    "addedToCart": "ajouté au panier"
+  },
+  "business": {
+    "title": "Mon Entreprise",
+    "dashboard": "Tableau de Bord",
+    "sales": "Ventes",
+    "inventory": "Inventaire",
+    "customers": "Clients",
+    "network": "Réseau",
+    "marketing": "Marketing",
+    "goals": "Objectifs",
+    "reports": "Rapports",
+    "totalSales": "Ventes Totales",
+    "totalEarnings": "Gains Totaux",
+    "totalCustomers": "Clients Totaux",
+    "totalReferrals": "Parrainages Totaux"
+  },
+  "gifting": {
+    "title": "Offrir un Parfum",
+    "subtitle": "Créez un cadeau parfumé personnalisé pour quelqu'un de spécial",
+    "personality": "Personnalité",
+    "occasion": "Occasion",
+    "mood": "Humeur",
+    "memory": "Souvenir",
+    "details": "Détails",
+    "duoPartner": "Partenaire Duo",
+    "generating": "Création de votre mélange...",
+    "result": "Votre Mélange Cadeau"
+  },
+  "lab": {
+    "title": "Le Laboratoire de Senteurs",
+    "subtitle": "Composez votre fragrance signature",
+    "topNotes": "Notes de Tête",
+    "heartNotes": "Notes de Cœur",
+    "baseNotes": "Notes de Fond",
+    "concentration": "Concentration",
+    "harmony": "Score d'Harmonie",
+    "aiAnalysis": "Analyse IA",
+    "clearAll": "Tout Effacer",
+    "save": "Sauvegarder"
   }
 }

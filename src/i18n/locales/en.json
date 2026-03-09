@@ -121,5 +121,63 @@
     "pending": "Pending",
     "approved": "Approved",
     "rejected": "Rejected"
+  },
+  "gateway": {
+    "choosePath": "Choose Your Path",
+    "customise": "Customise Your Perfume",
+    "customiseDesc": "Create your signature scent from 200+ molecular ingredients. Designed by you, blended by artisans.",
+    "startCreating": "Start Creating",
+    "becomePartner": "Become a Partner",
+    "partnerDesc": "Join our affiliate network. Share, promote, and earn up to 50% commission on every sale.",
+    "joinNow": "Join Now"
+  },
+  "store": {
+    "title": "THE COLLECTION",
+    "subtitle": "Discover our exclusive fragrance collection",
+    "noProducts": "No products found",
+    "addToCart": "Add",
+    "buyNow": "Buy Now",
+    "backToStore": "Back to Store",
+    "outOfStock": "This variant is currently out of stock",
+    "addedToCart": "added to cart"
+  },
+  "business": {
+    "title": "My Business",
+    "dashboard": "Dashboard",
+    "sales": "Sales",
+    "inventory": "Inventory",
+    "customers": "Customers",
+    "network": "Network",
+    "marketing": "Marketing",
+    "goals": "Goals",
+    "reports": "Reports",
+    "totalSales": "Total Sales",
+    "totalEarnings": "Total Earnings",
+    "totalCustomers": "Total Customers",
+    "totalReferrals": "Total Referrals"
+  },
+  "gifting": {
+    "title": "Gift a Scent",
+    "subtitle": "Create a personalised fragrance gift for someone special",
+    "personality": "Personality",
+    "occasion": "Occasion",
+    "mood": "Mood",
+    "memory": "Memory",
+    "details": "Details",
+    "duoPartner": "Duo Partner",
+    "generating": "Generating your blend...",
+    "result": "Your Gift Blend"
+  },
+  "lab": {
+    "title": "The Scent Lab",
+    "subtitle": "Compose your signature fragrance",
+    "topNotes": "Top Notes",
+    "heartNotes": "Heart Notes",
+    "baseNotes": "Base Notes",
+    "concentration": "Concentration",
+    "harmony": "Harmony Score",
+    "aiAnalysis": "AI Analysis",
+    "clearAll": "Clear All",
+    "save": "Save Blend"
   }
 }

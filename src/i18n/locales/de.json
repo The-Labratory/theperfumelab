@@ -95,5 +95,63 @@
     "pending": "Ausstehend",
     "approved": "Genehmigt",
     "rejected": "Abgelehnt"
+  },
+  "gateway": {
+    "choosePath": "Wählen Sie Ihren Weg",
+    "customise": "Gestalten Sie Ihr Parfüm",
+    "customiseDesc": "Kreieren Sie Ihren Signaturduft aus über 200 molekularen Inhaltsstoffen. Von Ihnen entworfen, von Handwerkern gemischt.",
+    "startCreating": "Jetzt Kreieren",
+    "becomePartner": "Partner werden",
+    "partnerDesc": "Treten Sie unserem Netzwerk bei. Teilen, bewerben und verdienen Sie bis zu 50% Provision.",
+    "joinNow": "Jetzt Beitreten"
+  },
+  "store": {
+    "title": "DIE KOLLEKTION",
+    "subtitle": "Entdecken Sie unsere exklusive Duftkollektion",
+    "noProducts": "Keine Produkte gefunden",
+    "addToCart": "Hinzufügen",
+    "buyNow": "Jetzt Kaufen",
+    "backToStore": "Zurück zum Shop",
+    "outOfStock": "Diese Variante ist derzeit nicht vorrätig",
+    "addedToCart": "zum Warenkorb hinzugefügt"
+  },
+  "business": {
+    "title": "Mein Geschäft",
+    "dashboard": "Übersicht",
+    "sales": "Verkäufe",
+    "inventory": "Bestand",
+    "customers": "Kunden",
+    "network": "Netzwerk",
+    "marketing": "Marketing",
+    "goals": "Ziele",
+    "reports": "Berichte",
+    "totalSales": "Gesamtumsatz",
+    "totalEarnings": "Gesamteinnahmen",
+    "totalCustomers": "Gesamtkunden",
+    "totalReferrals": "Gesamtempfehlungen"
+  },
+  "gifting": {
+    "title": "Einen Duft Schenken",
+    "subtitle": "Erstellen Sie ein personalisiertes Duftgeschenk",
+    "personality": "Persönlichkeit",
+    "occasion": "Anlass",
+    "mood": "Stimmung",
+    "memory": "Erinnerung",
+    "details": "Details",
+    "duoPartner": "Duo-Partner",
+    "generating": "Ihr Blend wird erstellt...",
+    "result": "Ihr Geschenk-Blend"
+  },
+  "lab": {
+    "title": "Das Duft-Labor",
+    "subtitle": "Komponieren Sie Ihren Signaturduft",
+    "topNotes": "Kopfnoten",
+    "heartNotes": "Herznoten",
+    "baseNotes": "Basisnoten",
+    "concentration": "Konzentration",
+    "harmony": "Harmonie-Wert",
+    "aiAnalysis": "KI-Analyse",
+    "clearAll": "Alles Löschen",
+    "save": "Blend Speichern"
   }
 }
