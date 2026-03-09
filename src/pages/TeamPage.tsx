@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Mail, Phone, ChevronDown, ChevronRight } from "lucide-react";
+import { Users, ChevronDown, ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
 interface Department {
