@@ -25,11 +25,11 @@ async function callAI(messages: any[], model = "google/gemini-3-flash-preview") 
       Authorization: `Bearer ${LOVABLE_API_KEY}`, 
       "Content-Type": "application/json" 
     },
-    body: JSON.stringify({ 
-      model, 
-      messages, 
-      temperature: 0.85 // High creativity for alchemical prompts
-    }),
+     body: JSON.stringify({ 
+       model, 
+       messages, 
+       temperature: 0.95 // Maximum creativity for unique alchemical outputs
+     }),
   });
 
   if (!response.ok) {

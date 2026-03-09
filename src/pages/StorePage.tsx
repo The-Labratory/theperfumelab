@@ -18,7 +18,7 @@ const StorePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await storefrontApiRequest(STOREFRONT_PRODUCTS_QUERY, { first: 50 });
+        const data = await storefrontApiRequest(STOREFRONT_PRODUCTS_QUERY, { first: 250 });
         setProducts(data?.data?.products?.edges || []);
       } catch (err) {
         console.error("Failed to fetch products:", err);
