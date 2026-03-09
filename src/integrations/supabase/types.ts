@@ -50,6 +50,27 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_whitelist: {
+        Row: {
+          created_at: string
+          email: string
+          grants_super_admin: boolean
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          grants_super_admin?: boolean
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          grants_super_admin?: boolean
+          id?: string
+        }
+        Relationships: []
+      }
       affiliate_partners: {
         Row: {
           approved_at: string | null
@@ -2300,9 +2321,7 @@ export type Database = {
       }
     }
     Functions: {
-      assign_admin_if_allowed:
-        | { Args: never; Returns: boolean }
-        | { Args: { _email: string; _user_id: string }; Returns: boolean }
+      assign_admin_if_allowed: { Args: never; Returns: boolean }
       calculate_formula_cost: {
         Args: { _batch_size_ml?: number; _formula_id: string }
         Returns: Json
