@@ -14,7 +14,8 @@
     "login": "Giriş Yap",
     "signup": "Kayıt Ol",
     "logout": "Çıkış Yap",
-    "account": "Hesap"
+    "account": "Hesap",
+    "myBusiness": "İşletmem"
   },
   "hero": {
     "badge": "Sadece 100 Kurucu Üye Kabul Edilir",
