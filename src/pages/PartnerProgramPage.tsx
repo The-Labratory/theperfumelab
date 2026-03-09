@@ -18,8 +18,8 @@ const BENEFITS = [
 ];
 
 const TIERS = [
-  { name: "B2C Partner", commission: "50%", requirement: "Direct consumer sales", color: "border-primary/50", featured: true },
-  { name: "B2B Partner", commission: "20%", requirement: "Business / wholesale orders", color: "border-accent/50" },
+  { name: "B2C Partner", commission: "50%", requirement: "Direct consumer sales", color: "border-primary/50", featured: true, glow: "shadow-[0_0_40px_hsl(var(--primary)/0.3)]", gradient: "from-primary/20 via-primary/5 to-transparent", iconColor: "text-primary" },
+  { name: "B2B Partner", commission: "20%", requirement: "Business / wholesale orders", color: "border-accent/50", featured: false, glow: "shadow-[0_0_30px_hsl(var(--accent)/0.2)]", gradient: "from-accent/20 via-accent/5 to-transparent", iconColor: "text-accent" },
 ];
 
 const TESTIMONIALS = [
