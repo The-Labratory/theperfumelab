@@ -106,12 +106,12 @@ const SuperAdminPage = () => {
 
       } else if (t === "invites") {
         const { data, error } = await supabase
-          .from("employee_invites")
+          .from("referral_invites")
           .select("*")
           .order("created_at", { ascending: false })
           .limit(100);
         if (error) throw error;
-        setInvites((data as InviteRow[]) ?? []);
+        setInvites((data as unknown as InviteRow[]) ?? []);
       }
     } catch (e) {
       toast.error("Failed to load data.");
@@ -141,11 +141,10 @@ const SuperAdminPage = () => {
     e.preventDefault();
     if (!inviteEmail.trim()) return;
     setInviting(true);
-    const { error } = await supabase.from("employee_invites").insert({
-      email: inviteEmail.trim(),
-      role: inviteRole,
-      invited_by: user!.id,
-    });
+    const { error } = await supabase.from("referral_invites").insert({
+      invited_email: inviteEmail.trim(),
+      inviter_user_id: user!.id,
+    } as any);
     setInviting(false);
     if (error) { toast.error(error.message); return; }
     toast.success(`Invite sent to ${inviteEmail.trim()}.`);
@@ -155,8 +154,8 @@ const SuperAdminPage = () => {
 
   const revokeInvite = async (inviteId: string) => {
     const { error } = await supabase
-      .from("employee_invites")
-      .update({ status: "revoked" })
+      .from("referral_invites")
+      .update({ status: "revoked" } as any)
       .eq("id", inviteId);
     if (error) { toast.error("Could not revoke invite."); return; }
     toast.success("Invite revoked.");
@@ -171,9 +170,9 @@ const SuperAdminPage = () => {
     setTreeLoading(true);
     try {
       const { data, error } = await supabase
-        .rpc("get_referral_tree", { _root_user_id: treeRootId.trim() });
+        .rpc("get_downline", { _user_id: treeRootId.trim() });
       if (error) throw error;
-      setReferralNodes((data as ReferralNode[]) ?? []);
+      setReferralNodes((data as unknown as ReferralNode[]) ?? []);
     } catch (e) {
       toast.error("Failed to load referral tree.");
       console.error(e);

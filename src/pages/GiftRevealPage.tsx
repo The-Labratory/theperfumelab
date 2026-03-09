@@ -44,7 +44,7 @@ const GiftRevealPage = () => {
         return;
       }
       const giftData = Array.isArray(data) ? data[0] : data;
-      setGift(giftData);
+      setGift(giftData as unknown as GiftData);
       if (giftData.reaction_emoji) setReactionSent(true);
       setLoading(false);
     };
