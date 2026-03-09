@@ -167,7 +167,7 @@ export default function TeamPage() {
 
   const loadData = async () => {
     const [empRes, deptRes] = await Promise.all([
-      supabase.from("employees").select("*").eq("is_active", true).order("hierarchy_level").order("sort_order"),
+      supabase.from("employee_public_profiles" as any).select("*").eq("is_active", true).order("hierarchy_level").order("sort_order"),
       supabase.from("departments").select("*").order("sort_order"),
     ]);
     setEmployees((empRes.data as Employee[]) || []);
