@@ -17,11 +17,11 @@ interface Employee {
   job_title: string;
   department_id: string | null;
   manager_id: string | null;
-  email: string | null;
-  phone: string | null;
   avatar_url: string | null;
   bio: string | null;
   hierarchy_level: number;
+  sort_order: number | null;
+  is_active: boolean;
 }
 
 interface TreeNode extends Employee {
