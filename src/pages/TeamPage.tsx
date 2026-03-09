@@ -170,7 +170,7 @@ export default function TeamPage() {
       supabase.from("employee_public_profiles" as any).select("*").eq("is_active", true).order("hierarchy_level").order("sort_order"),
       supabase.from("departments").select("*").order("sort_order"),
     ]);
-    setEmployees((empRes.data as Employee[]) || []);
+    setEmployees((empRes.data as unknown as Employee[]) || []);
     setDepartments((deptRes.data as Department[]) || []);
     setLoading(false);
   };
