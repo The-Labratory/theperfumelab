@@ -69,7 +69,27 @@ const ScentSeance = ({ worldName, worldType, worldEmoji }: Props) => {
           mode: "seance",
         },
       });
-      if (error) throw error;
+
+      // Handle specific error codes
+      if (data?.error || error) {
+        const status = data?.status || error?.status;
+        if (status === 401 || data?.error?.includes?.("Authentication")) {
+          toast.error("Please sign in to begin a Scent Séance");
+          setPhase("intro");
+          return;
+        }
+        if (status === 429) {
+          toast.error("Too many requests — please wait a moment");
+          setPhase("intro");
+          return;
+        }
+        if (status === 402) {
+          toast.error("AI credits exhausted. Please add credits.");
+          setPhase("intro");
+          return;
+        }
+        if (error) throw error;
+      }
 
       const raw = JSON.parse(data.content);
       const parsed = SeanceResultSchema.parse(raw) as SeanceResult;

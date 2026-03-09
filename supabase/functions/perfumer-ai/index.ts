@@ -29,15 +29,24 @@ setInterval(() => {
   }
 }, 120_000);
 
+function stripCodeFences(text: string): string {
+  return text.replace(/^```(?:json)?\s*\n?/gm, "").replace(/\n?```\s*$/gm, "").trim();
+}
+
+function makeErrorResponse(status: number, message: string) {
+  return new Response(JSON.stringify({ error: message, status }), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const authHeader = req.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return new Response(JSON.stringify({ error: "Authentication required" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return makeErrorResponse(401, "Authentication required");
     }
 
     const supabaseAuth = createClient(
@@ -48,54 +57,74 @@ serve(async (req) => {
 
     const { data: { user }, error: userError } = await supabaseAuth.auth.getUser();
     if (userError || !user) {
-      return new Response(JSON.stringify({ error: "Invalid or expired token" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return makeErrorResponse(401, "Invalid or expired token");
     }
 
     const userId = user.id;
 
     if (isRateLimited(userId)) {
-      return new Response(JSON.stringify({ error: "Too many requests. Please wait a moment." }), {
-        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return makeErrorResponse(429, "Too many requests. Please wait a moment.");
     }
 
     const body = await req.json();
-    const { notes, concentration, mode } = body;
+    const { notes, concentration, mode, messages: rawMessages } = body;
+
+    // Messages pass-through mode (for SEO generator and future use)
+    if (rawMessages && Array.isArray(rawMessages)) {
+      const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+      if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: rawMessages,
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) return makeErrorResponse(429, "Rate limited. Please try again shortly.");
+        if (response.status === 402) return makeErrorResponse(402, "AI credits exhausted. Please add credits.");
+        const t = await response.text();
+        console.error("AI gateway error:", response.status, t);
+        return makeErrorResponse(500, "AI service unavailable");
+      }
+
+      const data = await response.json();
+      const rawContent = data.choices?.[0]?.message?.content || "";
+      const content = stripCodeFences(rawContent);
+
+      return new Response(JSON.stringify({ content }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (!mode || !["analyze", "gift", "duo", "seance"].includes(mode)) {
-      return new Response(JSON.stringify({ error: "Invalid mode" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return makeErrorResponse(400, "Invalid mode");
     }
 
     if (mode === "analyze") {
       if (!Array.isArray(notes) || notes.length < 1 || notes.length > 20) {
-        return new Response(JSON.stringify({ error: "Invalid notes" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return makeErrorResponse(400, "Invalid notes");
       }
       if (typeof concentration !== "string" || concentration.length > 50) {
-        return new Response(JSON.stringify({ error: "Invalid concentration" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return makeErrorResponse(400, "Invalid concentration");
       }
     }
 
     if (mode === "gift" || mode === "duo") {
       if (!notes || typeof notes !== "object" || !notes.personality || !notes.occasion || !notes.mood) {
-        return new Response(JSON.stringify({ error: "Invalid gift parameters" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return makeErrorResponse(400, "Invalid gift parameters");
       }
     }
 
     if (mode === "seance") {
       if (!notes || typeof notes !== "object" || !notes.worldName || !notes.answers) {
-        return new Response(JSON.stringify({ error: "Invalid séance parameters" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return makeErrorResponse(400, "Invalid séance parameters");
       }
     }
 
@@ -199,7 +228,7 @@ Provide: 1) Brief assessment of balance 2) One specific suggestion to improve it
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
@@ -208,33 +237,22 @@ Provide: 1) Brief assessment of balance 2) One specific suggestion to improve it
     });
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limited. Please try again shortly." }), {
-          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Please add credits." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      if (response.status === 429) return makeErrorResponse(429, "Rate limited. Please try again shortly.");
+      if (response.status === 402) return makeErrorResponse(402, "AI credits exhausted. Please add credits.");
       const t = await response.text();
       console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "AI service unavailable" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return makeErrorResponse(500, "AI service unavailable");
     }
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "";
+    const rawContent = data.choices?.[0]?.message?.content || "";
+    const content = stripCodeFences(rawContent);
 
     return new Response(JSON.stringify({ content }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
     console.error("perfumer-ai error:", e);
-    return new Response(JSON.stringify({ error: "An error occurred processing your request" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return makeErrorResponse(500, "An error occurred processing your request");
   }
 });
