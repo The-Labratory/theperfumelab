@@ -61,19 +61,6 @@ const ExclusiveAccessPage = () => {
       <ParticleField count={15} />
 
       <main className="relative z-10 pt-24 pb-20 px-4 sm:px-6 max-w-2xl mx-auto">
-        {/* Restricted badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="flex justify-center mb-8"
-        >
-          <div className="glass-surface rounded-full px-5 py-2 flex items-center gap-2 border border-primary/20">
-            <Lock className="w-3.5 h-3.5 text-primary" />
-            <span className="font-display text-[10px] tracking-[0.3em] text-primary uppercase">
-              Access by Invitation Only
-            </span>
-          </div>
-        </motion.div>
 
         {/* Hero copy */}
         <motion.div
