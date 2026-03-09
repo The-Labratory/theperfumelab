@@ -19,8 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { useRealtimeSaleNotifications } from "@/hooks/useRealtimeSaleNotifications";
 
 const TIERS = [
-  { name: "B2C Partner", code: "b2c", commission: "50%", requirement: "Direct consumer sales", color: "from-primary to-accent", icon: Crown },
-  { name: "B2B Partner", code: "b2b", commission: "20%", requirement: "Business / reorders", color: "from-amber-700 to-amber-900", icon: Award },
+  { name: "B2C Partner", code: "b2c", commission: "50%", requirement: "Direct consumer sales", color: "from-primary to-accent", icon: Crown, glow: "shadow-[0_0_30px_hsl(var(--primary)/0.25)]", emoji: "🔥" },
+  { name: "B2B Partner", code: "b2b", commission: "20%", requirement: "Business / reorders", color: "from-amber-700 to-amber-900", icon: Award, glow: "shadow-[0_0_30px_hsl(var(--accent)/0.2)]", emoji: "💎" },
 ];
 
 const HOW_IT_WORKS = [
