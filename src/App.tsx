@@ -178,6 +178,15 @@ const AppContent = () => {
           <Route path="reports" element={<BusinessReports />} />
         </Route>
 
+        {/* Sovereign Manager Portal */}
+        <Route path="/sovereign" element={<SovereignLayout />}>
+          <Route index element={<SovereignManagerPage />} />
+          <Route path="vault" element={<GrowthVaultPage />} />
+          <Route path="stations" element={<ScentStationPage />} />
+          <Route path="tree" element={<NetworkTreePage />} />
+          <Route path="ai" element={<AIConsiglierePage />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
