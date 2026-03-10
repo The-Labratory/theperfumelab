@@ -83,7 +83,7 @@ export default function BusinessQREngine() {
     }
     setSaving(true);
     const referralUrl = buildReferralUrl(form.location_name, form.discount_pct);
-    const { error } = await supabase.from("affiliate_locations").insert({
+    const { error } = await supabase.from("scent_stations" as any).insert({
       affiliate_id: affiliate.id,
       location_name: form.location_name.trim(),
       discount_pct: form.discount_pct,
