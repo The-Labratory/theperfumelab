@@ -54,13 +54,13 @@ export default function BusinessQREngine() {
   const fetchLocations = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("affiliate_locations")
+      .from("scent_stations" as any)
       .select("*")
       .eq("affiliate_id", affiliate.id)
       .order("created_at", { ascending: false });
 
     if (error) toast.error("Failed to load locations");
-    setLocations((data as AffiliateLocation[]) || []);
+    setLocations((data as unknown as AffiliateLocation[]) || []);
     setLoading(false);
   };
 
@@ -83,7 +83,7 @@ export default function BusinessQREngine() {
     }
     setSaving(true);
     const referralUrl = buildReferralUrl(form.location_name, form.discount_pct);
-    const { error } = await supabase.from("affiliate_locations").insert({
+    const { error } = await supabase.from("scent_stations" as any).insert({
       affiliate_id: affiliate.id,
       location_name: form.location_name.trim(),
       discount_pct: form.discount_pct,
@@ -103,7 +103,7 @@ export default function BusinessQREngine() {
   const handleDelete = async (id: string, name: string) => {
     if (!window.confirm(`Delete location "${name}"? This cannot be undone.`)) return;
     const { error } = await supabase
-      .from("affiliate_locations")
+      .from("scent_stations" as any)
       .delete()
       .eq("id", id);
     if (error) toast.error("Failed to delete location");
