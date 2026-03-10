@@ -35,7 +35,8 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "The Perfume Laboratory by Louis Hariri"
+// Note: "Labratory" is the intentional brand spelling used by the organisation (The-Labratory).
+const SITE_NAME = "The Perfume Labratory by Louis Hariri"
 const SENDER_DOMAIN = "notify.theperfumelab.de"
 const ROOT_DOMAIN = "theperfumelab.de"
 const FROM_DOMAIN = "theperfumelab.de" // Domain shown in From address (may be root or sender subdomain)
