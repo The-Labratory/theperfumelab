@@ -92,6 +92,10 @@ Tone: confident, premium, brief. No bullet points — short paragraphs only.`;
       toast.error("Please fill in Business Type and Employee Count.");
       return;
     }
+    // NOTE: VITE_OPENAI_API_KEY is intentionally accessed client-side here as this
+    // app is a fully-frontend Supabase app with no dedicated backend. For a production
+    // deployment, move this call to a Supabase Edge Function or server endpoint so the
+    // key is never included in the browser bundle.
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
     if (!apiKey) {
       toast.error("OpenAI API key is not configured (VITE_OPENAI_API_KEY).");
@@ -114,8 +118,15 @@ Tone: confident, premium, brief. No bullet points — short paragraphs only.`;
         }),
       });
       if (!res.ok) {
-        const err = await res.json().catch(() => ({})) as { error?: { message?: string } };
-        throw new Error(err?.error?.message ?? `API error ${res.status}`);
+        const errBody = await res.text().catch(() => "");
+        let errorMsg = `API error ${res.status}`;
+        try {
+          const parsed = JSON.parse(errBody) as { error?: { message?: string } };
+          if (parsed?.error?.message) errorMsg = parsed.error.message;
+        } catch {
+          if (errBody) errorMsg = `${errorMsg}: ${errBody.slice(0, 120)}`;
+        }
+        throw new Error(errorMsg);
       }
       const json = await res.json() as { choices?: Array<{ message?: { content?: string } }> };
       const text: string = json.choices?.[0]?.message?.content ?? "";
@@ -164,7 +175,9 @@ Tone: confident, premium, brief. No bullet points — short paragraphs only.`;
 </html>`);
     win.document.close();
     win.focus();
-    setTimeout(() => win.print(), 600);
+    // Delay allows the browser to finish rendering and load the Google Font before printing
+    const PRINT_DELAY_MS = 600;
+    setTimeout(() => win.print(), PRINT_DELAY_MS);
   };
 
   if (!hasAccess) {

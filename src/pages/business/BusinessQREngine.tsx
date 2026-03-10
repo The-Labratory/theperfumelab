@@ -269,7 +269,7 @@ export default function BusinessQREngine() {
                 </Badge>
               </div>
 
-              {/* QR code (hidden canvas for download) */}
+              {/* QR code canvas (used for branded PNG download) */}
               <div className="flex items-center justify-center bg-white rounded-xl p-3">
                 <QRCodeCanvas
                   ref={(el) => {
@@ -279,12 +279,6 @@ export default function BusinessQREngine() {
                   size={160}
                   level="H"
                   includeMargin={false}
-                  imageSettings={{
-                    src: "/favicon.ico",
-                    height: 24,
-                    width: 24,
-                    excavate: true,
-                  }}
                 />
               </div>
 
