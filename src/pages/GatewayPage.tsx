@@ -37,7 +37,7 @@ const GatewayPage = () => {
         .select("id, display_name, tier, total_sales, total_referrals")
         .order("total_sales", { ascending: false })
         .limit(5);
-      if (data) setTopAffiliates(data);
+      if (data) setTopAffiliates(data as unknown as TopAffiliate[]);
     };
     fetchTop();
   }, []);
