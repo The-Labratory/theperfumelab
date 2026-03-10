@@ -79,6 +79,10 @@ const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"
 const BusinessCRM = lazy(() => import("./pages/business/BusinessCRM"));
 const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
 const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
+const BusinessExpansionHub = lazy(() => import("./pages/business/BusinessExpansionHub"));
+const BusinessQREngine = lazy(() => import("./pages/business/BusinessQREngine"));
+const BusinessPitchBuilder = lazy(() => import("./pages/business/BusinessPitchBuilder"));
+const BusinessTeam = lazy(() => import("./pages/business/BusinessTeam"));
 
 // Sovereign Manager Portal
 const SovereignLayout = lazy(() => import("./pages/sovereign/SovereignLayout"));
@@ -177,6 +181,10 @@ const AppContent = () => {
           <Route path="marketing" element={<BusinessMarketing />} />
           <Route path="goals" element={<BusinessGoals />} />
           <Route path="reports" element={<BusinessReports />} />
+          <Route path="expansion" element={<BusinessExpansionHub />} />
+          <Route path="qr-engine" element={<BusinessQREngine />} />
+          <Route path="pitch-builder" element={<BusinessPitchBuilder />} />
+          <Route path="team" element={<BusinessTeam />} />
         </Route>
 
         {/* Sovereign Manager Portal */}
