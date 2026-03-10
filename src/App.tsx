@@ -33,6 +33,9 @@ const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
 const PartnerProgramPage = lazy(() => import("./pages/PartnerProgramPage"));
 const AffiliateSignupPage = lazy(() => import("./pages/AffiliateSignupPage"));
 const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPackPage"));
+const AffiliateLanding = lazy(() => import("./pages/affiliate/AffiliateLanding"));
+const AffiliateWelcome = lazy(() => import("./pages/affiliate/AffiliateWelcome"));
+const AffiliateDashboardPage = lazy(() => import("./pages/affiliate/AffiliateDashboard"));
 const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
@@ -132,6 +135,11 @@ const AppContent = () => {
         <Route path="/partner-program" element={<PartnerProgramPage />} />
         <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
         <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
+        <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
+        <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
+        <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
+        <Route path="/r/:slug" element={<AffiliateLanding />} />
+        <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
         <Route path="/creator-portal" element={<CreatorPortalPage />} />
         <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
         <Route path="/team" element={<TeamPage />} />
