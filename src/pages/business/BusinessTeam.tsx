@@ -96,7 +96,7 @@ export default function BusinessTeam() {
       toast.success("Invite created!");
       setInviteEmail("");
       setDialogOpen(false);
-      setInvites((prev) => [data as SubInvite, ...prev]);
+      setInvites((prev) => [data as unknown as SubInvite, ...prev]);
     }
     setSaving(false);
   };
