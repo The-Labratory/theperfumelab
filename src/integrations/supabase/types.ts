@@ -1770,6 +1770,74 @@ export type Database = {
           },
         ]
       }
+      partner_leads: {
+        Row: {
+          client_name: string | null
+          created_at: string | null
+          event_type: string | null
+          id: string
+          partner_id: string | null
+          scent_profile_id: string | null
+          status: string | null
+        }
+        Insert: {
+          client_name?: string | null
+          created_at?: string | null
+          event_type?: string | null
+          id?: string
+          partner_id?: string | null
+          scent_profile_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          client_name?: string | null
+          created_at?: string | null
+          event_type?: string | null
+          id?: string
+          partner_id?: string | null
+          scent_profile_id?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_leads_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partner_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_profiles: {
+        Row: {
+          commission_rate: number | null
+          company_name: string
+          created_at: string | null
+          id: string
+          partner_code: string
+          total_earned: number | null
+          user_id: string
+        }
+        Insert: {
+          commission_rate?: number | null
+          company_name: string
+          created_at?: string | null
+          id?: string
+          partner_code: string
+          total_earned?: number | null
+          user_id: string
+        }
+        Update: {
+          commission_rate?: number | null
+          company_name?: string
+          created_at?: string | null
+          id?: string
+          partner_code?: string
+          total_earned?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       partner_sales_reports: {
         Row: {
           affiliate_partner_id: string

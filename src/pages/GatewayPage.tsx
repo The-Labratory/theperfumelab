@@ -134,7 +134,7 @@ const GatewayPage = () => {
                 </div>
               </motion.div>
               <h2 className="font-display text-xl sm:text-2xl font-black tracking-wider text-foreground mb-3">
-                <span className="text-accent">Become a Partner!</span>
+                <span className="text-foreground">Become a </span><span className="text-accent">Partner!</span>
               </h2>
               <p className="text-sm text-muted-foreground font-body leading-relaxed mb-6">Join our affiliate network. Share, promote, and earn up to 50% commission on every sale.</p>
               <div className="inline-flex items-center gap-2 text-accent font-display text-xs tracking-[0.2em] uppercase group-hover:gap-3 transition-all duration-300">
