@@ -82,14 +82,9 @@ export default function GrowthVaultPage() {
       return;
     }
 
-    // Deduct credits
-    const { error: creditError } = await supabase.from("growth_credits").insert({
-      user_id: user!.id,
-      amount: -cost,
-      cash_amount: 0,
-      credit_type: "auction_purchase",
-      multiplier: 1,
-      notes: `Purchased portfolio auction #${auctionId.slice(0, 8)}`,
+    // Deduct credits via edge function
+    const { data: creditData, error: creditError } = await supabase.functions.invoke("convert-growth-credits", {
+      body: { action: "spend", amount: cost },
     });
 
     if (creditError) {
