@@ -35,7 +35,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "scentra-world-builder"
+const SITE_NAME = "The Perfume Laboratory by Louis Hariri"
 const SENDER_DOMAIN = "notify.theperfumelab.de"
 const ROOT_DOMAIN = "theperfumelab.de"
 const FROM_DOMAIN = "theperfumelab.de" // Domain shown in From address (may be root or sender subdomain)
