@@ -109,7 +109,7 @@ export default function BusinessTeam() {
   const revokeInvite = async (id: string) => {
     if (!window.confirm("Revoke this invite?")) return;
     const { error } = await supabase
-      .from("sub_affiliate_invites")
+      .from("referral_invites" as any)
       .update({ status: "revoked" })
       .eq("id", id);
     if (error) toast.error("Failed to revoke invite");

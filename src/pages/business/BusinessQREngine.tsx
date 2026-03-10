@@ -103,7 +103,7 @@ export default function BusinessQREngine() {
   const handleDelete = async (id: string, name: string) => {
     if (!window.confirm(`Delete location "${name}"? This cannot be undone.`)) return;
     const { error } = await supabase
-      .from("affiliate_locations")
+      .from("scent_stations" as any)
       .delete()
       .eq("id", id);
     if (error) toast.error("Failed to delete location");
