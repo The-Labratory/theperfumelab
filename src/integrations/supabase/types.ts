@@ -3239,6 +3239,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_affiliate_points: {
+        Args: { _affiliate_id: string; _points: number }
+        Returns: undefined
+      }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       lock_formula_version: { Args: { _formula_id: string }; Returns: Json }
       log_security_event: {
