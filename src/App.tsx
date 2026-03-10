@@ -76,6 +76,7 @@ const BusinessInventory = lazy(() => import("./pages/business/BusinessInventory"
 const BusinessCustomers = lazy(() => import("./pages/business/BusinessCustomers"));
 const BusinessNetwork = lazy(() => import("./pages/business/BusinessNetwork"));
 const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"));
+const BusinessCRM = lazy(() => import("./pages/business/BusinessCRM"));
 const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
 const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
 const queryClient = new QueryClient();
