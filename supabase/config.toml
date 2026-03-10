@@ -9,3 +9,5 @@ project_id = "xkfztnyodbzftlshoqui"
     verify_jwt = false
   [functions.generate-b2b-pitch]
     verify_jwt = false
+  [functions.compliance-engine]
+    verify_jwt = false

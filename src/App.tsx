@@ -79,6 +79,16 @@ const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"
 const BusinessCRM = lazy(() => import("./pages/business/BusinessCRM"));
 const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
 const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
+
+// Sovereign Manager Portal
+const SovereignLayout = lazy(() => import("./pages/sovereign/SovereignLayout"));
+const SovereignManagerPage = lazy(() => import("./pages/sovereign/SovereignManagerPage"));
+const GrowthVaultPage = lazy(() => import("./pages/sovereign/GrowthVaultPage"));
+const ScentStationPage = lazy(() => import("./pages/sovereign/ScentStationPage"));
+const NetworkTreePage = lazy(() => import("./pages/sovereign/NetworkTreePage"));
+const AIConsiglierePage = lazy(() => import("./pages/sovereign/AIConsiglierePage"));
+const InactivityAuctionPage = lazy(() => import("./pages/sovereign/InactivityAuctionPage"));
+
 const queryClient = new QueryClient();
 
 const Loader = () => (
@@ -153,6 +163,7 @@ const AppContent = () => {
           <Route path="storage" element={<SAStorageManagerPage />} />
           <Route path="permissions" element={<SAPermissionsPage />} />
           <Route path="referrals" element={<SAReferralManagementPage />} />
+          <Route path="auction" element={<InactivityAuctionPage />} />
         </Route>
 
         {/* Business Portal */}
@@ -166,6 +177,15 @@ const AppContent = () => {
           <Route path="marketing" element={<BusinessMarketing />} />
           <Route path="goals" element={<BusinessGoals />} />
           <Route path="reports" element={<BusinessReports />} />
+        </Route>
+
+        {/* Sovereign Manager Portal */}
+        <Route path="/sovereign" element={<SovereignLayout />}>
+          <Route index element={<SovereignManagerPage />} />
+          <Route path="vault" element={<GrowthVaultPage />} />
+          <Route path="stations" element={<ScentStationPage />} />
+          <Route path="tree" element={<NetworkTreePage />} />
+          <Route path="ai" element={<AIConsiglierePage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
