@@ -82,9 +82,9 @@ export default function BusinessTeam() {
   const createInvite = async () => {
     setSaving(true);
     const { data, error } = await supabase
-      .from("sub_affiliate_invites")
+      .from("referral_invites" as any)
       .insert({
-        lead_affiliate_id: affiliate.id,
+        inviter_user_id: affiliate.user_id,
         invited_email: inviteEmail.trim() || null,
       })
       .select()
