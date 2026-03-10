@@ -79,6 +79,16 @@ const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"
 const BusinessCRM = lazy(() => import("./pages/business/BusinessCRM"));
 const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
 const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
+
+// Sovereign Manager Portal
+const SovereignLayout = lazy(() => import("./pages/sovereign/SovereignLayout"));
+const SovereignManagerPage = lazy(() => import("./pages/sovereign/SovereignManagerPage"));
+const GrowthVaultPage = lazy(() => import("./pages/sovereign/GrowthVaultPage"));
+const ScentStationPage = lazy(() => import("./pages/sovereign/ScentStationPage"));
+const NetworkTreePage = lazy(() => import("./pages/sovereign/NetworkTreePage"));
+const AIConsiglierePage = lazy(() => import("./pages/sovereign/AIConsiglierePage"));
+const InactivityAuctionPage = lazy(() => import("./pages/sovereign/InactivityAuctionPage"));
+
 const queryClient = new QueryClient();
 
 const Loader = () => (
