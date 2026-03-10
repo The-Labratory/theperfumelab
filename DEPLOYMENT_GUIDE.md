@@ -1,19 +1,19 @@
-# Deployment and Download Setup - Implementation Summary
+# Deployment Guide — The Perfume Lab
 
 ## What Was Implemented
 
-This implementation enables automatic building, deployment, and distribution of the Scentra World Builder app so that users can easily download and run it from home.
+This setup enables automatic building, deployment, and distribution of **The Perfume Lab — Fragrance Atelier** so that the latest version is always accessible online.
 
 ## Key Features
 
 ### 1. GitHub Actions Workflows
 
 #### Build and Deploy Workflow (`build-and-deploy.yml`)
-- **Triggers:** 
+- **Triggers:**
   - Automatically on every push to `main` branch
   - On pull requests to `main`
   - Manually via workflow_dispatch
-  
+
 - **What it does:**
   - Builds the app using Vite
   - Creates downloadable artifacts (kept for 90 days)
@@ -23,7 +23,7 @@ This implementation enables automatic building, deployment, and distribution of 
 - **Triggers:**
   - On git tags matching `v*` pattern (e.g., `v1.0.0`)
   - Manually via workflow_dispatch
-  
+
 - **What it does:**
   - Builds the app
   - Creates a ZIP file of the build
@@ -34,16 +34,16 @@ This implementation enables automatic building, deployment, and distribution of 
 
 ### 2. Multiple Access Options
 
-Users can now access the app in three ways:
+Users can access the app in three ways:
 
 1. **Live Web App** (Easiest)
-   - URL: https://lawrencehariri.github.io/scentra-world-builder
+   - URL: https://the-labratory.github.io/theperfumelab
    - No download needed
    - Automatically updated when code is pushed to main
 
 2. **Download Release** (For offline use)
    - Visit GitHub Releases page
-   - Download `scentra-world-builder.zip`
+   - Download `theperfumelab.zip`
    - Extract and run locally
 
 3. **Build from Source** (For developers)
@@ -86,13 +86,13 @@ Users should follow the instructions in `DOWNLOAD.md` which provides:
 
 ## Files Added/Modified
 
-### New Files
-- `.github/workflows/build-and-deploy.yml` - Main CI/CD workflow
-- `.github/workflows/release.yml` - Release creation workflow
-- `DOWNLOAD.md` - User-friendly download guide
+### Workflow Files
+- `.github/workflows/build-and-deploy.yml` — Main CI/CD workflow
+- `.github/workflows/release.yml` — Release creation workflow
 
-### Modified Files
-- `README.md` - Updated with download options and deployment info
+### Documentation
+- `DOWNLOAD.md` — User-friendly download guide
+- `README.md` — Updated with download options and deployment info
 
 ## Security
 
@@ -115,14 +115,14 @@ After merging this PR:
    - Or use Actions → Create Release → Run workflow
 
 3. **Test deployment:**
-   - Verify GitHub Pages URL works
+   - Verify GitHub Pages URL works: https://the-labratory.github.io/theperfumelab
    - Download the release ZIP and test locally
    - Confirm artifacts are created in workflow runs
 
 ## Maintenance
 
 - Artifacts are kept for 90 days
-- GitHub Pages deployment happens automatically
+- GitHub Pages deployment happens automatically on every push to `main`
 - Releases are permanent and should follow semantic versioning
 - Old releases can be deleted manually if needed
 
@@ -135,7 +135,7 @@ After merging this PR:
 
 **Release workflow failing:**
 - Ensure tag follows `v*` pattern
-- Check build succeeds locally first
+- Check build succeeds locally first: `npm run build`
 - Review workflow logs for specific errors
 
 **Artifacts not appearing:**

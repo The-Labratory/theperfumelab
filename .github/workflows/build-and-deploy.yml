@@ -41,7 +41,7 @@ jobs:
       - name: Create downloadable artifact
         uses: actions/upload-artifact@v4
         with:
-          name: scentra-world-builder-${{ github.sha }}
+          name: theperfumelab-${{ github.sha }}
           path: dist/
           retention-days: 90
 
