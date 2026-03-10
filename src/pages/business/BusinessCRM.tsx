@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UserPlus, Building2, ShoppingCart, Copy, ExternalLink } from "lucide-react";
+import { UserPlus, Building2, Copy, Sparkles, Loader2 } from "lucide-react";
+import ClientPitchDialog from "@/components/business/ClientPitchDialog";
 
 interface ClientConnection {
   id: string;
@@ -42,6 +42,9 @@ export default function BusinessCRM() {
   const [showB2B, setShowB2B] = useState(false);
   const [form, setForm] = useState({ email: "", account_type: "B2C", notes: "" });
   const [b2bForm, setB2bForm] = useState({ email: "", company: "", volume: "", discount: "20" });
+  const [pitchData, setPitchData] = useState<{ open: boolean; pitch: string; businessName: string; loading: boolean }>({
+    open: false, pitch: "", businessName: "", loading: false,
+  });
 
   const fetchClients = async () => {
     const { data } = await supabase
@@ -88,6 +91,31 @@ export default function BusinessCRM() {
     setB2bForm({ email: "", company: "", volume: "", discount: "20" });
     setShowB2B(false);
     fetchClients();
+  };
+
+  const generatePitch = async (client: ClientConnection) => {
+    if (!client.company_name) return toast.error("Company name is required to generate a pitch");
+    setPitchData({ open: true, pitch: "", businessName: client.company_name, loading: true });
+
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-b2b-pitch", {
+        body: {
+          businessName: client.company_name,
+          businessType: client.notes || "Business",
+          affiliateName: affiliate?.display_name || "Partner",
+          discount: client.discount_pct || 20,
+          expectedVolume: client.expected_volume,
+        },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      setPitchData(prev => ({ ...prev, pitch: data.pitch, loading: false }));
+    } catch (e: any) {
+      toast.error(e.message || "Failed to generate pitch");
+      setPitchData(prev => ({ ...prev, loading: false, open: false }));
+    }
   };
 
   const copyCheckoutLink = (code: string) => {
@@ -183,7 +211,7 @@ export default function BusinessCRM() {
               <TableHead className="text-xs font-display tracking-wider">TYPE</TableHead>
               <TableHead className="text-xs font-display tracking-wider">ORDERS</TableHead>
               <TableHead className="text-xs font-display tracking-wider">REVENUE</TableHead>
-              <TableHead className="text-xs font-display tracking-wider">LINK</TableHead>
+              <TableHead className="text-xs font-display tracking-wider">ACTIONS</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -211,9 +239,17 @@ export default function BusinessCRM() {
                   <TableCell className="text-xs font-display font-bold text-foreground">{c.total_orders}</TableCell>
                   <TableCell className="text-xs font-display font-bold text-primary">€{c.total_spent.toFixed(0)}</TableCell>
                   <TableCell>
-                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => copyCheckoutLink(c.checkout_link_code)}>
-                      <Copy className="w-3.5 h-3.5" />
-                    </Button>
+                    <div className="flex gap-1">
+                      <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => copyCheckoutLink(c.checkout_link_code)}>
+                        <Copy className="w-3.5 h-3.5" />
+                      </Button>
+                      {c.account_type === "B2B_Corporate" && c.company_name && (
+                        <Button size="sm" variant="ghost" className="h-7 gap-1 px-2 text-[10px] text-primary hover:text-primary" onClick={() => generatePitch(c)}>
+                          <Sparkles className="w-3.5 h-3.5" />
+                          Pitch
+                        </Button>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -221,6 +257,14 @@ export default function BusinessCRM() {
           </TableBody>
         </Table>
       </div>
+
+      <ClientPitchDialog
+        open={pitchData.open}
+        onOpenChange={(open) => setPitchData(prev => ({ ...prev, open }))}
+        pitch={pitchData.pitch}
+        businessName={pitchData.businessName}
+        loading={pitchData.loading}
+      />
     </div>
   );
 }
