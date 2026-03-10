@@ -227,7 +227,7 @@ const ExclusiveAccessPage = () => {
                   </motion.div>
                 ) : (
                   <>
-                    Request Access <ArrowRight className="w-4 h-4" />
+                    Sign Up Now <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
