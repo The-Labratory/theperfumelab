@@ -87,7 +87,7 @@ const Index = () => {
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="glow-primary font-display tracking-wider text-sm">
-              <Link to="/access">{t("hero.cta")} <Lock className="ml-2 w-4 h-4" /></Link>
+              <Link to="/affiliate-signup">Sign Up Now <ArrowRight className="ml-2 w-4 h-4" /></Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="font-display tracking-wider text-sm border-border hover:border-primary/50 hover:bg-primary/5">
               <Link to="/onboarding">{t("hero.journey")} <ArrowRight className="ml-2 w-4 h-4" /></Link>
