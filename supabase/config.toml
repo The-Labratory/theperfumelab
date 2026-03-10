@@ -17,3 +17,7 @@ project_id = "xkfztnyodbzftlshoqui"
     verify_jwt = false
   [functions.translation-agent]
     verify_jwt = false
+  [functions.create-affiliate]
+    verify_jwt = false
+  [functions.affiliate-kit]
+    verify_jwt = false
