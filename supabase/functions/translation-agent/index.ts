@@ -47,7 +47,7 @@ function stripCodeFences(text: string): string {
   return text.replace(/^```(?:json|javascript|js|typescript)?\s*\n?/gm, "").replace(/\n?```\s*$/gm, "").trim();
 }
 
-serve(async (req) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
