@@ -63,19 +63,18 @@ export default function BusinessTeam() {
     setLoading(true);
     const [inviteRes, subRes] = await Promise.all([
       supabase
-        .from("sub_affiliate_invites")
+        .from("referral_invites" as any)
         .select("*")
-        .eq("lead_affiliate_id", affiliate.id)
+        .eq("inviter_user_id", affiliate.user_id)
         .order("created_at", { ascending: false }),
       supabase
         .from("affiliate_partners")
         .select("id, display_name, email, total_sales, total_earnings, status, tier")
-        .eq("lead_affiliate_id", affiliate.id)
-        .order("total_sales", { ascending: false }),
+        .eq("status", "active"),
     ]);
     if (inviteRes.error) toast.error("Failed to load invites");
     if (subRes.error) toast.error("Failed to load team members");
-    setInvites((inviteRes.data as SubInvite[]) || []);
+    setInvites((inviteRes.data as unknown as SubInvite[]) || []);
     setSubAffiliates((subRes.data as SubAffiliate[]) || []);
     setLoading(false);
   };
