@@ -17,6 +17,7 @@ const superAdminNav = [
   { title: "Customers", url: "/superadmin/customers", icon: Users },
   { title: "Agents", url: "/superadmin/agents", icon: UserCheck },
   { title: "Permissions", url: "/superadmin/permissions", icon: KeyRound },
+  { title: "Inactivity Auction", url: "/superadmin/auction", icon: Triangle },
   { title: "Database Explorer", url: "/superadmin/database", icon: Database },
   { title: "Storage Manager", url: "/superadmin/storage", icon: HardDrive },
   { title: "Audit Logs", url: "/superadmin/audit-logs", icon: ScrollText },

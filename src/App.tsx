@@ -83,6 +83,16 @@ const BusinessExpansionHub = lazy(() => import("./pages/business/BusinessExpansi
 const BusinessQREngine = lazy(() => import("./pages/business/BusinessQREngine"));
 const BusinessPitchBuilder = lazy(() => import("./pages/business/BusinessPitchBuilder"));
 const BusinessTeam = lazy(() => import("./pages/business/BusinessTeam"));
+
+// Sovereign Manager Portal
+const SovereignLayout = lazy(() => import("./pages/sovereign/SovereignLayout"));
+const SovereignManagerPage = lazy(() => import("./pages/sovereign/SovereignManagerPage"));
+const GrowthVaultPage = lazy(() => import("./pages/sovereign/GrowthVaultPage"));
+const ScentStationPage = lazy(() => import("./pages/sovereign/ScentStationPage"));
+const NetworkTreePage = lazy(() => import("./pages/sovereign/NetworkTreePage"));
+const AIConsiglierePage = lazy(() => import("./pages/sovereign/AIConsiglierePage"));
+const InactivityAuctionPage = lazy(() => import("./pages/sovereign/InactivityAuctionPage"));
+
 const queryClient = new QueryClient();
 
 const Loader = () => (
@@ -157,6 +167,7 @@ const AppContent = () => {
           <Route path="storage" element={<SAStorageManagerPage />} />
           <Route path="permissions" element={<SAPermissionsPage />} />
           <Route path="referrals" element={<SAReferralManagementPage />} />
+          <Route path="auction" element={<InactivityAuctionPage />} />
         </Route>
 
         {/* Business Portal */}
@@ -176,6 +187,15 @@ const AppContent = () => {
           <Route path="team" element={<BusinessTeam />} />
         </Route>
 
+        {/* Sovereign Manager Portal */}
+        <Route path="/sovereign" element={<SovereignLayout />}>
+          <Route index element={<SovereignManagerPage />} />
+          <Route path="vault" element={<GrowthVaultPage />} />
+          <Route path="stations" element={<ScentStationPage />} />
+          <Route path="tree" element={<NetworkTreePage />} />
+          <Route path="ai" element={<AIConsiglierePage />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
@@ -187,7 +207,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <AppContent />
       </BrowserRouter>
     </TooltipProvider>
