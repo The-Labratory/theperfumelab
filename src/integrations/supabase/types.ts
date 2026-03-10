@@ -116,6 +116,13 @@ export type Database = {
             foreignKeyName: "affiliate_compliance_affiliate_id_fkey"
             columns: ["affiliate_id"]
             isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_compliance_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
@@ -238,6 +245,13 @@ export type Database = {
             foreignKeyName: "affiliate_payouts_affiliate_id_fkey"
             columns: ["affiliate_id"]
             isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_payouts_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
@@ -290,6 +304,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "affiliate_pyramid_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "affiliate_pyramid_affiliate_partner_id_fkey"
             columns: ["affiliate_partner_id"]
@@ -347,6 +368,13 @@ export type Database = {
           status?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
             columns: ["affiliate_id"]
@@ -521,6 +549,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "client_connections_original_affiliate_id_fkey"
+            columns: ["original_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "client_connections_original_affiliate_id_fkey"
             columns: ["original_affiliate_id"]
@@ -1653,6 +1688,13 @@ export type Database = {
             foreignKeyName: "partner_customers_affiliate_partner_id_fkey"
             columns: ["affiliate_partner_id"]
             isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_customers_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
@@ -1709,6 +1751,13 @@ export type Database = {
             foreignKeyName: "partner_goals_affiliate_partner_id_fkey"
             columns: ["affiliate_partner_id"]
             isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_goals_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
@@ -1761,6 +1810,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "partner_inventory_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "partner_inventory_affiliate_partner_id_fkey"
             columns: ["affiliate_partner_id"]
@@ -1892,6 +1948,13 @@ export type Database = {
             foreignKeyName: "partner_sales_reports_affiliate_partner_id_fkey"
             columns: ["affiliate_partner_id"]
             isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_sales_reports_affiliate_partner_id_fkey"
+            columns: ["affiliate_partner_id"]
+            isOneToOne: false
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
@@ -1953,6 +2016,13 @@ export type Database = {
           total_portfolio_value?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "portfolio_auctions_source_affiliate_id_fkey"
+            columns: ["source_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "portfolio_auctions_source_affiliate_id_fkey"
             columns: ["source_affiliate_id"]
@@ -2437,6 +2507,13 @@ export type Database = {
             foreignKeyName: "scent_stations_affiliate_id_fkey"
             columns: ["affiliate_id"]
             isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scent_stations_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
@@ -2540,6 +2617,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "sub_affiliate_margins_sub_affiliate_id_fkey"
+            columns: ["sub_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "sub_affiliate_margins_sub_affiliate_id_fkey"
             columns: ["sub_affiliate_id"]
@@ -2770,6 +2854,30 @@ export type Database = {
       }
     }
     Views: {
+      affiliate_leaderboard: {
+        Row: {
+          display_name: string | null
+          id: string | null
+          tier: string | null
+          total_referrals: number | null
+          total_sales: number | null
+        }
+        Insert: {
+          display_name?: string | null
+          id?: string | null
+          tier?: string | null
+          total_referrals?: number | null
+          total_sales?: number | null
+        }
+        Update: {
+          display_name?: string | null
+          id?: string | null
+          tier?: string | null
+          total_referrals?: number | null
+          total_sales?: number | null
+        }
+        Relationships: []
+      }
       employee_public_profiles: {
         Row: {
           avatar_url: string | null

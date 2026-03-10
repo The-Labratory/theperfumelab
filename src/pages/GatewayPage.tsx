@@ -32,13 +32,12 @@ const GatewayPage = () => {
 
   useEffect(() => {
     const fetchTop = async () => {
-      const { data } = await supabase.
-      from("affiliate_partners").
-      select("id, display_name, tier, total_sales, total_referrals").
-      eq("status", "active").
-      order("total_sales", { ascending: false }).
-      limit(5);
-      if (data) setTopAffiliates(data);
+      const { data } = await supabase
+        .from("affiliate_leaderboard" as any)
+        .select("id, display_name, tier, total_sales, total_referrals")
+        .order("total_sales", { ascending: false })
+        .limit(5);
+      if (data) setTopAffiliates(data as unknown as TopAffiliate[]);
     };
     fetchTop();
   }, []);
