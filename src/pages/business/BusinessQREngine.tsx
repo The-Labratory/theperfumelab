@@ -54,13 +54,13 @@ export default function BusinessQREngine() {
   const fetchLocations = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("affiliate_locations")
+      .from("scent_stations" as any)
       .select("*")
       .eq("affiliate_id", affiliate.id)
       .order("created_at", { ascending: false });
 
     if (error) toast.error("Failed to load locations");
-    setLocations((data as AffiliateLocation[]) || []);
+    setLocations((data as unknown as AffiliateLocation[]) || []);
     setLoading(false);
   };
 
