@@ -63,21 +63,14 @@ export default function GrowthVaultPage() {
       return;
     }
 
-    const creditAmount = amount * 1.2;
-
-    const { error } = await supabase.from("growth_credits").insert({
-      user_id: user!.id,
-      amount: creditAmount,
-      cash_amount: amount,
-      credit_type: "conversion",
-      multiplier: 1.2,
-      notes: `Converted $${amount.toFixed(2)} cash → ${creditAmount.toFixed(2)} credits`,
+    const { data, error } = await supabase.functions.invoke("convert-growth-credits", {
+      body: { action: "convert", amount },
     });
 
-    if (error) {
-      toast.error("Conversion failed");
+    if (error || data?.error) {
+      toast.error(data?.error || "Conversion failed");
     } else {
-      toast.success(`Converted $${amount.toFixed(2)} → ${creditAmount.toFixed(2)} Growth Credits!`);
+      toast.success(`Converted €${amount.toFixed(2)} → ${data.credits.toFixed(2)} Growth Credits!`);
       setConvertAmount("");
       loadData();
     }
