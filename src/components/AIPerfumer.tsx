@@ -16,8 +16,10 @@ interface AIPerfumerProps {
 }
 
 function handleAIError(data: any, error: any) {
+  // FunctionsHttpError stores the HTTP status on error.context?.status
+  const status = data?.status || error?.context?.status || error?.status;
+
   if (error) {
-    const status = data?.status || error?.status;
     if (status === 401) {
       toast.error("Please sign in to use the AI Perfumer");
       return true;
@@ -33,7 +35,7 @@ function handleAIError(data: any, error: any) {
   }
   if (data?.error) {
     const msg = data.error as string;
-    if (data.status === 401 || msg.includes("Authentication")) {
+    if (data.status === 401 || msg.includes("Authentication") || msg.includes("Unauthorized")) {
       toast.error("Please sign in to use the AI Perfumer");
       return true;
     }
@@ -47,6 +49,14 @@ function handleAIError(data: any, error: any) {
     }
     toast.error(msg);
     return true;
+  }
+  // If there's an error object but we couldn't parse status, check message
+  if (error) {
+    const errMsg = error?.message || "";
+    if (errMsg.includes("non-2xx")) {
+      toast.error("Please sign in to use the AI Perfumer");
+      return true;
+    }
   }
   return false;
 }
