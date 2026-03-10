@@ -19,11 +19,14 @@ export function decodeJwt(token: string): Record<string, unknown> | null {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return null;
-    const payload = parts[1];
-    // Base64url → Base64 → JSON
-    const padded = payload.replace(/-/g, "+").replace(/_/g, "/");
-    const json = atob(padded.padEnd(padded.length + ((4 - (padded.length % 4)) % 4), "="));
-    return JSON.parse(json) as Record<string, unknown>;
+
+    // Convert base64url encoding to standard base64, then pad to a multiple of 4
+    const base64url = parts[1];
+    const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
+    const paddingNeeded = (4 - (base64.length % 4)) % 4;
+    const padded = base64 + "=".repeat(paddingNeeded);
+
+    return JSON.parse(atob(padded)) as Record<string, unknown>;
   } catch {
     return null;
   }
@@ -67,14 +70,21 @@ export async function hasRole(role: string): Promise<boolean> {
 /**
  * Mask a client email address to prevent database scraping in the UI.
  *
+ * Shows at most 2 characters of the local part then "***", keeping the
+ * domain visible for recognition but making the full address un-copyable.
+ *
  * Examples:
- *   "test@domain.com"     → "te***@domain.com"
- *   "a@b.co"              → "a***@b.co"
- *   "verylongemail@x.io"  → "ve***@x.io"
+ *   "test@domain.com"  → "te***@domain.com"
+ *   "a@b.co"           → "a***@b.co"
+ *   "ab@x.io"          → "ab***@x.io"
  */
 export function maskEmail(email: string): string {
-  if (!email || !email.includes("@")) return "***";
-  const [local, domain] = email.split("@");
-  const visible = local.slice(0, Math.min(2, local.length));
+  if (!email || !email.includes("@")) return "***@***";
+  const atIndex = email.lastIndexOf("@");
+  const local = email.slice(0, atIndex);
+  const domain = email.slice(atIndex + 1);
+  // Always show at most 2 chars; for 1-char locals show 1 char
+  const visibleChars = Math.min(2, local.length);
+  const visible = local.slice(0, visibleChars);
   return `${visible}***@${domain}`;
 }

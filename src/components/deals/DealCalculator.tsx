@@ -2,32 +2,37 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import {
+  B2B_WHOLESALE_DISCOUNT,
+  B2C_COMMISSION_PCT,
+  TIER2_COMMISSION_PCT,
+  getB2BCommissionPct,
+} from "@/lib/commissionConstants";
 
 /**
  * DealCalculator — B2B Pricing Calculator (Module C)
  *
  * Shows a live breakdown of:
- *  - Wholesale price after 40% discount
+ *  - Wholesale price after the fixed 40% discount
  *  - Expected B2B commission (10–20%) on the discounted total
  *  - Tier 2 parent referrer override (5%) — informational only
  */
 export function DealCalculator() {
   const [retailPrice, setRetailPrice] = useState(500);
   const [units, setUnits] = useState(10);
-  const WHOLESALE_DISCOUNT = 0.4; // 40% wholesale discount (fixed)
 
   const orderTotal = retailPrice * units;
-  const wholesaleTotal = orderTotal * (1 - WHOLESALE_DISCOUNT);
+  const wholesaleTotal = orderTotal * (1 - B2B_WHOLESALE_DISCOUNT);
 
-  // B2C commission on full retail (50%)
-  const b2cCommission = orderTotal * 0.5;
+  // B2C commission on full retail
+  const b2cCommission = orderTotal * B2C_COMMISSION_PCT;
 
   // B2B commission rate: tiered by wholesale total
-  const b2bCommissionPct = wholesaleTotal >= 500 ? 20 : wholesaleTotal >= 200 ? 15 : 10;
+  const b2bCommissionPct = getB2BCommissionPct(wholesaleTotal);
   const b2bCommission = (wholesaleTotal * b2bCommissionPct) / 100;
 
-  // Tier 2: 5% of the order total (capped at 1 level up)
-  const tier2Commission = orderTotal * 0.05;
+  // Tier 2: fixed percentage of the order total (capped at 1 level up)
+  const tier2Commission = orderTotal * TIER2_COMMISSION_PCT;
 
   return (
     <div className="glass-surface rounded-xl border border-border/30 p-5 space-y-5">
@@ -62,9 +67,9 @@ export function DealCalculator() {
 
       <div className="space-y-2">
         <Label className="text-xs font-display text-muted-foreground tracking-wider">
-          WHOLESALE DISCOUNT (FIXED 40%)
+          WHOLESALE DISCOUNT (FIXED {B2B_WHOLESALE_DISCOUNT * 100}%)
         </Label>
-        <Slider value={[40]} min={40} max={40} disabled className="opacity-60" />
+        <Slider value={[B2B_WHOLESALE_DISCOUNT * 100]} min={B2B_WHOLESALE_DISCOUNT * 100} max={B2B_WHOLESALE_DISCOUNT * 100} disabled className="opacity-60" />
       </div>
 
       <div className="space-y-2 rounded-lg bg-muted/20 p-4 text-xs font-body">

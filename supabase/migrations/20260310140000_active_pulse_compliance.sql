@@ -132,6 +132,7 @@ BEGIN
       AND ap.account_type = 'b2c_affiliate'
   LOOP
     -- Rule 1: weekly_sales < 5 → mark Lapsed
+    -- Minimum 5 sales/week is the compliance threshold for b2c_affiliate accounts
     IF COALESCE(_rec.weekly_sales, 0) < 5 AND _rec.status = 'active' THEN
       UPDATE public.affiliate_partners
       SET status = 'Lapsed', updated_at = now()
@@ -146,7 +147,8 @@ BEGIN
       _lapsed_count := _lapsed_count + 1;
     END IF;
 
-    -- Rule 2: Lapsed for > 30 days → orphan their clients
+    -- Rule 2: Lapsed for > 30 days (grace period) → orphan their clients
+    -- After the 30-day grace period, clients are reassigned to the HOUSE account
     IF _rec.status = 'Lapsed'
        AND _rec.lapsed_at IS NOT NULL
        AND _rec.lapsed_at < now() - INTERVAL '30 days' THEN
@@ -180,6 +182,9 @@ BEGIN
 
   INSERT INTO public.affiliate_metrics (affiliate_id, week_start, weekly_sales, weekly_revenue)
   VALUES (NEW.affiliate_id, _week_start, 1, COALESCE(NEW.commission_amount, 0) * 2)
+  -- weekly_revenue approximates order total: commission_amount is 50% of order for B2C,
+  -- so multiplying by 2 recovers the retail price. For B2B the approximation is less precise
+  -- but sufficient for compliance threshold monitoring purposes.
   ON CONFLICT (affiliate_id, week_start)
   DO UPDATE SET
     weekly_sales = affiliate_metrics.weekly_sales + 1,

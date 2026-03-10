@@ -37,18 +37,16 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-  // Verify caller presents the service-role key (cron caller or admin)
+  // Only allow calls that present the service-role key.
+  // The pg_cron scheduled job must include this header:
+  //   Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY>
   const authHeader = req.headers.get("Authorization") ?? "";
   const token = authHeader.replace("Bearer ", "");
   if (token !== serviceKey) {
-    // Also allow invocation from pg_cron via anon key + internal header
-    const internalHeader = req.headers.get("x-supabase-internal");
-    if (internalHeader !== "cron") {
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
-        status: 403,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    return new Response(JSON.stringify({ error: "Forbidden" }), {
+      status: 403,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 
   const supabase = createClient(supabaseUrl, serviceKey);
