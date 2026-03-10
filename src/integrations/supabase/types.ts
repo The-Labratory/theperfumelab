@@ -71,6 +71,63 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_campaigns: {
+        Row: {
+          affiliate_id: string
+          channel: string | null
+          clicks: number | null
+          conversions: number | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          name: string
+          slug: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_id: string
+          channel?: string | null
+          clicks?: number | null
+          conversions?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          slug: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_id?: string
+          channel?: string | null
+          clicks?: number | null
+          conversions?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          slug?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_campaigns_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_campaigns_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliate_compliance: {
         Row: {
           affiliate_id: string
@@ -131,6 +188,9 @@ export type Database = {
       affiliate_partners: {
         Row: {
           approved_at: string | null
+          avatar_url: string | null
+          badges: Json | null
+          bio: string | null
           commission_rate: number
           company_name: string | null
           compliance_streak_days: number | null
@@ -139,11 +199,17 @@ export type Database = {
           email: string
           id: string
           is_compliant: boolean | null
+          landing_headline: string | null
+          landing_tagline: string | null
           last_active_at: string | null
+          onboarding_completed: boolean | null
           payout_details: Json | null
           payout_method: string | null
           phone: string | null
+          points: number | null
           referral_code: string
+          slug: string | null
+          social_links: Json | null
           status: string
           tier: string
           total_earnings: number
@@ -155,6 +221,9 @@ export type Database = {
         }
         Insert: {
           approved_at?: string | null
+          avatar_url?: string | null
+          badges?: Json | null
+          bio?: string | null
           commission_rate?: number
           company_name?: string | null
           compliance_streak_days?: number | null
@@ -163,11 +232,17 @@ export type Database = {
           email: string
           id?: string
           is_compliant?: boolean | null
+          landing_headline?: string | null
+          landing_tagline?: string | null
           last_active_at?: string | null
+          onboarding_completed?: boolean | null
           payout_details?: Json | null
           payout_method?: string | null
           phone?: string | null
+          points?: number | null
           referral_code?: string
+          slug?: string | null
+          social_links?: Json | null
           status?: string
           tier?: string
           total_earnings?: number
@@ -179,6 +254,9 @@ export type Database = {
         }
         Update: {
           approved_at?: string | null
+          avatar_url?: string | null
+          badges?: Json | null
+          bio?: string | null
           commission_rate?: number
           company_name?: string | null
           compliance_streak_days?: number | null
@@ -187,11 +265,17 @@ export type Database = {
           email?: string
           id?: string
           is_compliant?: boolean | null
+          landing_headline?: string | null
+          landing_tagline?: string | null
           last_active_at?: string | null
+          onboarding_completed?: boolean | null
           payout_details?: Json | null
           payout_method?: string | null
           phone?: string | null
+          points?: number | null
           referral_code?: string
+          slug?: string | null
+          social_links?: Json | null
           status?: string
           tier?: string
           total_earnings?: number
@@ -250,6 +334,51 @@ export type Database = {
           },
           {
             foreignKeyName: "affiliate_payouts_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_point_events: {
+        Row: {
+          action: string
+          affiliate_id: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          points: number
+          user_id: string
+        }
+        Insert: {
+          action: string
+          affiliate_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          points?: number
+          user_id: string
+        }
+        Update: {
+          action?: string
+          affiliate_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          points?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_point_events_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_point_events_affiliate_id_fkey"
             columns: ["affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
@@ -3021,6 +3150,7 @@ export type Database = {
       check_invite_rate_limit: { Args: { _user_id: string }; Returns: boolean }
       count_direct_referrals: { Args: { _user_id: string }; Returns: number }
       count_total_downline: { Args: { _user_id: string }; Returns: number }
+      generate_affiliate_slug: { Args: { _name: string }; Returns: string }
       get_alltime_leaderboard: {
         Args: { _limit?: number }
         Returns: {
