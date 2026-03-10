@@ -397,6 +397,68 @@ export type Database = {
           },
         ]
       }
+      client_connections: {
+        Row: {
+          account_type: string
+          acquisition_date: string
+          checkout_link_code: string | null
+          client_email: string
+          company_name: string | null
+          created_at: string
+          discount_pct: number | null
+          expected_volume: string | null
+          id: string
+          last_order_at: string | null
+          notes: string | null
+          original_affiliate_id: string | null
+          total_orders: number
+          total_spent: number
+          updated_at: string
+        }
+        Insert: {
+          account_type?: string
+          acquisition_date?: string
+          checkout_link_code?: string | null
+          client_email: string
+          company_name?: string | null
+          created_at?: string
+          discount_pct?: number | null
+          expected_volume?: string | null
+          id?: string
+          last_order_at?: string | null
+          notes?: string | null
+          original_affiliate_id?: string | null
+          total_orders?: number
+          total_spent?: number
+          updated_at?: string
+        }
+        Update: {
+          account_type?: string
+          acquisition_date?: string
+          checkout_link_code?: string | null
+          client_email?: string
+          company_name?: string | null
+          created_at?: string
+          discount_pct?: number | null
+          expected_volume?: string | null
+          id?: string
+          last_order_at?: string | null
+          notes?: string | null
+          original_affiliate_id?: string | null
+          total_orders?: number
+          total_spent?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_connections_original_affiliate_id_fkey"
+            columns: ["original_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       commission_ledger: {
         Row: {
           commission_amount: number
