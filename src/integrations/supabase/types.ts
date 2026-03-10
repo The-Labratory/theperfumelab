@@ -71,15 +71,68 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_compliance: {
+        Row: {
+          affiliate_id: string
+          checked_at: string | null
+          commission_voided: boolean
+          created_at: string
+          id: string
+          is_compliant: boolean
+          sales_count: number
+          user_id: string
+          voided_amount: number
+          week_end: string
+          week_start: string
+        }
+        Insert: {
+          affiliate_id: string
+          checked_at?: string | null
+          commission_voided?: boolean
+          created_at?: string
+          id?: string
+          is_compliant?: boolean
+          sales_count?: number
+          user_id: string
+          voided_amount?: number
+          week_end: string
+          week_start: string
+        }
+        Update: {
+          affiliate_id?: string
+          checked_at?: string | null
+          commission_voided?: boolean
+          created_at?: string
+          id?: string
+          is_compliant?: boolean
+          sales_count?: number
+          user_id?: string
+          voided_amount?: number
+          week_end?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_compliance_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliate_partners: {
         Row: {
           approved_at: string | null
           commission_rate: number
           company_name: string | null
+          compliance_streak_days: number | null
           created_at: string
           display_name: string
           email: string
           id: string
+          is_compliant: boolean | null
+          last_active_at: string | null
           payout_details: Json | null
           payout_method: string | null
           phone: string | null
@@ -91,15 +144,19 @@ export type Database = {
           total_sales: number
           updated_at: string
           user_id: string
+          withdrawals_locked: boolean | null
         }
         Insert: {
           approved_at?: string | null
           commission_rate?: number
           company_name?: string | null
+          compliance_streak_days?: number | null
           created_at?: string
           display_name: string
           email: string
           id?: string
+          is_compliant?: boolean | null
+          last_active_at?: string | null
           payout_details?: Json | null
           payout_method?: string | null
           phone?: string | null
@@ -111,15 +168,19 @@ export type Database = {
           total_sales?: number
           updated_at?: string
           user_id: string
+          withdrawals_locked?: boolean | null
         }
         Update: {
           approved_at?: string | null
           commission_rate?: number
           company_name?: string | null
+          compliance_streak_days?: number | null
           created_at?: string
           display_name?: string
           email?: string
           id?: string
+          is_compliant?: boolean | null
+          last_active_at?: string | null
           payout_details?: Json | null
           payout_method?: string | null
           phone?: string | null
@@ -131,6 +192,7 @@ export type Database = {
           total_sales?: number
           updated_at?: string
           user_id?: string
+          withdrawals_locked?: boolean | null
         }
         Relationships: []
       }
@@ -404,10 +466,13 @@ export type Database = {
           checkout_link_code: string | null
           client_email: string
           company_name: string | null
+          contact_name: string | null
+          contact_phone: string | null
           created_at: string
           discount_pct: number | null
           expected_volume: string | null
           id: string
+          is_contact_cloaked: boolean | null
           last_order_at: string | null
           notes: string | null
           original_affiliate_id: string | null
@@ -421,10 +486,13 @@ export type Database = {
           checkout_link_code?: string | null
           client_email: string
           company_name?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           discount_pct?: number | null
           expected_volume?: string | null
           id?: string
+          is_contact_cloaked?: boolean | null
           last_order_at?: string | null
           notes?: string | null
           original_affiliate_id?: string | null
@@ -438,10 +506,13 @@ export type Database = {
           checkout_link_code?: string | null
           client_email?: string
           company_name?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           discount_pct?: number | null
           expected_volume?: string | null
           id?: string
+          is_contact_cloaked?: boolean | null
           last_order_at?: string | null
           notes?: string | null
           original_affiliate_id?: string | null
@@ -1125,6 +1196,50 @@ export type Database = {
         }
         Relationships: []
       }
+      growth_credits: {
+        Row: {
+          amount: number
+          cash_amount: number
+          created_at: string
+          credit_type: string
+          id: string
+          multiplier: number
+          notes: string | null
+          source_commission_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          cash_amount?: number
+          created_at?: string
+          credit_type?: string
+          id?: string
+          multiplier?: number
+          notes?: string | null
+          source_commission_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          cash_amount?: number
+          created_at?: string
+          credit_type?: string
+          id?: string
+          multiplier?: number
+          notes?: string | null
+          source_commission_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "growth_credits_source_commission_id_fkey"
+            columns: ["source_commission_id"]
+            isOneToOne: false
+            referencedRelation: "commission_ledger"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ifra_restrictions: {
         Row: {
           amendment_number: string | null
@@ -1735,6 +1850,50 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_auctions: {
+        Row: {
+          claimed_by_user_id: string | null
+          client_count: number
+          created_at: string
+          credit_cost: number
+          id: string
+          resolved_at: string | null
+          source_affiliate_id: string
+          status: string
+          total_portfolio_value: number
+        }
+        Insert: {
+          claimed_by_user_id?: string | null
+          client_count?: number
+          created_at?: string
+          credit_cost?: number
+          id?: string
+          resolved_at?: string | null
+          source_affiliate_id: string
+          status?: string
+          total_portfolio_value?: number
+        }
+        Update: {
+          claimed_by_user_id?: string | null
+          client_count?: number
+          created_at?: string
+          credit_cost?: number
+          id?: string
+          resolved_at?: string | null
+          source_affiliate_id?: string
+          status?: string
+          total_portfolio_value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_auctions_source_affiliate_id_fkey"
+            columns: ["source_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       production_orders: {
         Row: {
           batch_id: string | null
@@ -2159,6 +2318,62 @@ export type Database = {
         }
         Relationships: []
       }
+      scent_stations: {
+        Row: {
+          address: string | null
+          affiliate_id: string
+          business_name: string
+          business_type: string
+          commission_split_pct: number
+          created_at: string
+          id: string
+          is_active: boolean
+          qr_code_data: string
+          total_conversions: number
+          total_scans: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          affiliate_id: string
+          business_name: string
+          business_type?: string
+          commission_split_pct?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          qr_code_data?: string
+          total_conversions?: number
+          total_scans?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          affiliate_id?: string
+          business_name?: string
+          business_type?: string
+          commission_split_pct?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          qr_code_data?: string
+          total_conversions?: number
+          total_scans?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scent_stations_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       security_events: {
         Row: {
           correlation_id: string | null
@@ -2197,6 +2412,74 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      session_fingerprints: {
+        Row: {
+          created_at: string
+          fingerprint_hash: string | null
+          id: string
+          ip_address: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          fingerprint_hash?: string | null
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          fingerprint_hash?: string | null
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sub_affiliate_margins: {
+        Row: {
+          created_at: string
+          id: string
+          manager_spread_pct: number | null
+          manager_user_id: string
+          margin_pct: number
+          promoted_at: string | null
+          sub_affiliate_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          manager_spread_pct?: number | null
+          manager_user_id: string
+          margin_pct?: number
+          promoted_at?: string | null
+          sub_affiliate_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          manager_spread_pct?: number | null
+          manager_user_id?: string
+          margin_pct?: number
+          promoted_at?: string | null
+          sub_affiliate_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_affiliate_margins_sub_affiliate_id_fkey"
+            columns: ["sub_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_permissions: {
         Row: {
