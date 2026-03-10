@@ -158,6 +158,7 @@ const AppContent = () => {
         {/* Business Portal */}
         <Route path="/my-business" element={<BusinessLayout />}>
           <Route index element={<BusinessDashboard />} />
+          <Route path="crm" element={<BusinessCRM />} />
           <Route path="sales" element={<BusinessSales />} />
           <Route path="inventory" element={<BusinessInventory />} />
           <Route path="customers" element={<BusinessCustomers />} />

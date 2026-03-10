@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, TrendingUp, Package, Users, Share2,
-  Target, FileText, Network, ChevronRight, Briefcase
+  Target, FileText, Network, ChevronRight, Briefcase, BookUser
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
 
 const NAV_ITEMS = [
   { title: "Dashboard", url: "/my-business", icon: LayoutDashboard, end: true },
+  { title: "Client CRM", url: "/my-business/crm", icon: BookUser },
   { title: "Sales", url: "/my-business/sales", icon: TrendingUp },
   { title: "Inventory", url: "/my-business/inventory", icon: Package },
   { title: "Customers", url: "/my-business/customers", icon: Users },
