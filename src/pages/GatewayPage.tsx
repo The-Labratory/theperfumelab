@@ -147,23 +147,24 @@ const GatewayPage = () => {
         </motion.div>
       </div>
 
-      {/* Top 5 Affiliate Networks */}
-      {topAffiliates.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-          className="relative z-10 mt-12 w-full max-w-3xl"
-        >
-          <div className="flex items-center gap-2 mb-5 justify-center">
-            <Trophy className="w-4 h-4 text-accent" />
-            <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 5 Affiliate Networks</h3>
-            <Trophy className="w-4 h-4 text-accent" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-            {topAffiliates.map((a, i) => (
+      {/* Top 5 Affiliate Networks — always visible */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+        className="relative z-10 mt-12 w-full max-w-3xl"
+      >
+        <div className="flex items-center gap-2 mb-5 justify-center">
+          <Trophy className="w-4 h-4 text-accent" />
+          <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 5 Affiliate Networks</h3>
+          <Trophy className="w-4 h-4 text-accent" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {Array.from({ length: 5 }).map((_, i) => {
+            const a = topAffiliates[i];
+            return (
               <motion.div
-                key={a.id}
+                key={a?.id ?? `placeholder-${i}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 + i * 0.1 }}
@@ -173,21 +174,21 @@ const GatewayPage = () => {
                   <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent pointer-events-none" />
                 )}
                 <div className="relative z-10">
-                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${tierColors[a.tier] || "from-muted to-muted"} flex items-center justify-center mx-auto mb-2 text-sm font-display font-black text-background`}>
+                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${a ? (tierColors[a.tier] || "from-muted to-muted") : "from-muted to-muted-foreground/20"} flex items-center justify-center mx-auto mb-2 text-sm font-display font-black text-background`}>
                     {i + 1}
                   </div>
-                  <p className="font-display text-xs font-bold text-foreground truncate">{a.display_name}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{tierEmoji[a.tier] || "🥉"} {a.tier?.toUpperCase()}</p>
+                  <p className="font-display text-xs font-bold text-foreground truncate">{a?.display_name ?? "Open Spot"}</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{a ? `${tierEmoji[a.tier] || "🥉"} ${a.tier?.toUpperCase()}` : "— JOIN NOW —"}</p>
                   <div className="mt-2 flex items-center justify-center gap-1 text-[10px] text-primary font-display font-bold">
                     <TrendingUp className="w-3 h-3" />
-                    €{a.total_sales.toFixed(0)}
+                    {a ? `€${a.total_sales.toFixed(0)}` : "€0"}
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
+            );
+          })}
+        </div>
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0 }}
