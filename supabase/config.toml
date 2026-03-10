@@ -15,3 +15,5 @@ project_id = "xkfztnyodbzftlshoqui"
     verify_jwt = false
   [functions.convert-growth-credits]
     verify_jwt = false
+  [functions.translation-agent]
+    verify_jwt = false
