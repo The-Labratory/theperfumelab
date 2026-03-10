@@ -163,6 +163,7 @@ const AppContent = () => {
           <Route path="storage" element={<SAStorageManagerPage />} />
           <Route path="permissions" element={<SAPermissionsPage />} />
           <Route path="referrals" element={<SAReferralManagementPage />} />
+          <Route path="auction" element={<InactivityAuctionPage />} />
         </Route>
 
         {/* Business Portal */}
