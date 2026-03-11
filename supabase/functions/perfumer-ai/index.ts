@@ -158,18 +158,16 @@ serve(async (req) => {
     const rawContent = aiResponse.choices?.[0]?.message?.content || "";
     const cleanContent = stripCodeFences(rawContent);
 
-    // PERSISTENCE: Log result for "System Learning"
-    await supabase.from("ai_logs").insert({
-        user_id: user.id,
-        mode: mode,
-        input: notes,
-        output: cleanContent,
-        success: true,
-        metadata: { 
-          zodiac: notes?.zodiac || notes?.duoPartnerZodiac,
-          has_memory: !!notes?.memory 
-        }
-    });
+    // Log result (best-effort, table may not exist)
+    try {
+      await supabase.from("ai_logs").insert({
+          user_id: user.id,
+          mode: mode,
+          input: notes,
+          output: cleanContent,
+          success: true,
+      });
+    } catch (_) { /* silent */ }
 
     return new Response(JSON.stringify({ content: cleanContent }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
