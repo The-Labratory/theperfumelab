@@ -57,7 +57,12 @@ export default function ClientPitchDialog({ open, onOpenChange, pitch, businessN
             <ScrollArea className="max-h-[55vh] pr-4">
               <div
                 className="prose prose-sm dark:prose-invert font-body text-xs leading-relaxed text-muted-foreground"
-                dangerouslySetInnerHTML={{ __html: renderMarkdown(pitch) }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(renderMarkdown(pitch), {
+                    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'strong', 'em', 'li', 'br', 'div', 'span'],
+                    ALLOWED_ATTR: ['class'],
+                  }),
+                }}
               />
             </ScrollArea>
             <div className="flex justify-end gap-2 pt-2 border-t border-border/30">
