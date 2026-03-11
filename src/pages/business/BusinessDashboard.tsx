@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  TrendingUp, DollarSign, Users, Package, Target, ArrowRight,
-  ShoppingBag, BarChart3, Share2, Network
+  TrendingUp, DollarSign, Users, Package, ArrowRight,
+  ShoppingBag, BarChart3, Share2, Percent, Network
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { DealCalculator } from "@/components/deals/DealCalculator";
 
 const QUICK_ACTIONS = [
   { label: "Report a Sale", icon: ShoppingBag, path: "/my-business/sales", color: "from-primary to-accent" },
@@ -148,6 +149,96 @@ export default function BusinessDashboard() {
           )}
         </div>
       </div>
+
+      {/* ── Command Center: B2C 50% Margin View ─────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <h3 className="font-display text-xs tracking-[0.2em] text-muted-foreground mb-4">
+          COMMAND CENTER — B2C 50% MARGIN
+        </h3>
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* B2C Margin Overview */}
+          <div className="glass-surface rounded-xl p-5 border border-border/30 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Percent className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="font-display text-sm font-bold tracking-wider text-foreground">
+                  B2C Retail Commission
+                </p>
+                <p className="text-[10px] text-muted-foreground font-body">
+                  Flat 50% on every retail order — Scent-Lock attributed
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                {
+                  label: "Commission Rate",
+                  value: "50%",
+                  sub: "Static — B2C",
+                  accent: true,
+                },
+                {
+                  label: "Your Earnings",
+                  value: `€${((affiliate?.total_earnings || 0)).toFixed(0)}`,
+                  sub: "All time",
+                  accent: false,
+                },
+                {
+                  label: "B2B Commission",
+                  value: "10–20%",
+                  sub: "After 40% wholesale",
+                  accent: false,
+                },
+                {
+                  label: "Tier 2 Override",
+                  value: "5%",
+                  sub: "Parent referrer (1 level)",
+                  accent: false,
+                },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-lg bg-muted/20 p-3 border border-border/20"
+                >
+                  <p
+                    className={`font-display text-lg font-black ${
+                      item.accent ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {item.value}
+                  </p>
+                  <p className="text-[10px] font-display tracking-widest text-muted-foreground">
+                    {item.label.toUpperCase()}
+                  </p>
+                  <p className="text-[9px] text-muted-foreground/70 mt-0.5">{item.sub}</p>
+                </div>
+              ))}
+            </div>
+
+            <Link to="/my-business/crm">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <Network className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-display font-semibold text-foreground">
+                    Manage Scent-Lock Portfolio
+                  </span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-primary" />
+              </div>
+            </Link>
+          </div>
+
+          {/* Live B2B Deal Calculator */}
+          <DealCalculator />
+        </div>
+      </motion.div>
     </div>
   );
 }

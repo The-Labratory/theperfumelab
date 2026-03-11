@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ClientStats } from "@/components/crm/ClientStats";
+import { ClientTable, type ClientConnection } from "@/components/crm/ClientTable";
+import { AddClientDialog } from "@/components/crm/AddClientDialog";
+import { B2BDealDialog } from "@/components/crm/B2BDealDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,27 +15,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { UserPlus, Building2, Copy, Sparkles, Loader2 } from "lucide-react";
 import ClientPitchDialog from "@/components/business/ClientPitchDialog";
 
-interface ClientConnection {
-  id: string;
-  client_email: string;
-  account_type: string;
-  company_name: string | null;
-  expected_volume: string | null;
-  discount_pct: number;
-  checkout_link_code: string;
-  last_order_at: string | null;
-  total_orders: number;
-  total_spent: number;
-  acquisition_date: string;
-  notes: string | null;
-}
-
-function getClientStatus(lastOrderAt: string | null): { label: string; color: string } {
-  if (!lastOrderAt) return { label: "New", color: "bg-muted text-muted-foreground" };
+function getClientStatusLabel(lastOrderAt: string | null): string {
+  if (!lastOrderAt) return "New";
   const days = (Date.now() - new Date(lastOrderAt).getTime()) / (1000 * 60 * 60 * 24);
-  if (days <= 30) return { label: "Active", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" };
-  if (days <= 90) return { label: "At Risk", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" };
-  return { label: "Inactive", color: "bg-muted text-muted-foreground border-muted" };
+  if (days <= 30) return "Active";
+  if (days <= 90) return "At Risk";
+  return "Inactive";
 }
 
 export default function BusinessCRM() {
@@ -60,36 +49,32 @@ export default function BusinessCRM() {
     if (affiliate?.id) fetchClients();
   }, [affiliate?.id]);
 
-  const addClient = async () => {
-    if (!form.email) return toast.error("Email is required");
+  const addClient = async (form: { email: string; account_type: string; notes: string }) => {
+    if (!form.email) return void toast.error("Email is required");
     const { error } = await supabase.from("client_connections").insert({
       client_email: form.email.toLowerCase().trim(),
       original_affiliate_id: affiliate.id,
       account_type: form.account_type,
       notes: form.notes || null,
     } as any);
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     toast.success("Client locked to your portfolio!");
-    setForm({ email: "", account_type: "B2C", notes: "" });
-    setShowAdd(false);
     fetchClients();
   };
 
-  const addB2BDeal = async () => {
-    if (!b2bForm.email || !b2bForm.company) return toast.error("Email & company required");
-    const discount = Math.min(40, Math.max(0, Number(b2bForm.discount)));
+  const addB2BDeal = async (form: { email: string; company: string; volume: string; discount: string }) => {
+    if (!form.email || !form.company) return void toast.error("Email & company required");
+    const discount = Math.min(40, Math.max(0, Number(form.discount)));
     const { error } = await supabase.from("client_connections").insert({
-      client_email: b2bForm.email.toLowerCase().trim(),
+      client_email: form.email.toLowerCase().trim(),
       original_affiliate_id: affiliate.id,
       account_type: "B2B_Corporate",
-      company_name: b2bForm.company,
-      expected_volume: b2bForm.volume || null,
+      company_name: form.company,
+      expected_volume: form.volume || null,
       discount_pct: discount,
     } as any);
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     toast.success("B2B deal created with pre-negotiated link!");
-    setB2bForm({ email: "", company: "", volume: "", discount: "20" });
-    setShowB2B(false);
     fetchClients();
   };
 
@@ -125,9 +110,9 @@ export default function BusinessCRM() {
 
   const stats = {
     total: clients.length,
-    active: clients.filter(c => getClientStatus(c.last_order_at).label === "Active").length,
-    atRisk: clients.filter(c => getClientStatus(c.last_order_at).label === "At Risk").length,
-    b2b: clients.filter(c => c.account_type === "B2B_Corporate").length,
+    active: clients.filter((c) => getClientStatusLabel(c.last_order_at) === "Active").length,
+    atRisk: clients.filter((c) => getClientStatusLabel(c.last_order_at) === "At Risk").length,
+    b2b: clients.filter((c) => c.account_type === "B2B_Corporate").length,
     revenue: clients.reduce((s, c) => s + c.total_spent, 0),
   };
 
@@ -135,72 +120,28 @@ export default function BusinessCRM() {
     <div className="space-y-6 max-w-7xl">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-display text-xl font-black tracking-wider text-foreground">Client CRM</h2>
-          <p className="text-xs text-muted-foreground font-body mt-1">Your Scent-Lock portfolio — persistent attribution</p>
+          <h2 className="font-display text-xl font-black tracking-wider text-foreground">
+            Client CRM
+          </h2>
+          <p className="text-xs text-muted-foreground font-body mt-1">
+            Your Scent-Lock portfolio — persistent attribution
+          </p>
         </div>
         <div className="flex gap-2">
-          <Dialog open={showAdd} onOpenChange={setShowAdd}>
-            <DialogTrigger asChild>
-              <Button size="sm" className="gap-1.5 text-xs"><UserPlus className="w-3.5 h-3.5" />Add Client</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader><DialogTitle className="font-display tracking-wider">Lock New Client</DialogTitle></DialogHeader>
-              <div className="space-y-3">
-                <Input placeholder="Client email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
-                <Select value={form.account_type} onValueChange={v => setForm(p => ({ ...p, account_type: v }))}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="B2C">B2C Retail</SelectItem>
-                    <SelectItem value="B2B_Corporate">B2B Corporate</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Input placeholder="Notes (optional)" value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))} />
-                <Button onClick={addClient} className="w-full">Lock Client</Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-
-          <Dialog open={showB2B} onOpenChange={setShowB2B}>
-            <DialogTrigger asChild>
-              <Button size="sm" variant="outline" className="gap-1.5 text-xs"><Building2 className="w-3.5 h-3.5" />B2B Deal</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader><DialogTitle className="font-display tracking-wider">B2B Deal Builder</DialogTitle></DialogHeader>
-              <div className="space-y-3">
-                <Input placeholder="Contact email" value={b2bForm.email} onChange={e => setB2bForm(p => ({ ...p, email: e.target.value }))} />
-                <Input placeholder="Company name" value={b2bForm.company} onChange={e => setB2bForm(p => ({ ...p, company: e.target.value }))} />
-                <Input placeholder="Expected volume (e.g. 200 units/month)" value={b2bForm.volume} onChange={e => setB2bForm(p => ({ ...p, volume: e.target.value }))} />
-                <div>
-                  <label className="text-xs font-display text-muted-foreground mb-1 block">Discount % (max 40%)</label>
-                  <Input type="number" min={0} max={40} value={b2bForm.discount} onChange={e => setB2bForm(p => ({ ...p, discount: e.target.value }))} />
-                </div>
-                <div className="rounded-lg bg-accent/10 p-3 text-xs text-accent font-body">
-                  <p className="font-bold">Commission: 10-20% on B2B orders</p>
-                  <p className="text-muted-foreground mt-1">A unique pre-negotiated checkout link will be generated automatically.</p>
-                </div>
-                <Button onClick={addB2BDeal} className="w-full">Create Deal & Generate Link</Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <AddClientDialog onAdd={addClient} />
+          <B2BDealDialog onAdd={addB2BDeal} />
         </div>
       </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        {[
-          { label: "TOTAL CLIENTS", value: stats.total, accent: false },
-          { label: "ACTIVE", value: stats.active, accent: false },
-          { label: "AT RISK", value: stats.atRisk, accent: false },
-          { label: "B2B DEALS", value: stats.b2b, accent: false },
-          { label: "TOTAL REVENUE", value: `€${stats.revenue.toFixed(0)}`, accent: true },
-        ].map(s => (
-          <div key={s.label} className="glass-surface rounded-xl p-3 border border-border/30 text-center">
-            <p className={`font-display text-lg font-black ${s.accent ? "text-primary" : "text-foreground"}`}>{s.value}</p>
-            <p className="text-[8px] font-display tracking-widest text-muted-foreground">{s.label}</p>
-          </div>
-        ))}
-      </div>
+      <ClientStats
+        total={stats.total}
+        active={stats.active}
+        atRisk={stats.atRisk}
+        b2b={stats.b2b}
+        revenue={stats.revenue}
+      />
 
+      <ClientTable clients={clients} loading={loading} onCopyLink={copyCheckoutLink} />
       {/* Client Table */}
       <div className="glass-surface rounded-xl border border-border/30 overflow-hidden">
         <Table>

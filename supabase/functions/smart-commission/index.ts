@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
 
         let commissionPct: number;
         if (connection.account_type === "B2B_Corporate") {
-          // B2B: 10-20% based on deal size
+          // B2B: 10-20% tiered (after 40% wholesale discount applied at checkout)
           commissionPct = order.total >= 500 ? 20 : order.total >= 200 ? 15 : 10;
         } else {
           // B2C: flat 50%
@@ -66,11 +66,50 @@ Deno.serve(async (req) => {
 
         const commissionAmount = (order.total * commissionPct) / 100;
 
+        // --- Tier 2 Override: 5% for the parent referrer (capped at 1 level) ---
+        const directAffiliateId = connection.original_affiliate_id;
+        let tier2Commission = null;
+
+        const { data: directAffiliate } = await supabase
+          .from("affiliate_partners")
+          .select("id, user_id")
+          .eq("id", directAffiliateId)
+          .single();
+
+        if (directAffiliate) {
+          // Look up this affiliate's referral parent (1 level up only)
+          const { data: parentRelationship } = await supabase
+            .from("referral_relationships")
+            .select("parent_user_id")
+            .eq("user_id", directAffiliate.user_id)
+            .maybeSingle();
+
+          if (parentRelationship?.parent_user_id) {
+            const { data: parentAffiliate } = await supabase
+              .from("affiliate_partners")
+              .select("id")
+              .eq("user_id", parentRelationship.parent_user_id)
+              .maybeSingle();
+
+            if (parentAffiliate) {
+              const tier2Pct = 5;
+              const tier2Amount = (order.total * tier2Pct) / 100;
+
+              tier2Commission = {
+                affiliate_id: parentAffiliate.id,
+                commission_pct: tier2Pct,
+                commission_amount: tier2Amount,
+              };
+            }
+          }
+        }
+
         return new Response(JSON.stringify({
           commission_pct: commissionPct,
           commission_amount: commissionAmount,
           account_type: connection.account_type,
-          affiliate_id: connection.original_affiliate_id,
+          affiliate_id: directAffiliateId,
+          tier2_commission: tier2Commission,
         }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
