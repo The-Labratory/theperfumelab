@@ -37,7 +37,7 @@ jobs:
       - name: Create zip archive
         run: |
           cd dist
-          zip -r ../scentra-world-builder.zip .
+          zip -r ../theperfumelab.zip .
           cd ..
 
       - name: Get version
@@ -55,15 +55,15 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           name: Release ${{ steps.get_version.outputs.VERSION }}
           body: |
-            ## Scentra World Builder - Release ${{ steps.get_version.outputs.VERSION }}
+            ## The Perfume Lab — Release ${{ steps.get_version.outputs.VERSION }}
             
             ### Download and Run
             
             **Web Version:**
-            - Visit the [live app](https://lawrencehariri.github.io/scentra-world-builder)
+            - Visit the [live app](https://the-labratory.github.io/theperfumelab)
             
             **Download Build:**
-            1. Download `scentra-world-builder.zip` below
+            1. Download `theperfumelab.zip` below
             2. Extract the zip file
             3. Open `index.html` in your web browser
             
@@ -81,6 +81,6 @@ jobs:
             ### Changes
             - Built from commit ${{ github.sha }}
           files: |
-            scentra-world-builder.zip
+            theperfumelab.zip
           draft: false
           prerelease: false

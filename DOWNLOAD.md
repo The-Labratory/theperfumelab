@@ -1,10 +1,10 @@
-# How to Download and Run Scentra World Builder
+# How to Download and Run The Perfume Lab
 
-Welcome! Here's how to get started with The Perfume Lab app.
+Welcome! Here's how to get started with **The Perfume Lab — Fragrance Atelier**.
 
 ## 🌐 Easiest Way: Use the Live Web App
 
-**Just click this link:** [https://lawrencehariri.github.io/scentra-world-builder](https://lawrencehariri.github.io/scentra-world-builder)
+**Just click this link:** [https://the-labratory.github.io/theperfumelab](https://the-labratory.github.io/theperfumelab)
 
 No download needed! The app runs directly in your web browser.
 
@@ -15,12 +15,12 @@ No download needed! The app runs directly in your web browser.
 Want to run the app on your computer without internet? Follow these steps:
 
 ### Step 1: Download the App
-1. Go to the [Releases page](https://github.com/LawrenceHariri/scentra-world-builder/releases)
+1. Go to the [Releases page](https://github.com/The-Labratory/theperfumelab/releases)
 2. Click on the latest release
-3. Download the `scentra-world-builder.zip` file
+3. Download the `theperfumelab.zip` file
 
 ### Step 2: Extract the Files
-1. Find the downloaded `scentra-world-builder.zip` file (usually in your Downloads folder)
+1. Find the downloaded `theperfumelab.zip` file (usually in your Downloads folder)
 2. Right-click the file and choose "Extract All" (Windows) or double-click (Mac)
 3. Choose where to extract it (your Desktop or Documents folder works great)
 
@@ -39,7 +39,7 @@ For the best experience, run the app with a local server:
 1. Open Command Prompt (Windows) or Terminal (Mac)
 2. Navigate to the extracted folder (replace with your actual path):
    ```
-   cd ~/Downloads/scentra-world-builder
+   cd ~/Downloads/theperfumelab
    ```
 3. Run this command:
    ```
@@ -51,7 +51,7 @@ For the best experience, run the app with a local server:
 1. Open Command Prompt (Windows) or Terminal (Mac)
 2. Navigate to the extracted folder (replace with your actual path):
    ```
-   cd ~/Downloads/scentra-world-builder
+   cd ~/Downloads/theperfumelab
    ```
 3. Run this command:
    ```
@@ -72,17 +72,17 @@ For the best experience, run the app with a local server:
 - Make sure JavaScript is enabled in your browser
 
 **Need help?**
-- Open an issue on the [GitHub repository](https://github.com/LawrenceHariri/scentra-world-builder/issues)
+- Open an issue on the [GitHub repository](https://github.com/The-Labratory/theperfumelab/issues)
 
 ---
 
 ## 🔄 Updating to the Latest Version
 
-1. Download the latest release from the [Releases page](https://github.com/LawrenceHariri/scentra-world-builder/releases)
+1. Download the latest release from the [Releases page](https://github.com/The-Labratory/theperfumelab/releases)
 2. Extract the new version
 3. Replace your old folder with the new one
 
-Your data should be saved in your browser's local storage, so it will persist between versions.
+Your data is saved in your browser's local storage (and Supabase when signed in), so it will persist between versions.
 
 ---
 
