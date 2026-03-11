@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Copy, Loader2, Sparkles } from "lucide-react";
+import DOMPurify from "dompurify";
 import { toast } from "sonner";
 
 interface ClientPitchDialogProps {
