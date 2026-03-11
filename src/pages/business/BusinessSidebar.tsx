@@ -1,6 +1,7 @@
 import {
   LayoutDashboard, TrendingUp, Package, Users, Share2,
-  Target, FileText, Network, ChevronRight, Briefcase, BookUser
+  Target, FileText, Network, Briefcase, BookUser,
+  Zap, QrCode, Sparkles, UserPlus,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -9,6 +10,7 @@ import {
   SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { getExpansionTier, canAccessQREngine, canAccessB2BSuite, canAccessTeamPortal } from "@/lib/affiliateTiers";
 
 const NAV_ITEMS = [
   { title: "Dashboard", url: "/my-business", icon: LayoutDashboard, end: true },
@@ -30,6 +32,19 @@ export function BusinessSidebar({ affiliate }: { affiliate: any }) {
   const tierEmoji: Record<string, string> = {
     bronze: "🥉", silver: "🥈", gold: "🥇", platinum: "💎", high_achiever: "👑",
   };
+
+  const weeklySales: number = affiliate?.weekly_sales_count ?? 0;
+  const tierKey = getExpansionTier(weeklySales);
+  const qrUnlocked = canAccessQREngine(tierKey);
+  const b2bUnlocked = canAccessB2BSuite(tierKey);
+  const teamUnlocked = canAccessTeamPortal(tierKey);
+
+  const EXPANSION_ITEMS = [
+    { title: "Expansion Hub", url: "/my-business/expansion", icon: Zap, unlocked: true },
+    { title: "QR Engine", url: "/my-business/qr-engine", icon: QrCode, unlocked: qrUnlocked },
+    { title: "Pitch Builder", url: "/my-business/pitch-builder", icon: Sparkles, unlocked: b2bUnlocked },
+    { title: "Team Portal", url: "/my-business/team", icon: UserPlus, unlocked: teamUnlocked },
+  ];
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border/30">
@@ -78,6 +93,42 @@ export function BusinessSidebar({ affiliate }: { affiliate: any }) {
                     >
                       <item.icon className="w-4 h-4 shrink-0" />
                       {!collapsed && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Expansion Suite group */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="font-display text-[10px] tracking-[0.2em]">
+            {!collapsed && "EXPANSION SUITE"}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {EXPANSION_ITEMS.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-body transition-colors ${
+                        item.unlocked
+                          ? "hover:bg-muted/50"
+                          : "opacity-40 pointer-events-none"
+                      }`}
+                      activeClassName="bg-primary/10 text-primary font-medium"
+                    >
+                      <item.icon className="w-4 h-4 shrink-0" />
+                      {!collapsed && (
+                        <span className="flex items-center gap-1.5">
+                          {item.title}
+                          {!item.unlocked && (
+                            <span className="text-[9px] bg-muted/50 px-1 rounded">🔒</span>
+                          )}
+                        </span>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -1,22 +1,22 @@
-# Scentra World Builder - The Perfume Lab
+# The Perfume Lab — Fragrance Atelier
 
 A fragrance atelier where you can craft your signature scent, explore fragrance worlds, build custom compositions, and shop luxury perfumes.
 
 ## 🚀 Download and Run the App
 
 ### Option 1: Use the Live Web App (Easiest)
-Visit the deployed app at: **[https://lawrencehariri.github.io/scentra-world-builder](https://lawrencehariri.github.io/scentra-world-builder)**
+Visit the deployed app at: **[https://the-labratory.github.io/theperfumelab](https://the-labratory.github.io/theperfumelab)**
 
 ### Option 2: Download Pre-Built Release
-1. Go to the [Releases page](https://github.com/LawrenceHariri/scentra-world-builder/releases)
-2. Download the latest `scentra-world-builder.zip`
+1. Go to the [Releases page](https://github.com/The-Labratory/theperfumelab/releases)
+2. Download the latest `theperfumelab.zip`
 3. Extract the zip file to your computer
 4. Open `index.html` in your web browser
 
 **Or run with a local server:**
 ```bash
 # Using Python (if installed)
-cd scentra-world-builder
+cd theperfumelab
 python -m http.server 8080
 
 # Using Node.js (if installed)
@@ -41,10 +41,10 @@ See the "Development" section below.
 
 ```sh
 # Clone the repository
-git clone https://github.com/LawrenceHariri/scentra-world-builder.git
+git clone https://github.com/The-Labratory/theperfumelab.git
 
 # Navigate to the project directory
-cd scentra-world-builder
+cd theperfumelab
 
 # Install dependencies
 npm install
@@ -117,7 +117,7 @@ Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and 
 
 **Via GitHub Pages:**
 
-Enable GitHub Pages in your repository settings and point it to the `gh-pages` branch or GitHub Actions.
+Enable GitHub Pages in your repository settings and set source to "GitHub Actions".
 
 **Custom Domain:**
 

@@ -20,11 +20,11 @@ const tierColors: Record<string, string> = {
   gold: "from-yellow-400 to-amber-600",
   silver: "from-gray-300 to-gray-500",
   bronze: "from-orange-400 to-orange-600",
-  high_achiever: "from-primary to-accent",
+  high_achiever: "from-primary to-accent"
 };
 
 const tierEmoji: Record<string, string> = {
-  bronze: "🥉", silver: "🥈", gold: "🥇", platinum: "💎", high_achiever: "👑",
+  bronze: "🥉", silver: "🥈", gold: "🥇", platinum: "💎", high_achiever: "👑"
 };
 
 const GatewayPage = () => {
@@ -33,12 +33,11 @@ const GatewayPage = () => {
   useEffect(() => {
     const fetchTop = async () => {
       const { data } = await supabase
-        .from("affiliate_partners")
+        .from("affiliate_leaderboard" as any)
         .select("id, display_name, tier, total_sales, total_referrals")
-        .eq("status", "active")
         .order("total_sales", { ascending: false })
         .limit(5);
-      if (data) setTopAffiliates(data);
+      if (data) setTopAffiliates(data as unknown as TopAffiliate[]);
     };
     fetchTop();
   }, []);
@@ -51,20 +50,20 @@ const GatewayPage = () => {
           animate={{ x: [0, 80, -40, 0], y: [0, -60, 40, 0], scale: [1, 1.3, 0.9, 1] }}
           transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
           className="absolute -top-1/4 -left-1/4 w-[70vw] h-[70vw] rounded-full opacity-20 blur-[120px]"
-          style={{ background: "radial-gradient(circle, hsl(185 80% 55%), transparent 70%)" }}
-        />
+          style={{ background: "radial-gradient(circle, hsl(185 80% 55%), transparent 70%)" }} />
+        
         <motion.div
           animate={{ x: [0, -60, 50, 0], y: [0, 50, -70, 0], scale: [1, 0.85, 1.2, 1] }}
           transition={{ repeat: Infinity, duration: 22, ease: "easeInOut" }}
           className="absolute -bottom-1/4 -right-1/4 w-[60vw] h-[60vw] rounded-full opacity-15 blur-[120px]"
-          style={{ background: "radial-gradient(circle, hsl(35 90% 55%), transparent 70%)" }}
-        />
+          style={{ background: "radial-gradient(circle, hsl(35 90% 55%), transparent 70%)" }} />
+        
         <motion.div
           animate={{ x: [0, 40, -30, 0], y: [0, -40, 30, 0], scale: [1, 1.15, 0.95, 1] }}
           transition={{ repeat: Infinity, duration: 15, ease: "easeInOut" }}
           className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[40vw] h-[40vw] rounded-full opacity-10 blur-[100px]"
-          style={{ background: "radial-gradient(circle, hsl(270 60% 50%), transparent 70%)" }}
-        />
+          style={{ background: "radial-gradient(circle, hsl(270 60% 50%), transparent 70%)" }} />
+        
       </div>
 
       {/* Video background */}
@@ -77,11 +76,11 @@ const GatewayPage = () => {
 
       {/* Grid lines */}
       <div className="absolute inset-0 z-0 opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(hsl(185 80% 55%) 1px, transparent 1px), linear-gradient(90deg, hsl(185 80% 55%) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
+      style={{
+        backgroundImage: "linear-gradient(hsl(185 80% 55%) 1px, transparent 1px), linear-gradient(90deg, hsl(185 80% 55%) 1px, transparent 1px)",
+        backgroundSize: "60px 60px"
+      }} />
+      
 
       <ParticleField count={20} />
 
@@ -94,8 +93,8 @@ const GatewayPage = () => {
           initial={{ opacity: 0, letterSpacing: "0.2em" }}
           animate={{ opacity: 1, letterSpacing: "0.4em" }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="text-[10px] font-display text-muted-foreground uppercase mt-4 text-center"
-        >
+          className="text-[10px] font-display text-muted-foreground uppercase mt-4 text-center">
+          
           Choose Your Path
         </motion.p>
       </motion.div>
@@ -134,7 +133,7 @@ const GatewayPage = () => {
                 </div>
               </motion.div>
               <h2 className="font-display text-xl sm:text-2xl font-black tracking-wider text-foreground mb-3">
-                <span className="text-accent">Sign Up Now</span>
+                <span className="text-foreground">Become a </span><span className="text-accent">Partner!</span>
               </h2>
               <p className="text-sm text-muted-foreground font-body leading-relaxed mb-6">Join our affiliate network. Share, promote, and earn up to 50% commission on every sale.</p>
               <div className="inline-flex items-center gap-2 text-accent font-display text-xs tracking-[0.2em] uppercase group-hover:gap-3 transition-all duration-300">
@@ -148,30 +147,30 @@ const GatewayPage = () => {
       </div>
 
       {/* Top 5 Affiliate Networks */}
-      {topAffiliates.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-          className="relative z-10 mt-12 w-full max-w-3xl"
-        >
+      {topAffiliates.length > 0 &&
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+        className="relative z-10 mt-12 w-full max-w-3xl">
+        
           <div className="flex items-center gap-2 mb-5 justify-center">
             <Trophy className="w-4 h-4 text-accent" />
             <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 5 Affiliate Networks</h3>
             <Trophy className="w-4 h-4 text-accent" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-            {topAffiliates.map((a, i) => (
-              <motion.div
-                key={a.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.1 }}
-                className="glass-surface rounded-xl p-4 text-center border border-border/30 hover:border-accent/30 transition-all relative overflow-hidden group"
-              >
-                {i === 0 && (
-                  <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent pointer-events-none" />
-                )}
+            {topAffiliates.map((a, i) =>
+          <motion.div
+            key={a.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 + i * 0.1 }}
+            className="glass-surface rounded-xl p-4 text-center border border-border/30 hover:border-accent/30 transition-all relative overflow-hidden group">
+            
+                {i === 0 &&
+            <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent pointer-events-none" />
+            }
                 <div className="relative z-10">
                   <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${tierColors[a.tier] || "from-muted to-muted"} flex items-center justify-center mx-auto mb-2 text-sm font-display font-black text-background`}>
                     {i + 1}
@@ -184,21 +183,21 @@ const GatewayPage = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
+          )}
           </div>
         </motion.div>
-      )}
+      }
 
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="relative z-10 text-[10px] text-muted-foreground/50 font-display tracking-[0.2em] uppercase mt-12"
-      >
+        className="relative z-10 text-[10px] text-muted-foreground/50 font-display tracking-[0.2em] uppercase mt-12">
+        
         © 2026 The Perfume Lab
       </motion.p>
-    </div>
-  );
+    </div>);
+
 };
 
 export default GatewayPage;

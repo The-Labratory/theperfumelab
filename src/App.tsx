@@ -33,6 +33,9 @@ const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
 const PartnerProgramPage = lazy(() => import("./pages/PartnerProgramPage"));
 const AffiliateSignupPage = lazy(() => import("./pages/AffiliateSignupPage"));
 const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPackPage"));
+const AffiliateLanding = lazy(() => import("./pages/affiliate/AffiliateLanding"));
+const AffiliateWelcome = lazy(() => import("./pages/affiliate/AffiliateWelcome"));
+const AffiliateDashboardPage = lazy(() => import("./pages/affiliate/AffiliateDashboard"));
 const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
@@ -79,6 +82,20 @@ const BusinessMarketing = lazy(() => import("./pages/business/BusinessMarketing"
 const BusinessCRM = lazy(() => import("./pages/business/BusinessCRM"));
 const BusinessGoals = lazy(() => import("./pages/business/BusinessGoals"));
 const BusinessReports = lazy(() => import("./pages/business/BusinessReports"));
+const BusinessExpansionHub = lazy(() => import("./pages/business/BusinessExpansionHub"));
+const BusinessQREngine = lazy(() => import("./pages/business/BusinessQREngine"));
+const BusinessPitchBuilder = lazy(() => import("./pages/business/BusinessPitchBuilder"));
+const BusinessTeam = lazy(() => import("./pages/business/BusinessTeam"));
+
+// Sovereign Manager Portal
+const SovereignLayout = lazy(() => import("./pages/sovereign/SovereignLayout"));
+const SovereignManagerPage = lazy(() => import("./pages/sovereign/SovereignManagerPage"));
+const GrowthVaultPage = lazy(() => import("./pages/sovereign/GrowthVaultPage"));
+const ScentStationPage = lazy(() => import("./pages/sovereign/ScentStationPage"));
+const NetworkTreePage = lazy(() => import("./pages/sovereign/NetworkTreePage"));
+const AIConsiglierePage = lazy(() => import("./pages/sovereign/AIConsiglierePage"));
+const InactivityAuctionPage = lazy(() => import("./pages/sovereign/InactivityAuctionPage"));
+
 const queryClient = new QueryClient();
 
 const Loader = () => (
@@ -118,6 +135,11 @@ const AppContent = () => {
         <Route path="/partner-program" element={<PartnerProgramPage />} />
         <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
         <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
+        <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
+        <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
+        <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
+        <Route path="/r/:slug" element={<AffiliateLanding />} />
+        <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
         <Route path="/creator-portal" element={<CreatorPortalPage />} />
         <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
         <Route path="/team" element={<TeamPage />} />
@@ -153,6 +175,7 @@ const AppContent = () => {
           <Route path="storage" element={<SAStorageManagerPage />} />
           <Route path="permissions" element={<SAPermissionsPage />} />
           <Route path="referrals" element={<SAReferralManagementPage />} />
+          <Route path="auction" element={<InactivityAuctionPage />} />
         </Route>
 
         {/* Business Portal */}
@@ -166,6 +189,19 @@ const AppContent = () => {
           <Route path="marketing" element={<BusinessMarketing />} />
           <Route path="goals" element={<BusinessGoals />} />
           <Route path="reports" element={<BusinessReports />} />
+          <Route path="expansion" element={<BusinessExpansionHub />} />
+          <Route path="qr-engine" element={<BusinessQREngine />} />
+          <Route path="pitch-builder" element={<BusinessPitchBuilder />} />
+          <Route path="team" element={<BusinessTeam />} />
+        </Route>
+
+        {/* Sovereign Manager Portal */}
+        <Route path="/sovereign" element={<SovereignLayout />}>
+          <Route index element={<SovereignManagerPage />} />
+          <Route path="vault" element={<GrowthVaultPage />} />
+          <Route path="stations" element={<ScentStationPage />} />
+          <Route path="tree" element={<NetworkTreePage />} />
+          <Route path="ai" element={<AIConsiglierePage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
@@ -179,7 +215,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <AppContent />
       </BrowserRouter>
     </TooltipProvider>

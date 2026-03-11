@@ -95,6 +95,10 @@ const AffiliateSignupPage = () => {
           if (error) throw error;
           setAffiliateData(data);
           setStep("success");
+          // Redirect to personalized onboarding
+          if (data.slug) {
+            setTimeout(() => navigate(`/affiliate/${data.slug}/welcome`), 2000);
+          }
         }
       } else {
         // Already logged in
@@ -105,7 +109,8 @@ const AffiliateSignupPage = () => {
             display_name: form.name.trim().slice(0, 200),
             email: form.email.trim().slice(0, 255),
             company_name: [form.instagram, form.tiktok, form.youtube].filter(Boolean).join(", ").slice(0, 200) || null,
-          })
+            social_links: { instagram: form.instagram || null, tiktok: form.tiktok || null, youtube: form.youtube || null },
+          } as any)
           .select()
           .single();
 
@@ -121,6 +126,10 @@ const AffiliateSignupPage = () => {
         }
         setAffiliateData(data);
         setStep("success");
+        // Redirect to personalized onboarding
+        if ((data as any).slug) {
+          setTimeout(() => navigate(`/affiliate/${(data as any).slug}/welcome`), 2000);
+        }
       }
     } catch (err: any) {
       toast.error(err.message || "Something went wrong. Please try again.");

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Perfume Lab — Fragrance Atelier</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // Redirects all 404s back to index.html, preserving the path as a query param.
+      // See: https://github.com/rafgraph/spa-github-pages
+      //
+      // pathSegmentsToKeep: number of path segments to keep in the URL (1 for a
+      // repo deployed at /repo-name/, i.e. one segment before the app routes start).
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol +
+          "//" +
+          l.hostname +
+          (l.port ? ":" + l.port : "") +
+          l.pathname
+            .split("/")
+            .slice(0, 1 + pathSegmentsToKeep)
+            .join("/") +
+          "/?/" +
+          l.pathname
+            .slice(1)
+            .split("/")
+            .slice(pathSegmentsToKeep)
+            .join("/")
+            .replace(/&/g, "~and~") +
+          (l.search
+            ? "&" + l.search.slice(1).replace(/&/g, "~and~")
+            : "") +
+          l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
