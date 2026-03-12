@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sparkles, Building2, Users, FlaskConical, FileDown, Lock, Loader2 } from "lucide-react";
