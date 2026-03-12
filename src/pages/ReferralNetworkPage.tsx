@@ -197,7 +197,7 @@ export default function ReferralNetworkPage() {
 
   const copyReferralLink = () => {
     if (!profile?.referral_code) return;
-    const link = `${window.location.origin}/auth?ref=${profile.referral_code}`;
+    const link = `https://www.lenzohariri.com/auth?ref=${profile.referral_code}`;
     navigator.clipboard.writeText(link);
     setCopied(true);
     toast.success("Referral link copied!");
@@ -305,7 +305,7 @@ export default function ReferralNetworkPage() {
           </div>
           {profile?.referral_code && (
             <div className="mt-3 p-2 rounded bg-muted/30 border border-border/20">
-              <code className="text-xs text-muted-foreground break-all">{window.location.origin}/auth?ref={profile.referral_code}</code>
+              <code className="text-xs text-muted-foreground break-all">https://www.lenzohariri.com/auth?ref={profile.referral_code}</code>
             </div>
           )}
         </Card>
@@ -513,7 +513,7 @@ export default function ReferralNetworkPage() {
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/20">
               <p className="text-xs text-muted-foreground mb-1">Your referral link:</p>
-              <code className="text-xs break-all text-foreground">{window.location.origin}/auth?ref={profile?.referral_code}</code>
+              <code className="text-xs break-all text-foreground">https://www.lenzohariri.com/auth?ref={profile?.referral_code}</code>
             </div>
           </div>
           <DialogFooter>

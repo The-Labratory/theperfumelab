@@ -64,7 +64,7 @@ export default function BusinessPitchBuilder() {
 
   const refCode: string = affiliate?.referral_code ?? "";
   const affiliateName: string = affiliate?.display_name ?? "Your Advisor";
-  const acceptUrl = `${window.location.origin}/store?ref=${refCode}&b2b=1`;
+  const acceptUrl = `https://www.lenzohariri.com/store?ref=${refCode}&b2b=1`;
 
   const setField = (key: keyof PitchForm, value: string) =>
     setForm((f) => ({ ...f, [key]: value }));

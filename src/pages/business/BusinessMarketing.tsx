@@ -9,7 +9,7 @@ export default function BusinessMarketing() {
   const { affiliate } = useOutletContext<{ affiliate: any }>();
   const [copied, setCopied] = useState(false);
 
-  const referralLink = `${window.location.origin}/?ref=${affiliate?.referral_code}`;
+  const referralLink = `https://www.lenzohariri.com/?ref=${affiliate?.referral_code}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);

@@ -92,6 +92,6 @@ export async function createCampaign(affiliateId: string, name: string, channel:
 }
 
 export function buildReferralLink(affiliateSlug: string, campaignSlug?: string) {
-  const base = `${window.location.origin}/r/${affiliateSlug}`;
+  const base = `https://www.lenzohariri.com/r/${affiliateSlug}`;
   return campaignSlug ? `${base}/${campaignSlug}` : base;
 }

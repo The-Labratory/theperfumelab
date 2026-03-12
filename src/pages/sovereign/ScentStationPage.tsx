@@ -87,7 +87,7 @@ export default function ScentStationPage() {
 
   const getQRUrl = (qrCode: string) =>
     `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-      `${window.location.origin}/store?station=${qrCode}`
+      `https://www.lenzohariri.com/store?station=${qrCode}`
     )}`;
 
   if (loading) {

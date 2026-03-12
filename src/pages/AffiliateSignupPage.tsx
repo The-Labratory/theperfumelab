@@ -139,7 +139,7 @@ const AffiliateSignupPage = () => {
   };
 
   const referralLink = affiliateData
-    ? `${window.location.origin}?ref=${affiliateData.referral_code}`
+    ? `https://www.lenzohariri.com?ref=${affiliateData.referral_code}`
     : "";
 
   const copyLink = () => {
