@@ -13,7 +13,6 @@ import ClientPitchDialog from "@/components/business/ClientPitchDialog";
 
 interface ClientConnection {
   id: string;
-  client_email: string;
   account_type: string;
   company_name: string | null;
   expected_volume: string | null;
@@ -24,13 +23,6 @@ interface ClientConnection {
   total_spent: number;
   acquisition_date: string;
   notes: string | null;
-}
-
-function maskEmail(email: string): string {
-  if (!email) return "***";
-  const [user, domain] = email.split("@");
-  if (!domain) return "***";
-  return `${user.slice(0, 2)}***@${domain}`;
 }
 
 function getClientStatus(lastOrderAt: string | null): { label: string; color: string } {
@@ -56,7 +48,7 @@ export default function BusinessCRM() {
   const fetchClients = async () => {
     const { data } = await supabase
       .from("client_connections")
-      .select("*")
+      .select("id, original_affiliate_id, account_type, company_name, expected_volume, discount_pct, checkout_link_code, last_order_at, total_orders, total_spent, acquisition_date, notes")
       .eq("original_affiliate_id", affiliate?.id)
       .order("created_at", { ascending: false });
     setClients((data as unknown as ClientConnection[]) || []);
@@ -234,8 +226,8 @@ export default function BusinessCRM() {
                     <Badge variant="outline" className={`text-[10px] ${status.color}`}>{status.label}</Badge>
                   </TableCell>
                   <TableCell>
-                    <p className="text-xs font-medium text-foreground">{maskEmail(c.client_email)}</p>
-                    {c.company_name && <p className="text-[10px] text-muted-foreground">{c.company_name}</p>}
+                    {c.company_name && <p className="text-xs font-medium text-foreground">{c.company_name}</p>}
+                    {!c.company_name && <p className="text-xs text-muted-foreground">Client #{c.id.slice(0, 6)}</p>}
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary" className="text-[10px]">

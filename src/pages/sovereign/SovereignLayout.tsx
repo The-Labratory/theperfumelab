@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -22,6 +23,7 @@ const sovereignNav = [
 export default function SovereignLayout() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -29,7 +31,24 @@ export default function SovereignLayout() {
     toast.success("Signed out");
   };
 
-  if (loading) {
+  useEffect(() => {
+    if (!user || loading) return;
+    const checkAccess = async () => {
+      const { data } = await supabase
+        .from("affiliate_partners")
+        .select("id, tier")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!data) {
+        navigate("/affiliate-signup", { replace: true });
+        return;
+      }
+      setAuthorized(true);
+    };
+    checkAccess();
+  }, [user, loading, navigate]);
+
+  if (loading || authorized === null) {
     return (
       <div className="min-h-screen bg-[hsl(var(--background))] flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-[hsl(var(--primary))] border-t-transparent rounded-full animate-spin" />
