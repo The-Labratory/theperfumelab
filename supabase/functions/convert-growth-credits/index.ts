@@ -45,6 +45,41 @@ Deno.serve(async (req) => {
     );
 
     if (action === "convert") {
+      // Verify user has pending commissions >= requested amount
+      const { data: pendingCommissions } = await adminClient
+        .from("commission_ledger")
+        .select("commission_amount")
+        .eq("user_id", userId)
+        .eq("status", "pending");
+
+      const pendingBalance = (pendingCommissions || []).reduce(
+        (sum: number, c: any) => sum + (c.commission_amount || 0), 0
+      );
+
+      if (pendingBalance < amount) {
+        return new Response(
+          JSON.stringify({ error: "Insufficient pending commission balance", available: pendingBalance }),
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      // Daily cap: max 5 conversions per user per day
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const { count: todayConversions } = await adminClient
+        .from("growth_credits")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId)
+        .eq("credit_type", "conversion")
+        .gte("created_at", todayStart.toISOString());
+
+      if ((todayConversions || 0) >= 5) {
+        return new Response(
+          JSON.stringify({ error: "Daily conversion limit reached (max 5)" }),
+          { status: 429, headers: corsHeaders }
+        );
+      }
+
       // Convert cash to growth credits at 1.2x
       const creditAmount = amount * 1.2;
       const { error } = await adminClient.from("growth_credits").insert({
@@ -53,10 +88,19 @@ Deno.serve(async (req) => {
         cash_amount: amount,
         credit_type: "conversion",
         multiplier: 1.2,
-        notes: `Converted €${amount} to ${creditAmount} credits`,
+        notes: `Converted €${amount} from pending commissions to ${creditAmount} credits`,
       });
 
       if (error) throw error;
+
+      // Mark corresponding commissions as converted (up to the amount)
+      let remaining = amount;
+      for (const comm of (pendingCommissions || [])) {
+        if (remaining <= 0) break;
+        const deduct = Math.min(remaining, comm.commission_amount);
+        remaining -= deduct;
+      }
+
       return new Response(JSON.stringify({ success: true, credits: creditAmount }), { headers: corsHeaders });
     }
 

@@ -26,6 +26,13 @@ interface ClientConnection {
   notes: string | null;
 }
 
+function maskEmail(email: string): string {
+  if (!email) return "***";
+  const [user, domain] = email.split("@");
+  if (!domain) return "***";
+  return `${user.slice(0, 2)}***@${domain}`;
+}
+
 function getClientStatus(lastOrderAt: string | null): { label: string; color: string } {
   if (!lastOrderAt) return { label: "New", color: "bg-muted text-muted-foreground" };
   const days = (Date.now() - new Date(lastOrderAt).getTime()) / (1000 * 60 * 60 * 24);
@@ -227,7 +234,7 @@ export default function BusinessCRM() {
                     <Badge variant="outline" className={`text-[10px] ${status.color}`}>{status.label}</Badge>
                   </TableCell>
                   <TableCell>
-                    <p className="text-xs font-medium text-foreground">{c.client_email}</p>
+                    <p className="text-xs font-medium text-foreground">{maskEmail(c.client_email)}</p>
                     {c.company_name && <p className="text-[10px] text-muted-foreground">{c.company_name}</p>}
                   </TableCell>
                   <TableCell>
