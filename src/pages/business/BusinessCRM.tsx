@@ -13,7 +13,6 @@ import ClientPitchDialog from "@/components/business/ClientPitchDialog";
 
 interface ClientConnection {
   id: string;
-  client_email: string;
   account_type: string;
   company_name: string | null;
   expected_volume: string | null;
@@ -24,13 +23,6 @@ interface ClientConnection {
   total_spent: number;
   acquisition_date: string;
   notes: string | null;
-}
-
-function maskEmail(email: string): string {
-  if (!email) return "***";
-  const [user, domain] = email.split("@");
-  if (!domain) return "***";
-  return `${user.slice(0, 2)}***@${domain}`;
 }
 
 function getClientStatus(lastOrderAt: string | null): { label: string; color: string } {
