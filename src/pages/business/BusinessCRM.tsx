@@ -226,8 +226,8 @@ export default function BusinessCRM() {
                     <Badge variant="outline" className={`text-[10px] ${status.color}`}>{status.label}</Badge>
                   </TableCell>
                   <TableCell>
-                    <p className="text-xs font-medium text-foreground">{maskEmail(c.client_email)}</p>
-                    {c.company_name && <p className="text-[10px] text-muted-foreground">{c.company_name}</p>}
+                    {c.company_name && <p className="text-xs font-medium text-foreground">{c.company_name}</p>}
+                    {!c.company_name && <p className="text-xs text-muted-foreground">Client #{c.id.slice(0, 6)}</p>}
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary" className="text-[10px]">
