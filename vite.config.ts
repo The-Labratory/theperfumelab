@@ -12,7 +12,7 @@ const fallbackSupabasePublishableKey =
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const base = mode === "production" ? "/theperfumelab/" : "/";
+  const base = "/";
 
   return {
     base,
