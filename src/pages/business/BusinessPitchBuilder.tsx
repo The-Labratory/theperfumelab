@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sparkles, Building2, Users, FlaskConical, FileDown, Lock, Loader2 } from "lucide-react";
@@ -92,44 +93,15 @@ Tone: confident, premium, brief. No bullet points — short paragraphs only.`;
       toast.error("Please fill in Business Type and Employee Count.");
       return;
     }
-    // NOTE: VITE_OPENAI_API_KEY is intentionally accessed client-side here as this
-    // app is a fully-frontend Supabase app with no dedicated backend. For a production
-    // deployment, move this call to a Supabase Edge Function or server endpoint so the
-    // key is never included in the browser bundle.
-    const apiKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
-    if (!apiKey) {
-      toast.error("OpenAI API key is not configured (VITE_OPENAI_API_KEY).");
-      return;
-    }
     setGenerating(true);
     setProposal("");
     try {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [{ role: "user", content: buildPrompt() }],
-          max_tokens: 600,
-          temperature: 0.7,
-        }),
+      const { data, error } = await supabase.functions.invoke("generate-b2b-pitch", {
+        body: { prompt: buildPrompt() },
       });
-      if (!res.ok) {
-        const errBody = await res.text().catch(() => "");
-        let errorMsg = `API error ${res.status}`;
-        try {
-          const parsed = JSON.parse(errBody) as { error?: { message?: string } };
-          if (parsed?.error?.message) errorMsg = parsed.error.message;
-        } catch {
-          if (errBody) errorMsg = `${errorMsg}: ${errBody.slice(0, 120)}`;
-        }
-        throw new Error(errorMsg);
-      }
-      const json = await res.json() as { choices?: Array<{ message?: { content?: string } }> };
-      const text: string = json.choices?.[0]?.message?.content ?? "";
+      if (error) throw new Error(error.message ?? "Failed to generate proposal");
+      const text: string = data?.pitch ?? "";
+      if (!text) throw new Error("Empty response from AI");
       setProposal(text);
       toast.success("Proposal generated!");
     } catch (e: unknown) {
