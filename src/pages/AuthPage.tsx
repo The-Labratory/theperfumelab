@@ -21,6 +21,7 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const referralCode = searchParams.get("ref") || "";
   const redirectTo = searchParams.get("redirect") || "/";
@@ -28,22 +29,35 @@ export default function AuthPage() {
   useEffect(() => {
     if (referralCode) setMode("signup");
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        if (referralCode) {
-          supabase.rpc("process_referral_signup", {
-            _new_user_id: session.user.id,
-            _referral_code: referralCode,
-          }).then(({ data }) => {
-            const result = data as any;
-            if (result?.success) toast.success("You've been linked to your inviter's network!");
-            navigate(redirectTo);
-          });
-        } else {
-          navigate(redirectTo);
+    const processAndRedirect = async (userId: string) => {
+      if (referralCode) {
+        const { data } = await supabase.rpc("process_referral_signup", {
+          _new_user_id: userId,
+          _referral_code: referralCode,
+        });
+        const result = data as any;
+        if (result?.success) toast.success("You've been linked to your inviter's network!");
+      }
+      navigate(redirectTo);
+    };
+
+    // Listen for auth changes — redirect on sign-in
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session?.user) {
+          processAndRedirect(session.user.id);
         }
       }
+    );
+
+    // Also check existing session immediately
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        processAndRedirect(session.user.id);
+      }
     });
+
+    return () => subscription.unsubscribe();
   }, [navigate, referralCode, redirectTo]);
 
   const getRedirectOrigin = () => {

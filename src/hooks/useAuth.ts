@@ -19,20 +19,46 @@ const ROLE_PRIORITY: Record<string, number> = {
 };
 
 const fetchUserRole = async (userId: string): Promise<AppRole> => {
-  const { data } = await supabase
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId);
+  try {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
 
-  if (!data || data.length === 0) return "user";
+    if (!data || data.length === 0) return "user";
 
-  // Return the highest-privilege role the user holds
-  return data.reduce<AppRole>((highest, row) => {
-    const rowRole = row.role as AppRole;
-    return (ROLE_PRIORITY[rowRole] ?? 0) > (ROLE_PRIORITY[highest] ?? 0)
-      ? rowRole
-      : highest;
-  }, "user");
+    return data.reduce<AppRole>((highest, row) => {
+      const rowRole = row.role as AppRole;
+      return (ROLE_PRIORITY[rowRole] ?? 0) > (ROLE_PRIORITY[highest] ?? 0)
+        ? rowRole
+        : highest;
+    }, "user");
+  } catch {
+    return "user";
+  }
+};
+
+/** Ensure a profile row exists — safety net if the DB trigger didn't fire */
+const ensureProfile = async (user: User): Promise<void> => {
+  try {
+    const { data } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!data) {
+      await supabase.from("profiles").insert({
+        user_id: user.id,
+        display_name:
+          user.user_metadata?.full_name ??
+          user.email?.split("@")[0] ??
+          "User",
+      });
+    }
+  } catch {
+    // Non-critical — profile will be created on next opportunity
+  }
 };
 
 export const useAuth = () => {
@@ -44,29 +70,34 @@ export const useAuth = () => {
   });
 
   useEffect(() => {
-    // Hydrate from existing session on mount
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
-        const role = await fetchUserRole(session.user.id);
-        setState({ user: session.user, session, role, loading: false });
-      } else {
-        setState({ user: null, session: null, role: null, loading: false });
-      }
-    });
+    let mounted = true;
 
-    // Keep state in sync with auth changes
+    const bootstrap = async (session: Session | null) => {
+      if (session?.user) {
+        // Ensure profile exists (fire-and-forget, don't block auth)
+        ensureProfile(session.user);
+        const role = await fetchUserRole(session.user.id);
+        if (mounted) setState({ user: session.user, session, role, loading: false });
+      } else {
+        if (mounted) setState({ user: null, session: null, role: null, loading: false });
+      }
+    };
+
+    // Set up listener BEFORE getSession (per Supabase best practice)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
-        if (session?.user) {
-          const role = await fetchUserRole(session.user.id);
-          setState({ user: session.user, session, role, loading: false });
-        } else {
-          setState({ user: null, session: null, role: null, loading: false });
-        }
+        await bootstrap(session);
       }
     );
 
-    return () => subscription.unsubscribe();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      bootstrap(session);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
@@ -89,6 +120,7 @@ export const useAuth = () => {
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
+    setState({ user: null, session: null, role: null, loading: false });
   }, []);
 
   const isAdmin = state.role === "admin" || state.role === "superadmin";
