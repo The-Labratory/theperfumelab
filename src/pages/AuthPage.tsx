@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Lock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,49 +16,20 @@ const PRODUCTION_ORIGIN = "https://theperfumelab.de";
 export default function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const processedReferralFor = useRef<string | null>(null);
 
   const referralCode = searchParams.get("ref") || "";
-  const redirectTo = searchParams.get("redirect") || "/";
 
   useEffect(() => {
     if (referralCode) setMode("signup");
-
-    const processAndRedirect = async (userId: string) => {
-      if (referralCode) {
-        const { data } = await supabase.rpc("process_referral_signup", {
-          _new_user_id: userId,
-          _referral_code: referralCode,
-        });
-        const result = data as any;
-        if (result?.success) toast.success("You've been linked to your inviter's network!");
-      }
-      navigate(redirectTo);
-    };
-
-    // Listen for auth changes — redirect on sign-in
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (session?.user) {
-          processAndRedirect(session.user.id);
-        }
-      }
-    );
-
-    // Also check existing session immediately
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        processAndRedirect(session.user.id);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate, referralCode, redirectTo]);
+  }, [referralCode]);
 
   const getRedirectOrigin = () => {
     if (window.location.hostname === "theperfumelab.de" || window.location.hostname === "www.theperfumelab.de") {
@@ -67,11 +38,55 @@ export default function AuthPage() {
     return window.location.origin;
   };
 
+  const handleReferralAttribution = async (userId: string, userEmail?: string) => {
+    if (!referralCode || processedReferralFor.current === userId) return;
+    processedReferralFor.current = userId;
+
+    await Promise.allSettled([
+      supabase.rpc("apply_referral_signup", {
+        _new_user_id: userId,
+        _referral_code: referralCode,
+        _referred_email: userEmail ?? null,
+      } as any),
+      supabase.rpc("process_referral_signup", {
+        _new_user_id: userId,
+        _referral_code: referralCode,
+      }),
+    ]);
+  };
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
+        await handleReferralAttribution(session.user.id, session.user.email);
+        await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
+        navigate("/dashboard", { replace: true });
+      }
+
+      if (event === "SIGNED_OUT") {
+        navigate("/auth", { replace: true });
+      }
+    });
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
+        await handleReferralAttribution(session.user.id, session.user.email);
+        navigate("/dashboard", { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+
     setSubmitting(true);
     setLoading(true);
+
     try {
       if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -81,26 +96,33 @@ export default function AuthPage() {
         toast.success("Check your email for a password reset link");
         setMode("login");
       } else if (mode === "signup") {
-        const { data: signupData, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: getRedirectOrigin() } });
+        const { data: signupData, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${getRedirectOrigin()}/dashboard` },
+        });
+
         if (error) throw error;
-        if (signupData.user && referralCode) {
-          await supabase.rpc("process_referral_signup", {
-            _new_user_id: signupData.user.id,
-            _referral_code: referralCode,
-          });
+
+        if (signupData.session?.user) {
+          await handleReferralAttribution(signupData.session.user.id, signupData.session.user.email);
+          await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
+          toast.success(t("auth.signedIn"));
+          navigate("/dashboard", { replace: true });
+        } else {
+          toast.success(t("auth.checkEmail"));
+          navigate(`/auth/confirm?email=${encodeURIComponent(email)}`, { replace: true });
         }
-        toast.success(t("auth.checkEmail"));
       } else {
         const { data: loginData, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        if (loginData.user && referralCode) {
-          await supabase.rpc("process_referral_signup", {
-            _new_user_id: loginData.user.id,
-            _referral_code: referralCode,
-          });
+
+        if (loginData.user) {
+          await handleReferralAttribution(loginData.user.id, loginData.user.email);
         }
+
         toast.success(t("auth.signedIn"));
-        navigate(redirectTo);
+        navigate("/dashboard", { replace: true });
       }
     } catch (err: any) {
       const msg = err.message || "";
@@ -176,7 +198,7 @@ export default function AuthPage() {
               className="w-full gap-2 font-display tracking-wider text-xs"
               onClick={async () => {
                 const { error } = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: getRedirectOrigin(),
+                  redirect_uri: `${getRedirectOrigin()}/dashboard`,
                 });
                 if (error) toast.error(error.message);
               }}
@@ -197,7 +219,7 @@ export default function AuthPage() {
         )}
 
         <div className="mt-4">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="w-full text-muted-foreground text-xs gap-2">
+          <Button variant="ghost" size="sm" onClick={() => navigate("/landing")} className="w-full text-muted-foreground text-xs gap-2">
             <ArrowLeft className="w-3 h-3" /> {t("auth.backToSite")}
           </Button>
         </div>
