@@ -305,7 +305,7 @@ export default function ReferralNetworkPage() {
           </div>
           {profile?.referral_code && (
             <div className="mt-3 p-2 rounded bg-muted/30 border border-border/20">
-              <code className="text-xs text-muted-foreground break-all">{window.location.origin}/auth?ref={profile.referral_code}</code>
+              <code className="text-xs text-muted-foreground break-all">https://www.lenzohariri.com/auth?ref={profile.referral_code}</code>
             </div>
           )}
         </Card>
