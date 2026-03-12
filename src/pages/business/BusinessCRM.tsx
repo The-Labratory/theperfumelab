@@ -56,7 +56,7 @@ export default function BusinessCRM() {
   const fetchClients = async () => {
     const { data } = await supabase
       .from("client_connections")
-      .select("*")
+      .select("id, original_affiliate_id, account_type, company_name, expected_volume, discount_pct, checkout_link_code, last_order_at, total_orders, total_spent, acquisition_date, notes")
       .eq("original_affiliate_id", affiliate?.id)
       .order("created_at", { ascending: false });
     setClients((data as unknown as ClientConnection[]) || []);
