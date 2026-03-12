@@ -197,7 +197,7 @@ export default function ReferralNetworkPage() {
 
   const copyReferralLink = () => {
     if (!profile?.referral_code) return;
-    const link = `${window.location.origin}/auth?ref=${profile.referral_code}`;
+    const link = `https://www.lenzohariri.com/auth?ref=${profile.referral_code}`;
     navigator.clipboard.writeText(link);
     setCopied(true);
     toast.success("Referral link copied!");
