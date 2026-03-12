@@ -513,7 +513,7 @@ export default function ReferralNetworkPage() {
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/20">
               <p className="text-xs text-muted-foreground mb-1">Your referral link:</p>
-              <code className="text-xs break-all text-foreground">{window.location.origin}/auth?ref={profile?.referral_code}</code>
+              <code className="text-xs break-all text-foreground">https://www.lenzohariri.com/auth?ref={profile?.referral_code}</code>
             </div>
           </div>
           <DialogFooter>

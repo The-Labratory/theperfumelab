@@ -43,7 +43,7 @@ export default function BusinessQREngine() {
   const tierKey = getExpansionTier(weeklySales);
   const hasAccess = canAccessQREngine(tierKey);
 
-  const baseUrl = window.location.origin;
+  const baseUrl = "https://www.lenzohariri.com";
   const refCode: string = affiliate?.referral_code ?? "";
 
   useEffect(() => {

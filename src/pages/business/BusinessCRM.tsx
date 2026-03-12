@@ -118,7 +118,7 @@ export default function BusinessCRM() {
   };
 
   const copyCheckoutLink = (code: string) => {
-    navigator.clipboard.writeText(`${window.location.origin}/store?ref=${code}`);
+    navigator.clipboard.writeText(`https://www.lenzohariri.com/store?ref=${code}`);
     toast.success("Checkout link copied!");
   };
 

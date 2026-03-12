@@ -39,7 +39,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Generate marketing kit content
-    const baseUrl = Deno.env.get("SUPABASE_URL")?.replace(".supabase.co", "") || "https://theperfumelab.lovable.app";
+    const baseUrl = "https://www.lenzohariri.com";
     const referralLink = `${baseUrl}/r/${affiliate.slug}`;
     
     const kit = {
