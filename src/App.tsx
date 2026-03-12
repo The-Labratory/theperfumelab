@@ -1,10 +1,20 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { useCartSync } from "@/hooks/useCartSync";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── Lazy-load every page ─────────────────────────────────────────────────────
 const GatewayPage = lazy(() => import("./pages/GatewayPage"));
@@ -27,6 +37,12 @@ const SharePage = lazy(() => import("./pages/SharePage"));
 const MilestonesPage = lazy(() => import("./pages/MilestonesPage"));
 const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
+const AuthEmailConfirmationPage = lazy(() => import("./pages/AuthEmailConfirmationPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const PerfumeCatalogPage = lazy(() => import("./pages/PerfumeCatalogPage"));
+const ScentQuizPage = lazy(() => import("./pages/ScentQuizPage"));
+const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
+const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
 const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
 const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
@@ -104,104 +120,161 @@ const Loader = () => (
   </div>
 );
 
+const isPublicPath = (pathname: string) => {
+  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password";
+};
+
+const AuthRouteGuard = () => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) return <Loader />;
+
+  if (!user && !isPublicPath(location.pathname)) {
+    const redirectTarget = `${location.pathname}${location.search}`;
+    return <Navigate to={`/auth?redirect=${encodeURIComponent(redirectTarget)}`} replace />;
+  }
+
+  if (user && location.pathname === "/auth") {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Outlet />;
+};
+
+const AuthStateRedirectHandler = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        navigate("/dashboard", { replace: true });
+      }
+
+      if (event === "SIGNED_OUT") {
+        navigate("/auth", { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  return null;
+};
+
 const AppContent = () => {
   useCartSync();
+
   return (
     <Suspense fallback={<Loader />}>
+      <AuthStateRedirectHandler />
       <Routes>
-        <Route path="/" element={<GatewayPage />} />
-        <Route path="/gateway" element={<GatewayPage />} />
-        <Route path="/home" element={<Index />} />
-        <Route path="/onboarding" element={<OnboardingPage />} />
-        <Route path="/worlds" element={<WorldsPage />} />
-        <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
-        <Route path="/lab" element={<ScentLabPage />} />
-        <Route path="/formulation" element={<FormulationLabPage />} />
-        <Route path="/collection" element={<CollectionPage />} />
-        <Route path="/dna" element={<ScentDNAPage />} />
-        <Route path="/gifting" element={<GiftingPage />} />
-        <Route path="/gift/:shareCode" element={<GiftRevealPage />} />
-        <Route path="/store" element={<StorePage />} />
-        <Route path="/product/:handle" element={<ProductPage />} />
-        <Route path="/install" element={<InstallPage />} />
-        <Route path="/access" element={<ExclusiveAccessPage />} />
-        <Route path="/launch" element={<LaunchPage />} />
-        <Route path="/share" element={<SharePage />} />
-        <Route path="/partner" element={<PartnerPage />} />
-        <Route path="/milestones" element={<MilestonesPage />} />
-        <Route path="/affiliate" element={<AffiliatePage />} />
-        <Route path="/game" element={<PerfumerGamePage />} />
-        <Route path="/network" element={<ReferralNetworkPage />} />
-        <Route path="/partner-program" element={<PartnerProgramPage />} />
-        <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
-        <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
-        <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
-        <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
-        <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
-        <Route path="/r/:slug" element={<AffiliateLanding />} />
-        <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
-        <Route path="/creator-portal" element={<CreatorPortalPage />} />
-        <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
-        <Route path="/team" element={<TeamPage />} />
+        <Route path="/" element={<Navigate to="/landing" replace />} />
+        <Route path="/landing" element={<GatewayPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/auth/confirm" element={<AuthEmailConfirmationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-        {/* Admin Back Office */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="ingredients" element={<IngredientsManager />} />
-          <Route path="interactions" element={<InteractionsManager />} />
-          <Route path="formulas" element={<FormulasManager />} />
-          <Route path="ifra" element={<IFRARulesManager />} />
-          <Route path="audit" element={<AuditLogPage />} />
-          <Route path="partners" element={<PartnerManager />} />
-          <Route path="employees" element={<EmployeeManager />} />
-          <Route path="pyramid" element={<PyramidManager />} />
-          <Route path="affiliates" element={<AffiliateAdminPage />} />
-          <Route path="onboarding" element={<EmployeeOnboardingPage />} />
-        </Route>
+        <Route element={<AuthRouteGuard />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/catalog" element={<PerfumeCatalogPage />} />
+          <Route path="/scent-quiz" element={<ScentQuizPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/orders" element={<OrderHistoryPage />} />
 
-        {/* Super Admin */}
-        <Route path="/superadmin" element={<SuperAdminLayout />}>
-          <Route index element={<SuperAdminDashboard />} />
-          <Route path="customers" element={<SACustomersPage />} />
-          <Route path="agents" element={<SAAgentsPage />} />
-          <Route path="audit-logs" element={<SAAuditLogsPage />} />
-          <Route path="security-events" element={<SASecurityEventsPage />} />
-          <Route path="system-settings" element={<SASystemSettingsPage />} />
-          <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
-          <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
-          <Route path="database" element={<SADatabaseExplorerPage />} />
-          <Route path="storage" element={<SAStorageManagerPage />} />
-          <Route path="permissions" element={<SAPermissionsPage />} />
-          <Route path="referrals" element={<SAReferralManagementPage />} />
-          <Route path="auction" element={<InactivityAuctionPage />} />
-        </Route>
+          <Route path="/gateway" element={<GatewayPage />} />
+          <Route path="/home" element={<Index />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/worlds" element={<WorldsPage />} />
+          <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
+          <Route path="/lab" element={<ScentLabPage />} />
+          <Route path="/formulation" element={<FormulationLabPage />} />
+          <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/dna" element={<ScentDNAPage />} />
+          <Route path="/gifting" element={<GiftingPage />} />
+          <Route path="/gift/:shareCode" element={<GiftRevealPage />} />
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/product/:handle" element={<ProductPage />} />
+          <Route path="/install" element={<InstallPage />} />
+          <Route path="/access" element={<ExclusiveAccessPage />} />
+          <Route path="/launch" element={<LaunchPage />} />
+          <Route path="/share" element={<SharePage />} />
+          <Route path="/partner" element={<PartnerPage />} />
+          <Route path="/milestones" element={<MilestonesPage />} />
+          <Route path="/affiliate" element={<AffiliatePage />} />
+          <Route path="/game" element={<PerfumerGamePage />} />
+          <Route path="/network" element={<ReferralNetworkPage />} />
+          <Route path="/partner-program" element={<PartnerProgramPage />} />
+          <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
+          <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
+          <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
+          <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
+          <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
+          <Route path="/r/:slug" element={<AffiliateLanding />} />
+          <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
+          <Route path="/creator-portal" element={<CreatorPortalPage />} />
+          <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
+          <Route path="/team" element={<TeamPage />} />
 
-        {/* Business Portal */}
-        <Route path="/my-business" element={<BusinessLayout />}>
-          <Route index element={<BusinessDashboard />} />
-          <Route path="crm" element={<BusinessCRM />} />
-          <Route path="sales" element={<BusinessSales />} />
-          <Route path="inventory" element={<BusinessInventory />} />
-          <Route path="customers" element={<BusinessCustomers />} />
-          <Route path="network" element={<BusinessNetwork />} />
-          <Route path="marketing" element={<BusinessMarketing />} />
-          <Route path="goals" element={<BusinessGoals />} />
-          <Route path="reports" element={<BusinessReports />} />
-          <Route path="expansion" element={<BusinessExpansionHub />} />
-          <Route path="qr-engine" element={<BusinessQREngine />} />
-          <Route path="pitch-builder" element={<BusinessPitchBuilder />} />
-          <Route path="team" element={<BusinessTeam />} />
-        </Route>
+          {/* Admin Back Office */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="ingredients" element={<IngredientsManager />} />
+            <Route path="interactions" element={<InteractionsManager />} />
+            <Route path="formulas" element={<FormulasManager />} />
+            <Route path="ifra" element={<IFRARulesManager />} />
+            <Route path="audit" element={<AuditLogPage />} />
+            <Route path="partners" element={<PartnerManager />} />
+            <Route path="employees" element={<EmployeeManager />} />
+            <Route path="pyramid" element={<PyramidManager />} />
+            <Route path="affiliates" element={<AffiliateAdminPage />} />
+            <Route path="onboarding" element={<EmployeeOnboardingPage />} />
+          </Route>
 
-        {/* Sovereign Manager Portal */}
-        <Route path="/sovereign" element={<SovereignLayout />}>
-          <Route index element={<SovereignManagerPage />} />
-          <Route path="vault" element={<GrowthVaultPage />} />
-          <Route path="stations" element={<ScentStationPage />} />
-          <Route path="tree" element={<NetworkTreePage />} />
-          <Route path="ai" element={<AIConsiglierePage />} />
+          {/* Super Admin */}
+          <Route path="/superadmin" element={<SuperAdminLayout />}>
+            <Route index element={<SuperAdminDashboard />} />
+            <Route path="customers" element={<SACustomersPage />} />
+            <Route path="agents" element={<SAAgentsPage />} />
+            <Route path="audit-logs" element={<SAAuditLogsPage />} />
+            <Route path="security-events" element={<SASecurityEventsPage />} />
+            <Route path="system-settings" element={<SASystemSettingsPage />} />
+            <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
+            <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
+            <Route path="database" element={<SADatabaseExplorerPage />} />
+            <Route path="storage" element={<SAStorageManagerPage />} />
+            <Route path="permissions" element={<SAPermissionsPage />} />
+            <Route path="referrals" element={<SAReferralManagementPage />} />
+            <Route path="auction" element={<InactivityAuctionPage />} />
+          </Route>
+
+          {/* Business Portal */}
+          <Route path="/my-business" element={<BusinessLayout />}>
+            <Route index element={<BusinessDashboard />} />
+            <Route path="crm" element={<BusinessCRM />} />
+            <Route path="sales" element={<BusinessSales />} />
+            <Route path="inventory" element={<BusinessInventory />} />
+            <Route path="customers" element={<BusinessCustomers />} />
+            <Route path="network" element={<BusinessNetwork />} />
+            <Route path="marketing" element={<BusinessMarketing />} />
+            <Route path="goals" element={<BusinessGoals />} />
+            <Route path="reports" element={<BusinessReports />} />
+            <Route path="expansion" element={<BusinessExpansionHub />} />
+            <Route path="qr-engine" element={<BusinessQREngine />} />
+            <Route path="pitch-builder" element={<BusinessPitchBuilder />} />
+            <Route path="team" element={<BusinessTeam />} />
+          </Route>
+
+          {/* Sovereign Manager Portal */}
+          <Route path="/sovereign" element={<SovereignLayout />}>
+            <Route index element={<SovereignManagerPage />} />
+            <Route path="vault" element={<GrowthVaultPage />} />
+            <Route path="stations" element={<ScentStationPage />} />
+            <Route path="tree" element={<NetworkTreePage />} />
+            <Route path="ai" element={<AIConsiglierePage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />
