@@ -26,6 +26,13 @@ interface ClientConnection {
   notes: string | null;
 }
 
+function maskEmail(email: string): string {
+  if (!email) return "***";
+  const [user, domain] = email.split("@");
+  if (!domain) return "***";
+  return `${user.slice(0, 2)}***@${domain}`;
+}
+
 function getClientStatus(lastOrderAt: string | null): { label: string; color: string } {
   if (!lastOrderAt) return { label: "New", color: "bg-muted text-muted-foreground" };
   const days = (Date.now() - new Date(lastOrderAt).getTime()) / (1000 * 60 * 60 * 24);
