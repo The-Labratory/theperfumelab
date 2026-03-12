@@ -963,6 +963,27 @@ export type Database = {
           },
         ]
       }
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          perfume_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          perfume_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          perfume_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       formula_costs: {
         Row: {
           batch_size_ml: number | null
@@ -2534,6 +2555,63 @@ export type Database = {
         }
         Relationships: []
       }
+      referrals: {
+        Row: {
+          created_at: string
+          credits_awarded: number
+          id: string
+          referred_email: string | null
+          referred_user_id: string | null
+          referrer_user_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          credits_awarded?: number
+          id?: string
+          referred_email?: string | null
+          referred_user_id?: string | null
+          referrer_user_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          credits_awarded?: number
+          id?: string
+          referred_email?: string | null
+          referred_user_id?: string | null
+          referrer_user_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          perfume_id: string
+          rating: number
+          review_text: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          perfume_id: string
+          rating: number
+          review_text?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          perfume_id?: string
+          rating?: number
+          review_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_blends: {
         Row: {
           blend_number: number
@@ -3142,7 +3220,19 @@ export type Database = {
       }
     }
     Functions: {
+      apply_referral_signup: {
+        Args: {
+          _new_user_id: string
+          _referral_code: string
+          _referred_email?: string
+        }
+        Returns: Json
+      }
       assign_admin_if_allowed: { Args: never; Returns: boolean }
+      award_growth_credit: {
+        Args: { _credit_type: string }
+        Returns: undefined
+      }
       calculate_formula_cost: {
         Args: { _batch_size_ml?: number; _formula_id: string }
         Returns: Json
