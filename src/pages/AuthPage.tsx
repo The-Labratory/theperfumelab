@@ -69,6 +69,8 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     setLoading(true);
     try {
       if (mode === "forgot") {
@@ -101,9 +103,19 @@ export default function AuthPage() {
         navigate(redirectTo);
       }
     } catch (err: any) {
-      toast.error(err.message || t("auth.error"));
+      const msg = err.message || "";
+      if (msg.includes("Invalid login")) {
+        toast.error("Invalid email or password. Please try again.");
+      } else if (msg.includes("already registered") || msg.includes("already been registered")) {
+        toast.error("This email is already registered. Try signing in instead.");
+      } else if (msg.includes("Email not confirmed")) {
+        toast.error("Please confirm your email before signing in. Check your inbox.");
+      } else {
+        toast.error(msg || t("auth.error"));
+      }
     } finally {
       setLoading(false);
+      setSubmitting(false);
     }
   };
 
