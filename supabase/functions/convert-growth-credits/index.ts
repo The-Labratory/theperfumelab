@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
       // Verify user has pending commissions >= requested amount
       const { data: pendingCommissions } = await adminClient
         .from("commission_ledger")
-        .select("commission_amount")
+        .select("id, commission_amount")
         .eq("user_id", userId)
         .eq("status", "pending");
 
