@@ -218,6 +218,7 @@ const AppContent = () => {
           <Route path="/creator-portal" element={<CreatorPortalPage />} />
           <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
           <Route path="/team" element={<TeamPage />} />
+          <Route path="/ai" element={<AIPage />} />
 
           {/* Admin Back Office */}
           <Route path="/admin" element={<AdminLayout />}>
