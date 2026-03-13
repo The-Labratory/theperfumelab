@@ -1,0 +1,36 @@
+name: Lovable Auto Sync
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Lovable project ID from config
+        id: lovable_config
+        run: |
+          PROJECT_ID=$(grep -oP 'app\.lovable\.\K[0-9a-f-]+' capacitor.config.ts | head -1)
+          echo "project_id=${PROJECT_ID}" >> "$GITHUB_OUTPUT"
+
+      - name: Notify Lovable of GitHub changes
+        run: |
+          curl --silent --fail-with-body -X POST \
+            "https://api.lovable.dev/api/v1/github/sync" \
+            -H "Authorization: Bearer ${{ secrets.LOVABLE_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "projectId": "${{ steps.lovable_config.outputs.project_id }}",
+              "repository": "${{ github.repository }}",
+              "sha": "${{ github.sha }}",
+              "ref": "${{ github.ref }}"
+            }'
