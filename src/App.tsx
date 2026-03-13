@@ -282,6 +282,7 @@ const AppContent = () => {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <GrokChatWidget />
     </Suspense>
   );
 };
