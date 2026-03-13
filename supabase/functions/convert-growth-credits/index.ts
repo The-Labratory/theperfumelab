@@ -93,12 +93,16 @@ Deno.serve(async (req) => {
 
       if (error) throw error;
 
-      // Mark corresponding commissions as converted (up to the amount)
+      // Mark corresponding commissions as converted
       let remaining = amount;
       for (const comm of (pendingCommissions || [])) {
         if (remaining <= 0) break;
         const deduct = Math.min(remaining, comm.commission_amount);
         remaining -= deduct;
+        await adminClient
+          .from("commission_ledger")
+          .update({ status: "converted" })
+          .eq("id", comm.id);
       }
 
       return new Response(JSON.stringify({ success: true, credits: creditAmount }), { headers: corsHeaders });
