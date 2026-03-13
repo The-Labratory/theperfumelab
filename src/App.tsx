@@ -56,6 +56,7 @@ const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const AIPage = lazy(() => import("./pages/AIPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Admin
