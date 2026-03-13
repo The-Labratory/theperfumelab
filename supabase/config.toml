@@ -21,3 +21,5 @@ project_id = "xkfztnyodbzftlshoqui"
     verify_jwt = false
   [functions.affiliate-kit]
     verify_jwt = false
+  [functions.grok-chat]
+    verify_jwt = false

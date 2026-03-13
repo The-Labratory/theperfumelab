@@ -12,6 +12,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import GrokChatWidget from "@/components/GrokChatWidget";
 import { useCartSync } from "@/hooks/useCartSync";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -56,6 +57,7 @@ const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const AIPage = lazy(() => import("./pages/AIPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Admin
@@ -217,6 +219,7 @@ const AppContent = () => {
           <Route path="/creator-portal" element={<CreatorPortalPage />} />
           <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
           <Route path="/team" element={<TeamPage />} />
+          <Route path="/ai" element={<AIPage />} />
 
           {/* Admin Back Office */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -279,6 +282,7 @@ const AppContent = () => {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <GrokChatWidget />
     </Suspense>
   );
 };
