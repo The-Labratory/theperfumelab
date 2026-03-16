@@ -128,11 +128,11 @@ export default function AuthPage() {
     } catch (err: any) {
       const msg = err.message || "";
       if (msg.includes("Invalid login")) {
-        toast.error("Invalid email or password. Please try again.");
+        toast.error(t("auth.invalidLogin"));
       } else if (msg.includes("already registered") || msg.includes("already been registered")) {
-        toast.error("This email is already registered. Try signing in instead.");
+        toast.error(t("auth.alreadyRegistered"));
       } else if (msg.includes("Email not confirmed")) {
-        toast.error("Please confirm your email before signing in. Check your inbox.");
+        toast.error(t("auth.emailNotConfirmed"));
       } else {
         toast.error(msg || t("auth.error"));
       }
