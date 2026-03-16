@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { TrendingUp, Plus, Download, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function BusinessSales() {
   const { affiliate } = useOutletContext<{ affiliate: any }>();
+  const { isAdmin } = useAuth();
   const [sales, setSales] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -78,7 +80,7 @@ export default function BusinessSales() {
           <p className="text-xs text-muted-foreground font-body mt-1">Report and track all your B2B & B2C sales</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={exportCSV}><Download className="w-4 h-4 mr-1" /> CSV</Button>
+          {isAdmin && <Button variant="outline" size="sm" onClick={exportCSV}><Download className="w-4 h-4 mr-1" /> CSV</Button>}
           <Button size="sm" onClick={() => setShowForm(!showForm)} className="bg-primary text-primary-foreground">
             <Plus className="w-4 h-4 mr-1" /> Report Sale
           </Button>
