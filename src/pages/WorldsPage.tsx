@@ -21,10 +21,10 @@ const WorldsPage = () => {
           className="text-center mb-14"
         >
           <h1 className="font-display text-3xl md:text-5xl font-black tracking-wider gradient-text mb-3">
-            SCENT WORLDS
+            {t("worlds.title")}
           </h1>
           <p className="text-muted-foreground font-body text-lg">
-            Explore realms of fragrance. Unlock ingredients. Master the art.
+            {t("worlds.subtitle")}
           </p>
         </motion.div>
 
