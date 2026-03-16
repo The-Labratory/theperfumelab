@@ -170,7 +170,7 @@ export default function AuthPage() {
             </div>
           )}
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">
-            {loading ? "…" : mode === "login" ? t("auth.signIn") : mode === "signup" ? t("auth.signUp") : "Send Reset Link"}
+            {loading ? "…" : mode === "login" ? t("auth.signIn") : mode === "signup" ? t("auth.signUp") : t("auth.sendResetLink")}
           </Button>
         </form>
 
