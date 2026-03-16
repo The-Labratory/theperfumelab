@@ -94,7 +94,7 @@ export default function AuthPage() {
           redirectTo: `${getRedirectOrigin()}/reset-password`,
         });
         if (error) throw error;
-        toast.success("Check your email for a password reset link");
+        toast.success(t("auth.resetEmailSent"));
         setMode("login");
       } else if (mode === "signup") {
         const { data: signupData, error } = await supabase.auth.signUp({
