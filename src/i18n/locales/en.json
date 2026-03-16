@@ -68,7 +68,23 @@
     "title": "What's Your Scent Identity?",
     "description": "Answer 5 quick questions and our AI perfumer will map your unique fragrance archetype — from the notes you'll love to the worlds you belong in.",
     "duration": "Takes only 2 minutes",
-    "cta": "Discover Your Scent DNA"
+    "cta": "Discover Your Scent DNA",
+    "profileTitle": "Scent Profile Quiz",
+    "profileSubtitle": "Tell us what you love so we can personalize your recommendations.",
+    "chooseFamilies": "1) Choose your preferred scent families",
+    "choosePersonality": "2) Pick your scent personality",
+    "saveProfile": "Save my scent profile",
+    "saving": "Saving…",
+    "profileSaved": "Your scent profile is saved.",
+    "signInFirst": "Please sign in first.",
+    "floral": "Floral",
+    "woody": "Woody",
+    "fresh": "Fresh",
+    "oriental": "Oriental",
+    "minimal": "Minimal & clean",
+    "bold": "Bold & expressive",
+    "mysterious": "Mysterious & warm",
+    "playful": "Playful & bright"
   },
   "testimonials": {
     "badge": "The Inner Circle",
@@ -98,6 +114,13 @@
     "hasAccount": "Already have an account?",
     "signInCta": "Sign in to your account",
     "signUpCta": "Create your account",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "backToSignIn": "← Back to sign in",
+    "resetEmailSent": "Check your email for a password reset link",
+    "invalidLogin": "Invalid email or password. Please try again.",
+    "alreadyRegistered": "This email is already registered. Try signing in instead.",
+    "emailNotConfirmed": "Please confirm your email before signing in. Check your inbox.",
     "backToSite": "← Back to Site",
     "checkEmail": "Check your email to confirm your account.",
     "signedIn": "Signed in successfully",
@@ -232,7 +255,8 @@
     "saving": "Saving…",
     "saved": "Saved",
     "finalizeOrder": "Finalize & Order",
-    "blendSaved": "Blend saved."
+    "blendSaved": "Blend saved.",
+    "couldNotSave": "Could not save blend."
   },
   "onboarding": {
     "story1": "You awaken in a place between dreams and reality…",
@@ -276,5 +300,49 @@
     "nocturneWeaverDesc": "Mysterious and alluring. You wrap the world in rich, intoxicating layers of depth.",
     "solarRadiant": "The Solar Radiant",
     "solarRadiantDesc": "Bursting with energy and light. You illuminate every moment with vibrant joy."
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back, {{name}}",
+    "subtitle": "Your Perfume Lab dashboard is ready.",
+    "notifications": "Notifications",
+    "latestNotifications": "Latest notifications",
+    "noNotifications": "No notifications yet.",
+    "growthCredits": "Growth Credits",
+    "browsePerfumes": "Browse perfumes",
+    "favorites": "Favorites",
+    "orders": "Orders",
+    "referrals": "Referrals",
+    "scentQuiz": "Scent Quiz",
+    "ready": "Ready",
+    "myFavorites": "My Favorites",
+    "myOrders": "My Orders",
+    "referFriend": "Refer a friend",
+    "yourReferralLink": "Your referral link",
+    "referralCodePending": "Your referral code will appear here after profile setup.",
+    "loading": "Loading dashboard…"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "subtitle": "Manage perfumes you've saved.",
+    "noFavorites": "No favorites yet.",
+    "browseCatalog": "Browse catalog",
+    "noImage": "No image",
+    "savedOn": "Saved on {{date}}",
+    "viewDetails": "View details",
+    "remove": "Remove",
+    "removed": "Removed from favorites."
+  },
+  "orderHistory": {
+    "title": "Order History",
+    "loading": "Loading orders…",
+    "noOrders": "No orders yet.",
+    "startShopping": "Start shopping",
+    "orderNumber": "Order #{{number}}",
+    "reorder": "Reorder"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
   }
 }
