@@ -3,7 +3,8 @@ import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Lock, Handshake, Users, Triangle, UserPlus } from "lucide-react";
+import { Beaker, FlaskConical, ArrowLeftRight, ShieldCheck, ScrollText, LayoutDashboard, Database, LogOut, AlertCircle, Handshake, Users, Triangle, UserPlus } from "lucide-react";
+import lhLogo from "@/assets/lhariri-logo.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -112,8 +113,8 @@ export default function AdminLayout() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="glass-surface rounded-2xl p-8 max-w-sm w-full">
-          <div className="flex items-center gap-3 mb-6">
-            <Lock className="w-6 h-6 text-primary" />
+          <div className="flex flex-col items-center gap-3 mb-6">
+            <img src={lhLogo} alt="Louis Hariri" className="h-12 w-auto" />
             <h1 className="text-xl font-display font-bold text-foreground">Admin Access</h1>
           </div>
           <form onSubmit={handleAuth} className="space-y-4">
