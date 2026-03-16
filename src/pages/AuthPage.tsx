@@ -154,7 +154,7 @@ export default function AuthPage() {
         <div className="flex flex-col items-center gap-3 mb-6">
           <img src={lhLogo} alt="Louis Hariri" className="h-12 w-auto" />
           <h1 className="text-xl font-display font-bold text-foreground">
-            {mode === "login" ? t("auth.signInCta") : mode === "signup" ? t("auth.signUpCta") : "Reset Password"}
+            {mode === "login" ? t("auth.signInCta") : mode === "signup" ? t("auth.signUpCta") : t("auth.resetPassword")}
           </h1>
         </div>
 
