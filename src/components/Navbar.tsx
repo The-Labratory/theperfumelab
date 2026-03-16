@@ -269,7 +269,7 @@ export default function Navbar() {
                         setSearchQuery("");
                       }
                     }}
-                    placeholder="Discover scents…"
+                    placeholder={t("nav.searchPlaceholder")}
                     className="w-full h-9 px-3 text-sm font-body bg-muted/50 border border-border/50 rounded-md text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
                   />
                 </motion.div>
