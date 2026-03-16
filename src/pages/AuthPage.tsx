@@ -10,6 +10,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import ParticleField from "@/components/ParticleField";
+import lhLogo from "@/assets/lhariri-logo.png";
 
 const PRODUCTION_ORIGIN = "https://theperfumelab.de";
 
