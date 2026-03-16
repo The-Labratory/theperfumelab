@@ -94,7 +94,7 @@ export default function AuthPage() {
           redirectTo: `${getRedirectOrigin()}/reset-password`,
         });
         if (error) throw error;
-        toast.success("Check your email for a password reset link");
+        toast.success(t("auth.resetEmailSent"));
         setMode("login");
       } else if (mode === "signup") {
         const { data: signupData, error } = await supabase.auth.signUp({
@@ -128,11 +128,11 @@ export default function AuthPage() {
     } catch (err: any) {
       const msg = err.message || "";
       if (msg.includes("Invalid login")) {
-        toast.error("Invalid email or password. Please try again.");
+        toast.error(t("auth.invalidLogin"));
       } else if (msg.includes("already registered") || msg.includes("already been registered")) {
-        toast.error("This email is already registered. Try signing in instead.");
+        toast.error(t("auth.alreadyRegistered"));
       } else if (msg.includes("Email not confirmed")) {
-        toast.error("Please confirm your email before signing in. Check your inbox.");
+        toast.error(t("auth.emailNotConfirmed"));
       } else {
         toast.error(msg || t("auth.error"));
       }
@@ -154,7 +154,7 @@ export default function AuthPage() {
         <div className="flex flex-col items-center gap-3 mb-6">
           <img src={lhLogo} alt="Louis Hariri" className="h-12 w-auto" />
           <h1 className="text-xl font-display font-bold text-foreground">
-            {mode === "login" ? t("auth.signInCta") : mode === "signup" ? t("auth.signUpCta") : "Reset Password"}
+            {mode === "login" ? t("auth.signInCta") : mode === "signup" ? t("auth.signUpCta") : t("auth.resetPassword")}
           </h1>
         </div>
 
@@ -170,19 +170,19 @@ export default function AuthPage() {
             </div>
           )}
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">
-            {loading ? "…" : mode === "login" ? t("auth.signIn") : mode === "signup" ? t("auth.signUp") : "Send Reset Link"}
+            {loading ? "…" : mode === "login" ? t("auth.signIn") : mode === "signup" ? t("auth.signUp") : t("auth.sendResetLink")}
           </Button>
         </form>
 
         {mode === "login" && (
           <button onClick={() => setMode("forgot")} className="text-xs text-primary underline mt-3 block w-full text-center">
-            Forgot password?
+            {t("auth.forgotPassword")}
           </button>
         )}
 
         {mode === "forgot" && (
           <button onClick={() => setMode("login")} className="text-xs text-primary underline mt-3 block w-full text-center">
-            ← Back to sign in
+            {t("auth.backToSignIn")}
           </button>
         )}
 

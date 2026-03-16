@@ -3,9 +3,11 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { worlds } from "@/data/worldsData";
+import { useTranslation } from "react-i18next";
 
 const WorldsPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-background">
@@ -19,10 +21,10 @@ const WorldsPage = () => {
           className="text-center mb-14"
         >
           <h1 className="font-display text-3xl md:text-5xl font-black tracking-wider gradient-text mb-3">
-            SCENT WORLDS
+            {t("worlds.title")}
           </h1>
           <p className="text-muted-foreground font-body text-lg">
-            Explore realms of fragrance. Unlock ingredients. Master the art.
+            {t("worlds.subtitle")}
           </p>
         </motion.div>
 
@@ -50,7 +52,7 @@ const WorldsPage = () => {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="glass-surface rounded-full px-5 py-2">
                       <span className="font-display text-xs tracking-widest text-muted-foreground">
-                        🔒 LOCKED
+                        🔒 {t("worlds.locked")}
                       </span>
                     </div>
                   </div>
