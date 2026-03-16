@@ -80,7 +80,7 @@ export default function BusinessSales() {
           <p className="text-xs text-muted-foreground font-body mt-1">Report and track all your B2B & B2C sales</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={exportCSV}><Download className="w-4 h-4 mr-1" /> CSV</Button>
+          {isAdmin && <Button variant="outline" size="sm" onClick={exportCSV}><Download className="w-4 h-4 mr-1" /> CSV</Button>}
           <Button size="sm" onClick={() => setShowForm(!showForm)} className="bg-primary text-primary-foreground">
             <Plus className="w-4 h-4 mr-1" /> Report Sale
           </Button>
