@@ -176,7 +176,7 @@ export default function AuthPage() {
 
         {mode === "login" && (
           <button onClick={() => setMode("forgot")} className="text-xs text-primary underline mt-3 block w-full text-center">
-            Forgot password?
+            {t("auth.forgotPassword")}
           </button>
         )}
 
