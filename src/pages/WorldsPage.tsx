@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { worlds } from "@/data/worldsData";
+import { useTranslation } from "react-i18next";
 
 const WorldsPage = () => {
   const navigate = useNavigate();
