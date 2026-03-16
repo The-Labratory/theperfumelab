@@ -113,8 +113,8 @@ export default function AdminLayout() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="glass-surface rounded-2xl p-8 max-w-sm w-full">
-          <div className="flex items-center gap-3 mb-6">
-            <Lock className="w-6 h-6 text-primary" />
+          <div className="flex flex-col items-center gap-3 mb-6">
+            <img src={lhLogo} alt="Louis Hariri" className="h-12 w-auto" />
             <h1 className="text-xl font-display font-bold text-foreground">Admin Access</h1>
           </div>
           <form onSubmit={handleAuth} className="space-y-4">

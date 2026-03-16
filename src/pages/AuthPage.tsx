@@ -151,8 +151,8 @@ export default function AuthPage() {
         animate={{ opacity: 1, y: 0 }}
         className="glass-surface rounded-2xl p-8 max-w-sm w-full relative z-10"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <Lock className="w-6 h-6 text-primary" />
+        <div className="flex flex-col items-center gap-3 mb-6">
+          <img src={lhLogo} alt="Louis Hariri" className="h-12 w-auto" />
           <h1 className="text-xl font-display font-bold text-foreground">
             {mode === "login" ? t("auth.signInCta") : mode === "signup" ? t("auth.signUpCta") : "Reset Password"}
           </h1>
