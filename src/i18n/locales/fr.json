@@ -15,7 +15,24 @@
     "signup": "S'inscrire",
     "logout": "Déconnexion",
     "account": "Compte",
-    "myBusiness": "Mon Entreprise"
+    "myBusiness": "Mon Entreprise",
+    "create": "Créer",
+    "explore": "Explorer",
+    "community": "Communauté",
+    "shop": "Acheter",
+    "team": "Équipe",
+    "searchPlaceholder": "Découvrir des parfums…",
+    "searchPlaceholderLong": "Découvrir des parfums, ingrédients, formules…",
+    "labDesc": "Composition guidée par IA",
+    "formulationDesc": "Constructeur de formules professionnel",
+    "dnaDesc": "Découvrez votre profil olfactif",
+    "worldsDesc": "Six royaumes de fragrance",
+    "gameDesc": "Parcours d'apprentissage interactif",
+    "shopDesc": "Parcourir notre catalogue",
+    "giftingDesc": "Envoyer un cadeau parfumé",
+    "affiliateDesc": "Réseau de partenaires",
+    "teamDesc": "Rencontrez les créateurs",
+    "signUpNow": "Inscrivez-vous"
   },
   "hero": {
     "badge": "Seulement 100 Créateurs Fondateurs Acceptés",
@@ -40,6 +57,32 @@
     "note": "La plupart des créateurs ne peuvent pas s'arrêter à un seul.",
     "lab": "Entrer au Laboratoire",
     "browse": "Parcourir la Collection"
+  },
+  "social": {
+    "blendsCreated": "Mélanges Créés",
+    "satisfaction": "Satisfaction",
+    "countries": "Pays",
+    "founders": "Créateurs Fondateurs"
+  },
+  "quiz": {
+    "title": "Quelle est Votre Identité Olfactive ?",
+    "description": "Répondez à 5 questions rapides et notre parfumeur IA cartographiera votre archétype de fragrance unique — des notes que vous aimerez aux mondes auxquels vous appartenez.",
+    "duration": "Seulement 2 minutes",
+    "cta": "Découvrez Votre ADN Olfactif"
+  },
+  "testimonials": {
+    "badge": "Le Cercle Intérieur",
+    "title": "Ce Que Disent Nos Créateurs",
+    "sophia": "J'ai dépensé des milliers en fragrances de niche. Rien ne se compare à porter quelque chose construit molécule par molécule autour de ma personnalité.",
+    "james": "Le Laboratoire de Formulation crée une dépendance. J'ai créé 6 mélanges jusqu'ici — chacun raconte une histoire différente. La précision est incomparable.",
+    "amira": "En tant que directrice créative, j'ai besoin que mon parfum soit aussi intentionnel que mon travail. Le Laboratoire de Parfums m'a donné exactement cela — une signature que personne d'autre n'a.",
+    "marcus": "Du quiz d'intégration au flacon final, chaque étape a été une expérience de luxe. Ce n'est pas du shopping de parfum — c'est de la création de parfum."
+  },
+  "trust": {
+    "ssl": "Chiffrement SSL",
+    "handBlended": "Mélangé à la Main",
+    "exclusive": "Limité à 100 Créateurs",
+    "ifra": "Conforme IFRA"
   },
   "footer": {
     "copyright": "© 2026 Le Laboratoire de Parfums — Chaque composition est mélangée individuellement dans notre atelier."
@@ -101,9 +144,11 @@
     "customise": "Personnalisez Votre Parfum",
     "customiseDesc": "Créez votre senteur signature à partir de plus de 200 ingrédients moléculaires. Conçu par vous, mélangé par des artisans.",
     "startCreating": "Commencer à Créer",
-    "becomePartner": "Devenir Partenaire",
+    "becomePartner": "Devenez",
+    "partnerHighlight": "Partenaire !",
     "partnerDesc": "Rejoignez notre réseau. Partagez, promouvez et gagnez jusqu'à 50% de commission sur chaque vente.",
-    "joinNow": "Rejoindre"
+    "joinNow": "Inscrivez-vous",
+    "topNetworks": "Top 5 Réseaux d'Affiliés"
   },
   "store": {
     "title": "LA COLLECTION",
@@ -113,7 +158,8 @@
     "buyNow": "Acheter",
     "backToStore": "Retour à la Boutique",
     "outOfStock": "Cette variante est actuellement en rupture de stock",
-    "addedToCart": "ajouté au panier"
+    "addedToCart": "ajouté au panier",
+    "noImage": "Pas d'Image"
   },
   "business": {
     "title": "Mon Entreprise",
@@ -140,11 +186,29 @@
     "details": "Détails",
     "duoPartner": "Partenaire Duo",
     "generating": "Création de votre mélange...",
-    "result": "Votre Mélange Cadeau"
+    "result": "Votre Mélange Cadeau",
+    "duoBlend": "MÉLANGE DUO",
+    "giftingMode": "MODE CADEAU",
+    "duoSubtitle": "Deux âmes, un parfum — créez ensemble en temps réel",
+    "soloSubtitle": "Créez le parfum parfait pour quelqu'un de spécial",
+    "chooseExperience": "CHOISISSEZ VOTRE EXPÉRIENCE",
+    "soloGift": "Cadeau Solo",
+    "soloGiftDesc": "Créez un parfum personnel pour quelqu'un que vous aimez",
+    "duoBlendOption": "Mélange Duo",
+    "duoBlendDesc": "Deux personnes, un parfum harmonisé — créez ensemble",
+    "yourPersonality": "VOTRE PERSONNALITÉ",
+    "theirPersonality": "LEUR PERSONNALITÉ"
+  },
+  "worlds": {
+    "title": "MONDES OLFACTIFS",
+    "subtitle": "Explorez des mondes de fragrance. Débloquez des ingrédients. Maîtrisez l'art.",
+    "locked": "VERROUILLÉ"
   },
   "lab": {
     "title": "Le Laboratoire de Senteurs",
+    "pageTitle": "LABORATOIRE DE PARFUMS",
     "subtitle": "Composez votre fragrance signature",
+    "pageSubtitle": "Créez votre fragrance signature",
     "topNotes": "Notes de Tête",
     "heartNotes": "Notes de Cœur",
     "baseNotes": "Notes de Fond",
@@ -152,6 +216,65 @@
     "harmony": "Score d'Harmonie",
     "aiAnalysis": "Analyse IA",
     "clearAll": "Tout Effacer",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "projection": "Projection",
+    "longevity": "Longévité",
+    "moodLabel": "Humeur",
+    "strong": "Fort",
+    "moderate": "Modéré",
+    "light": "Léger",
+    "romantic": "Romantique",
+    "energetic": "Énergique",
+    "intensity": "Intensité",
+    "warmth": "Chaleur",
+    "yourBlend": "VOTRE MÉLANGE",
+    "selectNotes": "Sélectionnez des notes pour commencer votre création",
+    "saving": "Sauvegarde…",
+    "saved": "Sauvegardé",
+    "finalizeOrder": "Finaliser et Commander",
+    "blendSaved": "Mélange sauvegardé."
+  },
+  "onboarding": {
+    "story1": "Vous vous réveillez dans un lieu entre rêves et réalité…",
+    "question1": "Vous vous retrouvez dans une forêt cachée. Que sentez-vous en premier ?",
+    "opt1a": "Terre humide et mousse verte",
+    "opt1b": "Fleurs sauvages sucrées",
+    "opt1c": "Résine chaude et cèdre",
+    "opt1d": "Rosée fraîche du matin",
+    "story2": "Un pouvoir mystérieux s'agite en vous…",
+    "question2": "Choisissez votre affinité élémentaire :",
+    "opt2a": "Feu — Passionné et Audacieux",
+    "opt2b": "Océan — Calme et Profond",
+    "opt2c": "Minuit — Mystérieux et Riche",
+    "opt2d": "Étincelle d'Agrumes — Brillante et Vivante",
+    "story3": "Le monde change autour de vous, se modelant à vos désirs…",
+    "question3": "Votre soirée idéale ressemble à…",
+    "opt3a": "Obscurité veloutée à la lueur des bougies",
+    "opt3b": "Un toit-terrasse sous la lumière des étoiles",
+    "opt3c": "Une bibliothèque chaleureuse avec de vieux livres",
+    "opt3d": "Une garden-party à l'heure dorée",
+    "story4": "Votre identité olfactive se cristallise…",
+    "question4": "Quelle texture résonne avec votre âme ?",
+    "opt4a": "Soie lisse",
+    "opt4b": "Pierre brute",
+    "opt4c": "Mercure liquide",
+    "opt4d": "Miel doré",
+    "dnaCode": "Votre Code ADN Olfactif",
+    "enterLab": "Entrer au Laboratoire",
+    "exploreWorlds": "Explorer les Mondes",
+    "forestSage": "Le Sage de la Forêt",
+    "forestSageDesc": "Vous portez la sagesse des forêts anciennes. Votre ADN olfactif est enraciné, ancré et vivant.",
+    "bloomEnchanter": "L'Enchanteur des Fleurs",
+    "bloomEnchanterDesc": "Délicat mais puissant, vous fleurissez avec un charme magnétique et une élégance enivrante.",
+    "emberGuardian": "Le Gardien des Braises",
+    "emberGuardianDesc": "Chaleureux, imposant et profondément sensuel. Vous rayonnez d'une puissance tranquille et d'une profondeur intemporelle.",
+    "azureVoyager": "Le Voyageur Azur",
+    "azureVoyagerDesc": "Libre d'esprit et lumineux, vous vous déplacez comme les courants océaniques — rafraîchissant tout ce que vous touchez.",
+    "flameAlchemist": "L'Alchimiste de Flamme",
+    "flameAlchemistDesc": "Audacieux et sans excuse. Votre présence enflamme les pièces et laisse une trace inoubliable.",
+    "nocturneWeaver": "Le Tisseur Nocturne",
+    "nocturneWeaverDesc": "Mystérieux et séduisant. Vous enveloppez le monde de couches riches et enivrantes de profondeur.",
+    "solarRadiant": "Le Radieux Solaire",
+    "solarRadiantDesc": "Débordant d'énergie et de lumière. Vous illuminez chaque moment d'une joie vibrante."
   }
 }

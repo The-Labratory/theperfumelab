@@ -15,7 +15,24 @@
     "signup": "Kayıt Ol",
     "logout": "Çıkış Yap",
     "account": "Hesap",
-    "myBusiness": "İşletmem"
+    "myBusiness": "İşletmem",
+    "create": "Yarat",
+    "explore": "Keşfet",
+    "community": "Topluluk",
+    "shop": "Alışveriş",
+    "team": "Ekip",
+    "searchPlaceholder": "Kokuları keşfedin…",
+    "searchPlaceholderLong": "Kokuları, bileşenleri, formülleri keşfedin…",
+    "labDesc": "Yapay zeka destekli koku kompozisyonu",
+    "formulationDesc": "Profesyonel formül oluşturucu",
+    "dnaDesc": "Koku profilinizi keşfedin",
+    "worldsDesc": "Altı koku dünyası",
+    "gameDesc": "İnteraktif öğrenme yolu",
+    "shopDesc": "Kataloğumuza göz atın",
+    "giftingDesc": "Koku hediyesi gönderin",
+    "affiliateDesc": "Ortaklık ağı",
+    "teamDesc": "Yapımcılarla tanışın",
+    "signUpNow": "Şimdi Kaydol"
   },
   "hero": {
     "badge": "Sadece 100 Kurucu Üye Kabul Edilir",
@@ -32,7 +49,7 @@
     "worlds": "Altı Koku Dünyası",
     "worldsDesc": "Küratörlü koku alemleri — her biri kendi paleti, havası ve hammaddeleriyle.",
     "atelier": "Atölye",
-    "atelierDesc": "Hassasiyetle bestelyin. Her karışım küçük haftalık partiler halinde elle üretilir."
+    "atelierDesc": "Hassasiyetle besteleyin. Her karışım küçük haftalık partiler halinde elle üretilir."
   },
   "cta": {
     "title": "İmzanız Sizi Bekliyor",
@@ -40,6 +57,32 @@
     "note": "Çoğu yaratıcı sadece birinde duramaz.",
     "lab": "Koku Laboratuvarına Girin",
     "browse": "Koleksiyonu Keşfedin"
+  },
+  "social": {
+    "blendsCreated": "Oluşturulan Karışım",
+    "satisfaction": "Memnuniyet",
+    "countries": "Ülke",
+    "founders": "Kurucu Yaratıcı"
+  },
+  "quiz": {
+    "title": "Koku Kimliğiniz Nedir?",
+    "description": "5 hızlı soruyu cevaplayın ve yapay zeka parfümörümüz benzersiz koku arketipinizi haritalasın — seveceğiniz notalardan ait olduğunuz dünyalara.",
+    "duration": "Sadece 2 dakika sürer",
+    "cta": "Koku DNA'nızı Keşfedin"
+  },
+  "testimonials": {
+    "badge": "İç Çevre",
+    "title": "Yaratıcılarımız Ne Diyor",
+    "sophia": "Niş parfümlere binlerce harcadım. Kişiliğim etrafında molekül molekül inşa edilmiş bir şey giymekle hiçbir şey kıyaslanamaz.",
+    "james": "Formülasyon Laboratuvarı bağımlılık yapıyor. Şimdiye kadar 6 karışım yarattım — her biri farklı bir hikâye anlatıyor. Hassasiyet eşsiz.",
+    "amira": "Yaratıcı yönetmen olarak, kokumun işim kadar kasıtlı olması gerekiyor. Parfüm Laboratuvarı bana tam olarak bunu verdi — başka kimsenin sahip olmadığı bir imza.",
+    "marcus": "Giriş testinden son şişeye kadar her adım lüks bir deneyim gibi hissettirdi. Bu parfüm alışverişi değil — parfüm yaratımı."
+  },
+  "trust": {
+    "ssl": "SSL Şifreli",
+    "handBlended": "El Yapımı",
+    "exclusive": "100 Yaratıcıyla Sınırlı",
+    "ifra": "IFRA Uyumlu"
   },
   "footer": {
     "copyright": "© 2026 Parfüm Laboratuvarı — Her kompozisyon atölyemizde bireysel olarak harmanlanır."
@@ -101,9 +144,11 @@
     "customise": "Parfümünüzü Tasarlayın",
     "customiseDesc": "200'den fazla moleküler bileşenden imza kokunuzu yaratın. Sizin tarafınızdan tasarlanan, zanaatkarlar tarafından harmanlanır.",
     "startCreating": "Yaratmaya Başla",
-    "becomePartner": "Ortak Olun",
+    "becomePartner": "Bir",
+    "partnerHighlight": "Ortak Olun!",
     "partnerDesc": "Ortaklık ağımıza katılın. Paylaşın, tanıtın ve her satıştan %50'ye varan komisyon kazanın.",
-    "joinNow": "Şimdi Katıl"
+    "joinNow": "Şimdi Kaydol",
+    "topNetworks": "En İyi 5 Ortaklık Ağı"
   },
   "store": {
     "title": "KOLEKSİYON",
@@ -113,7 +158,8 @@
     "buyNow": "Şimdi Al",
     "backToStore": "Mağazaya Dön",
     "outOfStock": "Bu varyant şu anda stokta yok",
-    "addedToCart": "sepete eklendi"
+    "addedToCart": "sepete eklendi",
+    "noImage": "Resim Yok"
   },
   "business": {
     "title": "İşletmem",
@@ -140,11 +186,29 @@
     "details": "Detaylar",
     "duoPartner": "İkili Ortak",
     "generating": "Karışımınız oluşturuluyor...",
-    "result": "Hediye Karışımınız"
+    "result": "Hediye Karışımınız",
+    "duoBlend": "İKİLİ KARIŞIM",
+    "giftingMode": "HEDİYE MODU",
+    "duoSubtitle": "İki ruh, bir koku — gerçek zamanlı birlikte yaratın",
+    "soloSubtitle": "Özel birisi için mükemmel kokuyu yaratın",
+    "chooseExperience": "DENEYİMİNİZİ SEÇİN",
+    "soloGift": "Tek Hediye",
+    "soloGiftDesc": "Sevdiğiniz biri için kişisel bir koku yaratın",
+    "duoBlendOption": "İkili Karışım",
+    "duoBlendDesc": "İki kişi, bir uyumlu koku — birlikte yaratın",
+    "yourPersonality": "SİZİN KİŞİLİĞİNİZ",
+    "theirPersonality": "ONLARIN KİŞİLİĞİ"
+  },
+  "worlds": {
+    "title": "KOKU DÜNYALARI",
+    "subtitle": "Koku dünyalarını keşfedin. Bileşenlerin kilidini açın. Sanatı ustalaşın.",
+    "locked": "KİLİTLİ"
   },
   "lab": {
     "title": "Koku Laboratuvarı",
+    "pageTitle": "PARFÜM LABORATUVARI",
     "subtitle": "İmza kokunuzu besteleyin",
+    "pageSubtitle": "İmza kokunuzu yaratın",
     "topNotes": "Üst Notalar",
     "heartNotes": "Kalp Notaları",
     "baseNotes": "Alt Notalar",
@@ -152,6 +216,65 @@
     "harmony": "Uyum Puanı",
     "aiAnalysis": "Yapay Zeka Analizi",
     "clearAll": "Tümünü Temizle",
-    "save": "Karışımı Kaydet"
+    "save": "Karışımı Kaydet",
+    "projection": "Yayılım",
+    "longevity": "Kalıcılık",
+    "moodLabel": "Ruh Hali",
+    "strong": "Güçlü",
+    "moderate": "Orta",
+    "light": "Hafif",
+    "romantic": "Romantik",
+    "energetic": "Enerjik",
+    "intensity": "Yoğunluk",
+    "warmth": "Sıcaklık",
+    "yourBlend": "KARIŞIMINIZ",
+    "selectNotes": "Kreasyonunuza başlamak için nota seçin",
+    "saving": "Kaydediliyor…",
+    "saved": "Kaydedildi",
+    "finalizeOrder": "Tamamla ve Sipariş Ver",
+    "blendSaved": "Karışım kaydedildi."
+  },
+  "onboarding": {
+    "story1": "Rüyalar ve gerçeklik arasında bir yerde uyanıyorsunuz…",
+    "question1": "Kendinizi gizli bir ormanda buluyorsunuz. İlk ne kokuyorsunuz?",
+    "opt1a": "Nemli toprak ve yeşil yosun",
+    "opt1b": "Tatlı kır çiçekleri",
+    "opt1c": "Sıcak reçine ve sedir",
+    "opt1d": "Serin sabah çiyi",
+    "story2": "İçinizde gizemli bir güç kıpırdıyor…",
+    "question2": "Elemental yakınlığınızı seçin:",
+    "opt2a": "Ateş — Tutkulu ve Cesur",
+    "opt2b": "Okyanus — Sakin ve Derin",
+    "opt2c": "Gece Yarısı — Gizemli ve Zengin",
+    "opt2d": "Narenciye Kıvılcımı — Parlak ve Canlı",
+    "story3": "Dünya etrafınızda değişiyor, arzularınıza şekil veriyor…",
+    "question3": "İdeal akşamınız nasıl hissettiriyor…",
+    "opt3a": "Mum ışığında kadife karanlık",
+    "opt3b": "Yıldız ışığı altında bir çatı",
+    "opt3c": "Eski kitaplarla sıcak bir kütüphane",
+    "opt3d": "Altın saatte bir bahçe partisi",
+    "story4": "Koku kimliğiniz kristalleşiyor…",
+    "question4": "Ruhunuzla hangi doku rezonans yapıyor?",
+    "opt4a": "Pürüzsüz ipek",
+    "opt4b": "Kaba taş",
+    "opt4c": "Sıvı civa",
+    "opt4d": "Altın bal",
+    "dnaCode": "Koku DNA Kodunuz",
+    "enterLab": "Koku Laboratuvarına Girin",
+    "exploreWorlds": "Dünyaları Keşfedin",
+    "forestSage": "Orman Bilgesi",
+    "forestSageDesc": "Kadim ormanların bilgeliğini taşıyorsunuz. Koku DNA'nız köklü, topraklayıcı ve canlı.",
+    "bloomEnchanter": "Çiçek Büyücüsü",
+    "bloomEnchanterDesc": "Zarif ama güçlü, manyetik çekicilik ve büyüleyici zarafetle çiçek açıyorsunuz.",
+    "emberGuardian": "Kor Muhafızı",
+    "emberGuardianDesc": "Sıcak, buyurgan ve derinden duyusal. Sessiz güç ve zamansız derinlik yayıyorsunuz.",
+    "azureVoyager": "Masmavi Gezgin",
+    "azureVoyagerDesc": "Özgür ruhlu ve ışıltılı, okyanus akıntıları gibi hareket ediyorsunuz — dokunduğunuz her şeyi tazeliyorsunuz.",
+    "flameAlchemist": "Alev Simyacısı",
+    "flameAlchemistDesc": "Cesur ve özür dilemeyen. Varlığınız odaları tutuşturur ve unutulmaz bir iz bırakır.",
+    "nocturneWeaver": "Gece Dokumacısı",
+    "nocturneWeaverDesc": "Gizemli ve baştan çıkarıcı. Dünyayı zengin, sarhoş edici derinlik katmanlarıyla sarıyorsunuz.",
+    "solarRadiant": "Güneş Işıltısı",
+    "solarRadiantDesc": "Enerji ve ışıkla dolu. Her anı canlı neşeyle aydınlatıyorsunuz."
   }
 }

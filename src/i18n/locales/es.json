@@ -15,7 +15,24 @@
     "signup": "Registrarse",
     "logout": "Cerrar Sesión",
     "account": "Cuenta",
-    "myBusiness": "Mi Negocio"
+    "myBusiness": "Mi Negocio",
+    "create": "Crear",
+    "explore": "Explorar",
+    "community": "Comunidad",
+    "shop": "Comprar",
+    "team": "Equipo",
+    "searchPlaceholder": "Descubre aromas…",
+    "searchPlaceholderLong": "Descubre aromas, ingredientes, fórmulas…",
+    "labDesc": "Composición guiada por IA",
+    "formulationDesc": "Constructor profesional de fórmulas",
+    "dnaDesc": "Descubre tu perfil olfativo",
+    "worldsDesc": "Seis mundos de fragancia",
+    "gameDesc": "Ruta de aprendizaje interactiva",
+    "shopDesc": "Explora nuestro catálogo",
+    "giftingDesc": "Envía un regalo de aroma",
+    "affiliateDesc": "Red de socios",
+    "teamDesc": "Conoce a los creadores",
+    "signUpNow": "Regístrate Ahora"
   },
   "hero": {
     "badge": "Solo 100 Creadores Fundadores Aceptados",
@@ -40,6 +57,32 @@
     "note": "La mayoría de los creadores no pueden parar en solo uno.",
     "lab": "Entrar al Laboratorio",
     "browse": "Explorar la Colección"
+  },
+  "social": {
+    "blendsCreated": "Mezclas Creadas",
+    "satisfaction": "Satisfacción",
+    "countries": "Países",
+    "founders": "Creadores Fundadores"
+  },
+  "quiz": {
+    "title": "¿Cuál es Tu Identidad Olfativa?",
+    "description": "Responde 5 preguntas rápidas y nuestro perfumista IA mapeará tu arquetipo de fragancia único — desde las notas que amarás hasta los mundos a los que perteneces.",
+    "duration": "Solo toma 2 minutos",
+    "cta": "Descubre Tu ADN Olfativo"
+  },
+  "testimonials": {
+    "badge": "El Círculo Interior",
+    "title": "Lo Que Dicen Nuestros Creadores",
+    "sophia": "He gastado miles en fragancias nicho. Nada se compara a usar algo que fue construido molécula por molécula alrededor de mi personalidad.",
+    "james": "El Laboratorio de Formulación es adictivo. He creado 6 mezclas hasta ahora — cada una cuenta una historia diferente. La precisión es incomparable.",
+    "amira": "Como directora creativa, necesito que mi aroma sea tan intencional como mi trabajo. El Laboratorio de Perfumes me dio exactamente eso — una firma que nadie más tiene.",
+    "marcus": "Desde el quiz de incorporación hasta el frasco final, cada paso se sintió como una experiencia de lujo. Esto no es comprar perfume — es creación de perfume."
+  },
+  "trust": {
+    "ssl": "Cifrado SSL",
+    "handBlended": "Mezclado a Mano",
+    "exclusive": "Limitado a 100 Creadores",
+    "ifra": "Cumplimiento IFRA"
   },
   "footer": {
     "copyright": "© 2026 El Laboratorio de Perfumes — Cada composición se mezcla individualmente en nuestro atelier."
@@ -101,9 +144,11 @@
     "customise": "Personaliza Tu Perfume",
     "customiseDesc": "Crea tu aroma exclusivo con más de 200 ingredientes moleculares. Diseñado por ti, mezclado por artesanos.",
     "startCreating": "Empieza a Crear",
-    "becomePartner": "Hazte Socio",
+    "becomePartner": "Conviértete en",
+    "partnerHighlight": "¡Socio!",
     "partnerDesc": "Únete a nuestra red. Comparte, promociona y gana hasta un 50% de comisión en cada venta.",
-    "joinNow": "Únete Ahora"
+    "joinNow": "Regístrate Ahora",
+    "topNetworks": "Top 5 Redes de Afiliados"
   },
   "store": {
     "title": "LA COLECCIÓN",
@@ -113,7 +158,8 @@
     "buyNow": "Comprar Ahora",
     "backToStore": "Volver a la Tienda",
     "outOfStock": "Esta variante no está disponible actualmente",
-    "addedToCart": "añadido al carrito"
+    "addedToCart": "añadido al carrito",
+    "noImage": "Sin Imagen"
   },
   "business": {
     "title": "Mi Negocio",
@@ -140,11 +186,29 @@
     "details": "Detalles",
     "duoPartner": "Compañero Dúo",
     "generating": "Generando tu mezcla...",
-    "result": "Tu Mezcla de Regalo"
+    "result": "Tu Mezcla de Regalo",
+    "duoBlend": "MEZCLA DÚO",
+    "giftingMode": "MODO REGALO",
+    "duoSubtitle": "Dos almas, una fragancia — creen juntos en tiempo real",
+    "soloSubtitle": "Crea la fragancia perfecta para alguien especial",
+    "chooseExperience": "ELIGE TU EXPERIENCIA",
+    "soloGift": "Regalo Individual",
+    "soloGiftDesc": "Crea una fragancia personal para alguien que amas",
+    "duoBlendOption": "Mezcla Dúo",
+    "duoBlendDesc": "Dos personas, un aroma armonizado — creen juntos",
+    "yourPersonality": "TU PERSONALIDAD",
+    "theirPersonality": "SU PERSONALIDAD"
+  },
+  "worlds": {
+    "title": "MUNDOS OLFATIVOS",
+    "subtitle": "Explora mundos de fragancia. Desbloquea ingredientes. Domina el arte.",
+    "locked": "BLOQUEADO"
   },
   "lab": {
     "title": "El Laboratorio de Aromas",
+    "pageTitle": "LABORATORIO DE PERFUMES",
     "subtitle": "Compón tu fragancia exclusiva",
+    "pageSubtitle": "Crea tu fragancia exclusiva",
     "topNotes": "Notas de Salida",
     "heartNotes": "Notas de Corazón",
     "baseNotes": "Notas de Fondo",
@@ -152,6 +216,65 @@
     "harmony": "Puntuación de Armonía",
     "aiAnalysis": "Análisis IA",
     "clearAll": "Borrar Todo",
-    "save": "Guardar Mezcla"
+    "save": "Guardar Mezcla",
+    "projection": "Proyección",
+    "longevity": "Longevidad",
+    "moodLabel": "Estado de Ánimo",
+    "strong": "Fuerte",
+    "moderate": "Moderada",
+    "light": "Ligera",
+    "romantic": "Romántico",
+    "energetic": "Energético",
+    "intensity": "Intensidad",
+    "warmth": "Calidez",
+    "yourBlend": "TU MEZCLA",
+    "selectNotes": "Selecciona notas para comenzar tu creación",
+    "saving": "Guardando…",
+    "saved": "Guardado",
+    "finalizeOrder": "Finalizar y Ordenar",
+    "blendSaved": "Mezcla guardada."
+  },
+  "onboarding": {
+    "story1": "Despiertas en un lugar entre sueños y realidad…",
+    "question1": "Te encuentras en un bosque oculto. ¿Qué hueles primero?",
+    "opt1a": "Tierra húmeda y musgo verde",
+    "opt1b": "Flores silvestres dulces",
+    "opt1c": "Resina cálida y cedro",
+    "opt1d": "Rocío fresco de la mañana",
+    "story2": "Un poder misterioso se agita dentro de ti…",
+    "question2": "Elige tu afinidad elemental:",
+    "opt2a": "Fuego — Apasionado y Audaz",
+    "opt2b": "Océano — Tranquilo y Profundo",
+    "opt2c": "Medianoche — Misterioso y Rico",
+    "opt2d": "Chispa Cítrica — Brillante y Viva",
+    "story3": "El mundo cambia a tu alrededor, moldeándose a tus deseos…",
+    "question3": "Tu velada ideal se siente como…",
+    "opt3a": "Oscuridad aterciopelada a la luz de las velas",
+    "opt3b": "Una azotea bajo la luz de las estrellas",
+    "opt3c": "Una biblioteca cálida con libros antiguos",
+    "opt3d": "Una fiesta en el jardín a la hora dorada",
+    "story4": "Tu identidad olfativa se cristaliza…",
+    "question4": "¿Qué textura resuena con tu alma?",
+    "opt4a": "Seda suave",
+    "opt4b": "Piedra áspera",
+    "opt4c": "Mercurio líquido",
+    "opt4d": "Miel dorada",
+    "dnaCode": "Tu Código de ADN Olfativo",
+    "enterLab": "Entrar al Laboratorio",
+    "exploreWorlds": "Explorar Mundos",
+    "forestSage": "El Sabio del Bosque",
+    "forestSageDesc": "Llevas la sabiduría de los bosques antiguos. Tu ADN olfativo está enraizado, fundamentado y vivo.",
+    "bloomEnchanter": "El Encantador de Flores",
+    "bloomEnchanterDesc": "Delicado pero poderoso, floreces con encanto magnético y elegancia embriagadora.",
+    "emberGuardian": "El Guardián de Brasas",
+    "emberGuardianDesc": "Cálido, dominante y profundamente sensual. Irradias poder silencioso y profundidad atemporal.",
+    "azureVoyager": "El Viajero Azur",
+    "azureVoyagerDesc": "De espíritu libre y luminoso, te mueves como corrientes oceánicas — refrescando todo lo que tocas.",
+    "flameAlchemist": "El Alquimista de Llamas",
+    "flameAlchemistDesc": "Audaz y sin disculpas. Tu presencia enciende habitaciones y deja un rastro inolvidable.",
+    "nocturneWeaver": "El Tejedor Nocturno",
+    "nocturneWeaverDesc": "Misterioso y seductor. Envuelves el mundo en capas ricas e intoxicantes de profundidad.",
+    "solarRadiant": "El Radiante Solar",
+    "solarRadiantDesc": "Rebosante de energía y luz. Iluminas cada momento con alegría vibrante."
   }
 }
