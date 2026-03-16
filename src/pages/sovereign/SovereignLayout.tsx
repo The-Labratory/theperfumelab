@@ -39,7 +39,7 @@ export default function SovereignLayout() {
         .select("id, tier")
         .eq("user_id", user.id)
         .maybeSingle();
-      if (!data) {
+      if (!data || !["lead_affiliate", "overlord", "pro"].includes(data.tier)) {
         navigate("/affiliate-signup", { replace: true });
         return;
       }
