@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { buildReferralCodeLink } from "@/lib/referralLinks";
+import { useTranslation } from "react-i18next";
 
 interface DashboardState {
   displayName: string;
@@ -32,6 +33,7 @@ const initialState: DashboardState = {
 };
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
   const [state, setState] = useState<DashboardState>(initialState);
   const [loading, setLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -101,12 +103,12 @@ export default function DashboardPage() {
       <div className="relative z-10 pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto space-y-6">
         <div className="flex flex-wrap gap-3 items-center justify-between">
           <div>
-            <h1 className="font-display text-3xl font-black tracking-wider text-foreground">Welcome back, {state.displayName}</h1>
-            <p className="text-sm text-muted-foreground">Your Perfume Lab dashboard is ready.</p>
+            <h1 className="font-display text-3xl font-black tracking-wider text-foreground">{t("dashboard.welcomeBack", { name: state.displayName })}</h1>
+            <p className="text-sm text-muted-foreground">{t("dashboard.subtitle")}</p>
           </div>
 
           <Button variant="outline" onClick={() => setShowNotifications((prev) => !prev)} className="relative gap-2">
-            <Bell className="w-4 h-4" /> Notifications
+            <Bell className="w-4 h-4" /> {t("dashboard.notifications")}
             {state.unreadNotifications > 0 && (
               <Badge className="absolute -top-2 -right-2 min-w-5 h-5 px-1.5 text-[10px]">
                 {state.unreadNotifications}
@@ -118,11 +120,11 @@ export default function DashboardPage() {
         {showNotifications && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-display">Latest notifications</CardTitle>
+              <CardTitle className="text-base font-display">{t("dashboard.latestNotifications")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {state.latestNotifications.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No notifications yet.</p>
+                <p className="text-sm text-muted-foreground">{t("dashboard.noNotifications")}</p>
               ) : (
                 state.latestNotifications.map((item) => (
                   <div key={item.id} className="border border-border/50 rounded-lg p-3">
@@ -138,13 +140,13 @@ export default function DashboardPage() {
         <Card className="border-primary/30">
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">Growth Credits</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">{t("dashboard.growthCredits")}</p>
               <p className="font-display text-4xl font-black text-primary flex items-center gap-2">
                 <Coins className="w-7 h-7" /> {state.growthCredits.toFixed(0)}
               </p>
             </div>
             <Button asChild className="font-display tracking-wider">
-              <Link to="/catalog">Browse perfumes <ChevronRight className="w-4 h-4 ml-1" /></Link>
+              <Link to="/catalog">{t("dashboard.browsePerfumes")} <ChevronRight className="w-4 h-4 ml-1" /></Link>
             </Button>
           </CardContent>
         </Card>
@@ -152,54 +154,54 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Favorites</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.favorites")}</p>
               <p className="font-display text-2xl font-bold text-foreground">{state.favoritesCount}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Orders</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.orders")}</p>
               <p className="font-display text-2xl font-bold text-foreground">{state.ordersCount}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Referrals</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.referrals")}</p>
               <p className="font-display text-2xl font-bold text-foreground">{state.referralsCount}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Scent Quiz</p>
-              <p className="font-display text-2xl font-bold text-foreground">Ready</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.scentQuiz")}</p>
+              <p className="font-display text-2xl font-bold text-foreground">{t("dashboard.ready")}</p>
             </CardContent>
           </Card>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/catalog"><ShoppingBag className="w-4 h-4" /> Browse Perfumes</Link></Button>
-          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/favorites"><Heart className="w-4 h-4" /> My Favorites</Link></Button>
-          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/orders"><Gift className="w-4 h-4" /> My Orders</Link></Button>
-          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/scent-quiz"><Sparkles className="w-4 h-4" /> Scent Quiz</Link></Button>
+          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/catalog"><ShoppingBag className="w-4 h-4" /> {t("dashboard.browsePerfumes")}</Link></Button>
+          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/favorites"><Heart className="w-4 h-4" /> {t("dashboard.myFavorites")}</Link></Button>
+          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/orders"><Gift className="w-4 h-4" /> {t("dashboard.myOrders")}</Link></Button>
+          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/scent-quiz"><Sparkles className="w-4 h-4" /> {t("dashboard.scentQuiz")}</Link></Button>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-display flex items-center gap-2"><Users className="w-4 h-4" /> Refer a friend</CardTitle>
+            <CardTitle className="text-base font-display flex items-center gap-2"><Users className="w-4 h-4" /> {t("dashboard.referFriend")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {state.referralCode ? (
               <>
-                <p className="text-xs text-muted-foreground">Your referral link</p>
+                <p className="text-xs text-muted-foreground">{t("dashboard.yourReferralLink")}</p>
                 <code className="block text-xs rounded-lg bg-muted/40 border border-border/50 p-3 break-all text-foreground">{referralLink}</code>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">Your referral code will appear here after profile setup.</p>
+              <p className="text-sm text-muted-foreground">{t("dashboard.referralCodePending")}</p>
             )}
           </CardContent>
         </Card>
 
-        {loading && <p className="text-sm text-muted-foreground">Loading dashboard…</p>}
+        {loading && <p className="text-sm text-muted-foreground">{t("dashboard.loading")}</p>}
       </div>
     </div>
   );

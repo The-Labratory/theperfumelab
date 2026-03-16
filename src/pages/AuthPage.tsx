@@ -182,7 +182,7 @@ export default function AuthPage() {
 
         {mode === "forgot" && (
           <button onClick={() => setMode("login")} className="text-xs text-primary underline mt-3 block w-full text-center">
-            ← Back to sign in
+            {t("auth.backToSignIn")}
           </button>
         )}
 
