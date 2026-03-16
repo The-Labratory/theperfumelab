@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { TrendingUp, Plus, Download, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
