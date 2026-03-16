@@ -52,7 +52,7 @@ const WorldsPage = () => {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="glass-surface rounded-full px-5 py-2">
                       <span className="font-display text-xs tracking-widest text-muted-foreground">
-                        🔒 LOCKED
+                        🔒 {t("worlds.locked")}
                       </span>
                     </div>
                   </div>
