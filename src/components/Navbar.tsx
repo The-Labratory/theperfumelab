@@ -64,20 +64,20 @@ export default function Navbar() {
   const navGroups: NavGroup[] = [
     { label: t("nav.home"), path: "/home" },
     {
-      label: "Create",
+      label: t("nav.create"),
       icon: <FlaskConical className="w-4 h-4" />,
       children: [
-        { path: "/lab", label: t("nav.lab"), description: "AI-guided scent composition" },
-        { path: "/formulation", label: t("nav.formulation"), description: "Professional formula builder" },
-        { path: "/dna", label: t("nav.dna"), description: "Discover your scent profile" },
+        { path: "/lab", label: t("nav.lab"), description: t("nav.labDesc") },
+        { path: "/formulation", label: t("nav.formulation"), description: t("nav.formulationDesc") },
+        { path: "/dna", label: t("nav.dna"), description: t("nav.dnaDesc") },
       ],
     },
     {
-      label: "Explore",
+      label: t("nav.explore"),
       icon: <Compass className="w-4 h-4" />,
       children: [
-        { path: "/worlds", label: t("nav.worlds"), description: "Six fragrance realms" },
-        { path: "/game", label: t("nav.game"), description: "Interactive learning path" },
+        { path: "/worlds", label: t("nav.worlds"), description: t("nav.worldsDesc") },
+        { path: "/game", label: t("nav.game"), description: t("nav.gameDesc") },
       ],
     },
     { label: t("nav.collection"), path: "/collection" },
@@ -85,19 +85,19 @@ export default function Navbar() {
       label: t("nav.store"),
       icon: <ShoppingBag className="w-4 h-4" />,
       children: [
-        { path: "/store", label: "Shop", description: "Browse our catalogue" },
-        { path: "/gifting", label: t("nav.gifting"), description: "Send a scent gift" },
+        { path: "/store", label: t("nav.shop"), description: t("nav.shopDesc") },
+        { path: "/gifting", label: t("nav.gifting"), description: t("nav.giftingDesc") },
       ],
     },
     {
-      label: "Community",
+      label: t("nav.community"),
       icon: <Users className="w-4 h-4" />,
       children: [
-        { path: "/affiliate", label: t("nav.affiliate"), description: "Partner network" },
-        { path: "/team", label: "Team", description: "Meet the makers" },
+        { path: "/affiliate", label: t("nav.affiliate"), description: t("nav.affiliateDesc") },
+        { path: "/team", label: t("nav.team"), description: t("nav.teamDesc") },
       ],
     },
-    ...(user ? [{ label: "My Business", path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
+    ...(user ? [{ label: t("nav.myBusiness"), path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
     ...(isAdmin ? [{ label: t("nav.backOffice"), path: "/admin" }] : []),
   ];
 
