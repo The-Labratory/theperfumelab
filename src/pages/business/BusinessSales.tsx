@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function BusinessSales() {
   const { affiliate } = useOutletContext<{ affiliate: any }>();
+  const { isAdmin } = useAuth();
   const [sales, setSales] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
