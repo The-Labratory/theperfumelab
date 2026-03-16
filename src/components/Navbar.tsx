@@ -345,7 +345,7 @@ export default function Navbar() {
                 autoFocus
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Discover scents, ingredients, formulas…"
+                placeholder={t("nav.searchPlaceholderLong")}
                 className="w-full h-10 px-4 text-sm font-body bg-muted/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
               />
             </div>
