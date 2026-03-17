@@ -17,6 +17,8 @@ import StepIdentity from "@/components/onboarding/StepIdentity";
 import StepQuickWin from "@/components/onboarding/StepQuickWin";
 import StepStarterPack from "@/components/onboarding/StepStarterPack";
 import StepTraining from "@/components/onboarding/StepTraining";
+import StepMathModule from "@/components/onboarding/StepMathModule";
+import StepMathQuiz from "@/components/onboarding/StepMathQuiz";
 import StepPledge from "@/components/onboarding/StepPledge";
 import StepTasks from "@/components/onboarding/StepTasks";
 import StepRoleplay from "@/components/onboarding/StepRoleplay";
@@ -32,9 +34,7 @@ const AffiliateOnboardPage = () => {
 
   useEffect(() => {
     if (progress) {
-      // Resume from saved step
       setStep(progress.current_step);
-      // If already completed, redirect
       if (progress.completed && affiliate) {
         navigate(`/affiliate/${affiliate.slug}/dashboard`, { replace: true });
       }
@@ -63,7 +63,6 @@ const AffiliateOnboardPage = () => {
   }
 
   const progressPct = Math.round((step / ONBOARDING_STEP_COUNT) * 100);
-
   const advance = () => setStep((s) => Math.min(s + 1, ONBOARDING_STEP_COUNT - 1));
 
   const handleSaveAndExit = async () => {
@@ -78,12 +77,10 @@ const AffiliateOnboardPage = () => {
       <ParticleField count={6} />
 
       <div className="relative z-10 pt-20 sm:pt-24 pb-16 px-4 sm:px-6 max-w-2xl mx-auto">
-        {/* Language switcher */}
         <div className="absolute top-4 right-4 z-20">
           <LanguageSwitcher />
         </div>
 
-        {/* Resume banner */}
         {isResuming && step === (progress?.current_step ?? 0) && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -101,7 +98,6 @@ const AffiliateOnboardPage = () => {
           </motion.div>
         )}
 
-        {/* Top bar */}
         {step > 0 && step < ONBOARDING_STEP_COUNT - 1 && (
           <div className="flex items-center justify-between mb-4">
             <Button
@@ -126,12 +122,10 @@ const AffiliateOnboardPage = () => {
           </div>
         )}
 
-        {/* Progress bar */}
         {step > 0 && (
           <Progress value={progressPct} className="h-1.5 mb-8" />
         )}
 
-        {/* Steps */}
         <AnimatePresence mode="wait">
           <div key={step}>
             {step === 0 && (
@@ -187,61 +181,96 @@ const AffiliateOnboardPage = () => {
                     advance();
                   } else {
                     toast.error("Score below 80%. Please retry the training.");
-                    // Reset to retry - stay on step 4
                   }
                 }}
               />
             )}
 
             {step === 5 && (
-              <StepPledge
-                displayName={affiliate.display_name}
-                onSign={async (pledgeText) => {
-                  await emitEvent("pledge_signed", { pledgeText });
-                  await saveStep(5, { pledge_signed: true, pledge_text: pledgeText });
-                  toast.success("Pledge signed! Badge unlocked 🏅");
+              <StepMathModule
+                onComplete={async () => {
+                  await emitEvent("math_module_completed");
+                  await saveStep(5);
                   advance();
                 }}
               />
             )}
 
             {step === 6 && (
-              <StepTasks
-                onComplete={async (tasks) => {
-                  await emitEvent("tasks_assigned", { tasks });
-                  await saveStep(6, { microtasks: tasks.map((t) => ({ task: t, completed: false })) as any });
-                  advance();
+              <StepMathQuiz
+                onComplete={async (score, passed, details, attempts) => {
+                  await emitEvent(passed ? "math_quiz_passed" : "math_quiz_failed", {
+                    score,
+                    total: 7,
+                    details,
+                    attempts,
+                    completed_at: new Date().toISOString(),
+                  });
+                  await saveStep(6, {
+                    quiz_scores: {
+                      ...(progress?.quiz_scores as Record<string, number> || {}),
+                      math_quiz: score / 7,
+                    },
+                  });
+                  if (passed) {
+                    toast.success(t("mathQuiz.passedToast"));
+                    advance();
+                  } else {
+                    toast.error(t("mathQuiz.failedToast"));
+                  }
                 }}
               />
             )}
 
             {step === 7 && (
-              <StepRoleplay
-                onComplete={async (passed) => {
-                  await emitEvent(passed ? "roleplay_passed" : "roleplay_failed");
-                  await saveStep(7, { roleplay_passed: passed });
-                  if (passed) advance();
+              <StepPledge
+                displayName={affiliate.display_name}
+                onSign={async (pledgeText) => {
+                  await emitEvent("pledge_signed", { pledgeText });
+                  await saveStep(7, { pledge_signed: true, pledge_text: pledgeText });
+                  toast.success("Pledge signed! Badge unlocked 🏅");
+                  advance();
                 }}
               />
             )}
 
             {step === 8 && (
-              <StepPayout
-                onSave={async () => {
-                  await emitEvent("payout_details_saved");
-                  await saveStep(8, { payout_details_saved: true, terms_accepted: true, buyback_terms_accepted: true });
-                  toast.success("Payout details saved! ✅");
+              <StepTasks
+                onComplete={async (tasks) => {
+                  await emitEvent("tasks_assigned", { tasks });
+                  await saveStep(8, { microtasks: tasks.map((t) => ({ task: t, completed: false })) as any });
                   advance();
                 }}
               />
             )}
 
             {step === 9 && (
+              <StepRoleplay
+                onComplete={async (passed) => {
+                  await emitEvent(passed ? "roleplay_passed" : "roleplay_failed");
+                  await saveStep(9, { roleplay_passed: passed });
+                  if (passed) advance();
+                }}
+              />
+            )}
+
+            {step === 10 && (
+              <StepPayout
+                onSave={async () => {
+                  await emitEvent("payout_details_saved");
+                  await saveStep(10, { payout_details_saved: true, terms_accepted: true, buyback_terms_accepted: true });
+                  toast.success("Payout details saved! ✅");
+                  advance();
+                }}
+              />
+            )}
+
+            {step === 11 && (
               <StepCelebrate
                 displayName={affiliate.display_name}
                 partnerNumber={Math.floor(Math.random() * 50) + 10}
                 onFinish={async () => {
-                  await saveStep(9);
+                  await saveStep(11);
                   await finishOnboarding();
                   toast.success("Welcome aboard! 🚀");
                 }}

@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const ONBOARDING_STEP_COUNT = 10;
+export const ONBOARDING_STEP_COUNT = 12;
 
 export const ONBOARDING_STEP_LABELS = [
   "Welcome",
@@ -8,6 +8,8 @@ export const ONBOARDING_STEP_LABELS = [
   "48-Hour Quick Win Plan",
   "Starter Pack Claim",
   "Micro-Training",
+  "Commission Math",
+  "Math Quiz",
   "Commitment Pledge",
   "First Tasks & Scheduler",
   "Verification Roleplay",
