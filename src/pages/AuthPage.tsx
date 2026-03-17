@@ -60,14 +60,25 @@ export default function AuthPage() {
     ]);
   };
 
+  const handlePostAuthRedirect = async (userId: string, email?: string) => {
+    await handleReferralAttribution(userId, email);
+    await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
+
+    if (isAffiliateFlow) {
+      // Check affiliate onboarding status
+      const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
+      await redirectAfterAuth(navigate);
+    } else {
+      navigate("/dashboard", { replace: true });
+    }
+  };
+
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session?.user) {
-        await handleReferralAttribution(session.user.id, session.user.email);
-        await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
-        navigate("/dashboard", { replace: true });
+        await handlePostAuthRedirect(session.user.id, session.user.email);
       }
 
       if (event === "SIGNED_OUT") {
@@ -77,13 +88,17 @@ export default function AuthPage() {
 
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
-        await handleReferralAttribution(session.user.id, session.user.email);
-        navigate("/dashboard", { replace: true });
+        if (isAffiliateFlow) {
+          const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
+          await redirectAfterAuth(navigate);
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, isAffiliateFlow]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
