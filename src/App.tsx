@@ -185,12 +185,15 @@ const OnboardingGate = () => {
 
 const AuthStateRedirectHandler = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
+        // Don't redirect away from reset-password during recovery flow
+        if (window.location.pathname === "/reset-password" || location.pathname === "/reset-password") return;
         navigate("/dashboard", { replace: true });
       }
 
@@ -200,7 +203,7 @@ const AuthStateRedirectHandler = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return null;
 };
