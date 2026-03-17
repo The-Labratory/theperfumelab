@@ -125,10 +125,8 @@ export default function AuthPage() {
         if (error) throw error;
 
         if (signupData.session?.user) {
-          await handleReferralAttribution(signupData.session.user.id, signupData.session.user.email);
-          await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
           toast.success(t("auth.signedIn"));
-          navigate("/dashboard", { replace: true });
+          await handlePostAuthRedirect(signupData.session.user.id, signupData.session.user.email);
         } else {
           toast.success(t("auth.checkEmail"));
           navigate(`/auth/confirm?email=${encodeURIComponent(email)}`, { replace: true });
