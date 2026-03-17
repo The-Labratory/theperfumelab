@@ -125,7 +125,7 @@ const Loader = () => (
 );
 
 const isPublicPath = (pathname: string) => {
-  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password";
+  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password" || pathname === "/affiliate-portal";
 };
 
 const AuthRouteGuard = () => {
