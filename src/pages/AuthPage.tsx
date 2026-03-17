@@ -135,12 +135,8 @@ export default function AuthPage() {
         const { data: loginData, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        if (loginData.user) {
-          await handleReferralAttribution(loginData.user.id, loginData.user.email);
-        }
-
         toast.success(t("auth.signedIn"));
-        navigate("/dashboard", { replace: true });
+        await handlePostAuthRedirect(loginData.user.id, loginData.user.email);
       }
     } catch (err: any) {
       const msg = err.message || "";
