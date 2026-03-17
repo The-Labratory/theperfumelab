@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useAffiliateOnboarding } from "@/hooks/useAffiliateOnboarding";
 import { ONBOARDING_STEP_COUNT, ONBOARDING_STEP_LABELS } from "@/lib/affiliateOnboarding";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import StepWelcome from "@/components/onboarding/StepWelcome";
 import StepIdentity from "@/components/onboarding/StepIdentity";
