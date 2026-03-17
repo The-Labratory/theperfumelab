@@ -1,63 +1,30 @@
 
+# Master Perfumer AI & Full Application Audit — COMPLETED
 
-## Problem: Dashboard Blocked by Onboarding Gate
+## Changes Made
 
-**Root cause**: The `OnboardingGate` component (added in the last change) requires `profiles.onboarding_completed = true` to access the dashboard. All 7 existing users have `onboarding_completed = false`, so everyone is redirected to `/onboarding` and can never reach the dashboard.
+### A. `supabase/functions/perfumer-ai/index.ts` (Edge Function)
+- ✅ Added `stripCodeFences()` helper to remove markdown code fences from AI responses before returning
+- ✅ Added `messages` pass-through mode for SEO generator and future use
+- ✅ Updated model from `google/gemini-2.5-flash` to `google/gemini-3-flash-preview`
+- ✅ Centralized error responses with `makeErrorResponse()` helper that includes status in JSON body
+- ✅ Refactored for cleaner code structure
 
-Additionally, the `profiles` table type definition may not include `onboarding_completed`, forcing the code to use `as any` casts which could silently fail on update.
+### B. `src/components/AIPerfumer.tsx`
+- ✅ Added `handleAIError()` helper with specific messages for 401, 429, 402 status codes
+- ✅ Users now see "Please sign in" instead of generic "temporarily unavailable"
 
-## Plan
+### C. `src/pages/GiftingPage.tsx`
+- ✅ Added 401/429/402 error detection before JSON parsing
+- ✅ Early return on auth/rate-limit errors with specific toast messages
 
-### 1. Fix existing users — mark all current profiles as onboarded
-Run a migration to set `onboarding_completed = true` for all existing users so they aren't retroactively blocked:
-```sql
-UPDATE public.profiles SET onboarding_completed = true WHERE onboarding_completed = false;
-```
+### D. `src/components/ScentSeance.tsx`
+- ✅ Added 401/429/402 error detection
+- ✅ Resets phase to "intro" on auth/rate-limit errors
 
-### 2. Fix the OnboardingGate to handle edge cases
-The current gate has two problems:
-- If the Supabase query fails (network error, RLS issue), `checking` stays `true` forever → infinite spinner
-- It returns `null` when `!onboarded`, which shows a blank screen after redirect
+### E. `src/pages/FormulationLabPage.tsx`
+- ✅ Added 401/429/402 error detection with specific messages
 
-**Fix**: Add error handling and a timeout fallback. If the profile query fails, allow access rather than permanently blocking:
-
-```typescript
-const OnboardingGate = () => {
-  // ... existing state ...
-  useEffect(() => {
-    if (loading || !user) return;
-    supabase
-      .from("profiles")
-      .select("onboarding_completed")
-      .eq("user_id", user.id)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (error) {
-          // Don't block on error — let user through
-          setOnboarded(true);
-          setChecking(false);
-          return;
-        }
-        const completed = !!(data as any)?.onboarding_completed;
-        setOnboarded(completed);
-        setChecking(false);
-        if (!completed) {
-          navigate("/onboarding", { replace: true });
-        }
-      });
-  }, [user, loading, navigate]);
-  // ...
-};
-```
-
-### 3. Fix the OnboardingPage completion to use proper typing
-The `update` call in `OnboardingPage.tsx` uses `as any` because the auto-generated types don't include `onboarding_completed` yet. After the migration runs, the types will regenerate. In the meantime, confirm the update actually works by removing the `as any` or ensuring the column name is correct.
-
-### 4. Ensure new users go through onboarding once
-The `handle_new_user` trigger creates profiles with `onboarding_completed = false` (the column default), so new signups will still be gated — this is correct behavior.
-
-## Summary of changes
-- **Database**: `UPDATE profiles SET onboarding_completed = true` for existing users
-- **App.tsx**: Add error handling to `OnboardingGate` so failures don't cause infinite spinners
-- **OnboardingPage.tsx**: Verify the completion update works correctly
-
+### F. `src/pages/SEOPageGeneratorPage.tsx`
+- ✅ Fixed to read `data.content` instead of `data.choices[0].message.content`
+- ✅ Added 401/429/402 error handling
