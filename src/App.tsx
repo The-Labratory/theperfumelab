@@ -361,6 +361,7 @@ const AppContent = () => {
               <Route path="tree" element={<NetworkTreePage />} />
               <Route path="ai" element={<AIConsiglierePage />} />
             </Route>
+           </Route>
           </Route>
         </Route>
 

@@ -98,6 +98,7 @@ export default function Navbar() {
       ],
     },
     ...(user ? [{ label: t("nav.myBusiness"), path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
+    ...(user ? [{ label: "Training", path: "/training" }] : []),
     ...(isAdmin ? [{ label: t("nav.backOffice"), path: "/admin" }] : []),
   ];
 
