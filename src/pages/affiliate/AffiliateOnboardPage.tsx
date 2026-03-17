@@ -68,8 +68,8 @@ const AffiliateOnboardPage = () => {
 
   const handleSaveAndExit = async () => {
     await saveStep(step);
-    toast.success("Progress saved! Come back to finish onboarding.");
-    navigate("/dashboard");
+    toast.success(t("affiliateOnboarding.progressSaved"));
+    navigate("/landing");
   };
 
   return (
