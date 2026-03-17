@@ -185,6 +185,138 @@ export type Database = {
           },
         ]
       }
+      affiliate_onboarding_events: {
+        Row: {
+          affiliate_id: string
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_id: string
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_id?: string
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_onboarding_events_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_onboarding_events_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_onboarding_progress: {
+        Row: {
+          affiliate_id: string
+          buyback_terms_accepted: boolean
+          chosen_partner_level: string | null
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          current_step: number
+          id: string
+          microtasks: Json
+          payout_details_saved: boolean
+          pledge_signed: boolean
+          pledge_text: string | null
+          quiz_passed: boolean
+          quiz_scores: Json
+          roleplay_passed: boolean
+          started_at: string | null
+          starter_pack_claimed: boolean
+          starter_pack_data: Json | null
+          steps_completed: Json
+          terms_accepted: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_id: string
+          buyback_terms_accepted?: boolean
+          chosen_partner_level?: string | null
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          current_step?: number
+          id?: string
+          microtasks?: Json
+          payout_details_saved?: boolean
+          pledge_signed?: boolean
+          pledge_text?: string | null
+          quiz_passed?: boolean
+          quiz_scores?: Json
+          roleplay_passed?: boolean
+          started_at?: string | null
+          starter_pack_claimed?: boolean
+          starter_pack_data?: Json | null
+          steps_completed?: Json
+          terms_accepted?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_id?: string
+          buyback_terms_accepted?: boolean
+          chosen_partner_level?: string | null
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          current_step?: number
+          id?: string
+          microtasks?: Json
+          payout_details_saved?: boolean
+          pledge_signed?: boolean
+          pledge_text?: string | null
+          quiz_passed?: boolean
+          quiz_scores?: Json
+          roleplay_passed?: boolean
+          started_at?: string | null
+          starter_pack_claimed?: boolean
+          starter_pack_data?: Json | null
+          steps_completed?: Json
+          terms_accepted?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_onboarding_progress_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: true
+            referencedRelation: "affiliate_leaderboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_onboarding_progress_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: true
+            referencedRelation: "affiliate_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliate_partners: {
         Row: {
           approved_at: string | null
