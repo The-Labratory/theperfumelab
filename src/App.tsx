@@ -180,6 +180,7 @@ const AppContent = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/auth/confirm" element={<AuthEmailConfirmationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/affiliate-portal" element={<AffiliatePortalPage />} />
 
         <Route element={<AuthRouteGuard />}>
           <Route path="/dashboard" element={<DashboardPage />} />
