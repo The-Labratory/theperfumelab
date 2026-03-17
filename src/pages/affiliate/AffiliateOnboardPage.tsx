@@ -167,6 +167,7 @@ const AffiliateOnboardPage = () => {
 
             {step === 3 && (
               <StepStarterPack
+                affiliateId={affiliate.id}
                 onClaim={async (data) => {
                   await emitEvent("starter_pack_claimed", data);
                   await saveStep(3, { starter_pack_claimed: true, starter_pack_data: data });
