@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import AdminOnboardingMetrics from "@/components/admin/AdminOnboardingMetrics";
 import { motion } from "framer-motion";
 import {
   Users, Search, Filter, Download, Mail, Crown, Award,
