@@ -256,13 +256,15 @@ const AppContent = () => {
         <Route path="/affiliate-portal" element={<AffiliatePortalPage />} />
 
         <Route element={<AuthRouteGuard />}>
-          {/* Accessible without onboarding completion */}
+          {/* Accessible without onboarding/training completion */}
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/training" element={<TrainingPage />} />
           <Route path="/affiliate/onboard" element={<AffiliateOnboardPage />} />
           <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
 
-          {/* All other routes require onboarding completion */}
+          {/* All other routes require onboarding + training completion */}
           <Route element={<OnboardingGate />}>
+           <Route element={<TrainingGate />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/catalog" element={<PerfumeCatalogPage />} />
