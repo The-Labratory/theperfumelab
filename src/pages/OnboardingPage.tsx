@@ -213,31 +213,6 @@ const OnboardingPage = () => {
                 </Button>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button
-                  size="lg"
-                  disabled={completing}
-                  className="glow-primary font-display tracking-wider text-sm"
-                  onClick={async () => {
-                    await markOnboardingComplete();
-                    navigate("/dashboard");
-                  }}
-                >
-                  {completing ? "…" : t("onboarding.enterLab")} <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  disabled={completing}
-                  className="font-display tracking-wider text-sm border-border hover:border-primary/50"
-                  onClick={async () => {
-                    await markOnboardingComplete();
-                    navigate("/worlds");
-                  }}
-                >
-                  {t("onboarding.exploreWorlds")}
-                </Button>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>

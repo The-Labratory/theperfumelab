@@ -21,6 +21,7 @@ import { supabase } from "@/integrations/supabase/client";
 const GatewayPage = lazy(() => import("./pages/GatewayPage"));
 const Index = lazy(() => import("./pages/Index"));
 const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
+const TrainingPage = lazy(() => import("./pages/TrainingPage"));
 const WorldsPage = lazy(() => import("./pages/WorldsPage"));
 const ScentLabPage = lazy(() => import("./pages/ScentLabPage"));
 const StorePage = lazy(() => import("./pages/StorePage"));
@@ -150,7 +151,6 @@ const AuthRouteGuard = () => {
 /** Gates all child routes behind onboarding completion */
 const OnboardingGate = () => {
   const { user, loading } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
   const [onboarded, setOnboarded] = useState(false);
@@ -164,7 +164,6 @@ const OnboardingGate = () => {
       .maybeSingle()
       .then(({ data, error }) => {
         if (error) {
-          // Don't block on error — let user through
           setOnboarded(true);
           setChecking(false);
           return;
@@ -183,14 +182,51 @@ const OnboardingGate = () => {
   return <Outlet />;
 };
 
+/** Gates child routes behind training completion */
+const TrainingGate = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const [checking, setChecking] = useState(true);
+  const [trained, setTrained] = useState(false);
+
+  useEffect(() => {
+    if (loading || !user) return;
+    supabase
+      .from("profiles")
+      .select("training_completed")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error) {
+          setTrained(true);
+          setChecking(false);
+          return;
+        }
+        const completed = !!(data as any)?.training_completed;
+        setTrained(completed);
+        setChecking(false);
+        if (!completed) {
+          navigate("/training", { replace: true });
+        }
+      });
+  }, [user, loading, navigate]);
+
+  if (loading || checking) return <Loader />;
+  if (!trained) return null;
+  return <Outlet />;
+};
+
 const AuthStateRedirectHandler = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
+        // Don't redirect away from reset-password during recovery flow
+        if (window.location.pathname === "/reset-password" || location.pathname === "/reset-password") return;
         navigate("/dashboard", { replace: true });
       }
 
@@ -200,7 +236,7 @@ const AuthStateRedirectHandler = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return null;
 };
@@ -220,13 +256,15 @@ const AppContent = () => {
         <Route path="/affiliate-portal" element={<AffiliatePortalPage />} />
 
         <Route element={<AuthRouteGuard />}>
-          {/* Accessible without onboarding completion */}
+          {/* Accessible without onboarding/training completion */}
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/training" element={<TrainingPage />} />
           <Route path="/affiliate/onboard" element={<AffiliateOnboardPage />} />
           <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
 
-          {/* All other routes require onboarding completion */}
+          {/* All other routes require onboarding + training completion */}
           <Route element={<OnboardingGate />}>
+           <Route element={<TrainingGate />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/catalog" element={<PerfumeCatalogPage />} />
@@ -323,6 +361,7 @@ const AppContent = () => {
               <Route path="tree" element={<NetworkTreePage />} />
               <Route path="ai" element={<AIConsiglierePage />} />
             </Route>
+           </Route>
           </Route>
         </Route>
 
