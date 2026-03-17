@@ -282,14 +282,26 @@ export default function Navbar() {
           <CartDrawer />
 
           {user ? (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleSignOut}
-              className="h-9 w-9 text-muted-foreground hover:text-foreground"
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
+            <div className="flex items-center gap-0.5">
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 text-muted-foreground hover:text-foreground"
+              >
+                <Link to="/profile">
+                  <User className="w-4 h-4" />
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSignOut}
+                className="h-9 w-9 text-muted-foreground hover:text-foreground"
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </div>
           ) : (
             <Button
               asChild
@@ -317,9 +329,14 @@ export default function Navbar() {
           <LanguageSwitcher />
           <CartDrawer />
           {user ? (
-            <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground" onClick={handleSignOut}>
-              <LogOut className="w-4 h-4" />
-            </Button>
+            <>
+              <Button asChild variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground">
+                <Link to="/profile"><User className="w-4 h-4" /></Link>
+              </Button>
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </>
           ) : (
             <Button asChild variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground">
               <Link to="/auth"><User className="w-4 h-4" /></Link>
