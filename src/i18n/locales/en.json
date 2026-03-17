@@ -385,5 +385,24 @@
     "claimCta": "Claim Starter Pack & Earn €20 Credit →",
     "claiming": "Claiming…",
     "starterPackError": "Error claiming starter pack. Please try again."
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your account and settings.",
+    "editProfile": "Edit Profile",
+    "displayName": "Display Name",
+    "bio": "About Me",
+    "bioPlaceholder": "Tell us a bit about yourself…",
+    "save": "Save Profile",
+    "saving": "Saving…",
+    "saved": "Profile saved!",
+    "saveError": "Error saving. Please try again.",
+    "account": "Account",
+    "email": "Email Address",
+    "signOut": "Sign Out",
+    "noName": "No name",
+    "referralCode": "Referral Code",
+    "uploadError": "Upload failed. Please try again.",
+    "avatarUpdated": "Profile picture updated!"
   }
 }

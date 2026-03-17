@@ -2477,6 +2477,7 @@ export type Database = {
           favorite_families: string[] | null
           id: string
           is_public: boolean | null
+          onboarding_completed: boolean
           referral_code: string | null
           scent_personality: string | null
           team_id: string | null
@@ -2494,6 +2495,7 @@ export type Database = {
           favorite_families?: string[] | null
           id?: string
           is_public?: boolean | null
+          onboarding_completed?: boolean
           referral_code?: string | null
           scent_personality?: string | null
           team_id?: string | null
@@ -2511,6 +2513,7 @@ export type Database = {
           favorite_families?: string[] | null
           id?: string
           is_public?: boolean | null
+          onboarding_completed?: boolean
           referral_code?: string | null
           scent_personality?: string | null
           team_id?: string | null
