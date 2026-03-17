@@ -53,6 +53,7 @@ const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPack
 const AffiliateLanding = lazy(() => import("./pages/affiliate/AffiliateLanding"));
 const AffiliateWelcome = lazy(() => import("./pages/affiliate/AffiliateWelcome"));
 const AffiliateDashboardPage = lazy(() => import("./pages/affiliate/AffiliateDashboard"));
+const AffiliateOnboardPage = lazy(() => import("./pages/affiliate/AffiliateOnboardPage"));
 const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
