@@ -151,7 +151,6 @@ const AuthRouteGuard = () => {
 /** Gates all child routes behind onboarding completion */
 const OnboardingGate = () => {
   const { user, loading } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
   const [onboarded, setOnboarded] = useState(false);
@@ -165,7 +164,6 @@ const OnboardingGate = () => {
       .maybeSingle()
       .then(({ data, error }) => {
         if (error) {
-          // Don't block on error — let user through
           setOnboarded(true);
           setChecking(false);
           return;
@@ -181,6 +179,40 @@ const OnboardingGate = () => {
 
   if (loading || checking) return <Loader />;
   if (!onboarded) return null;
+  return <Outlet />;
+};
+
+/** Gates child routes behind training completion */
+const TrainingGate = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const [checking, setChecking] = useState(true);
+  const [trained, setTrained] = useState(false);
+
+  useEffect(() => {
+    if (loading || !user) return;
+    supabase
+      .from("profiles")
+      .select("training_completed")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error) {
+          setTrained(true);
+          setChecking(false);
+          return;
+        }
+        const completed = !!(data as any)?.training_completed;
+        setTrained(completed);
+        setChecking(false);
+        if (!completed) {
+          navigate("/training", { replace: true });
+        }
+      });
+  }, [user, loading, navigate]);
+
+  if (loading || checking) return <Loader />;
+  if (!trained) return null;
   return <Outlet />;
 };
 
