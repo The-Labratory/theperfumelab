@@ -54,6 +54,7 @@ const AffiliateLanding = lazy(() => import("./pages/affiliate/AffiliateLanding")
 const AffiliateWelcome = lazy(() => import("./pages/affiliate/AffiliateWelcome"));
 const AffiliateDashboardPage = lazy(() => import("./pages/affiliate/AffiliateDashboard"));
 const AffiliateOnboardPage = lazy(() => import("./pages/affiliate/AffiliateOnboardPage"));
+const AffiliatePortalPage = lazy(() => import("./pages/affiliate/AffiliatePortalPage"));
 const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
@@ -124,7 +125,7 @@ const Loader = () => (
 );
 
 const isPublicPath = (pathname: string) => {
-  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password";
+  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password" || pathname === "/affiliate-portal";
 };
 
 const AuthRouteGuard = () => {
@@ -179,6 +180,7 @@ const AppContent = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/auth/confirm" element={<AuthEmailConfirmationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/affiliate-portal" element={<AffiliatePortalPage />} />
 
         <Route element={<AuthRouteGuard />}>
           <Route path="/dashboard" element={<DashboardPage />} />

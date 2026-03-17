@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useAffiliateOnboarding } from "@/hooks/useAffiliateOnboarding";
 import { ONBOARDING_STEP_COUNT, ONBOARDING_STEP_LABELS } from "@/lib/affiliateOnboarding";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import StepWelcome from "@/components/onboarding/StepWelcome";
 import StepIdentity from "@/components/onboarding/StepIdentity";
@@ -22,9 +24,11 @@ import StepPayout from "@/components/onboarding/StepPayout";
 import StepCelebrate from "@/components/onboarding/StepCelebrate";
 
 const AffiliateOnboardPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { affiliate, progress, loading, saveStep, emitEvent, finishOnboarding } = useAffiliateOnboarding();
   const [step, setStep] = useState(0);
+  const isResuming = progress ? progress.current_step > 0 && !progress.completed : false;
 
   useEffect(() => {
     if (progress) {
@@ -64,8 +68,8 @@ const AffiliateOnboardPage = () => {
 
   const handleSaveAndExit = async () => {
     await saveStep(step);
-    toast.success("Progress saved! Come back to finish onboarding.");
-    navigate("/dashboard");
+    toast.success(t("affiliateOnboarding.progressSaved"));
+    navigate("/landing");
   };
 
   return (
@@ -74,6 +78,29 @@ const AffiliateOnboardPage = () => {
       <ParticleField count={6} />
 
       <div className="relative z-10 pt-20 sm:pt-24 pb-16 px-4 sm:px-6 max-w-2xl mx-auto">
+        {/* Language switcher */}
+        <div className="absolute top-4 right-4 z-20">
+          <LanguageSwitcher />
+        </div>
+
+        {/* Resume banner */}
+        {isResuming && step === (progress?.current_step ?? 0) && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-surface rounded-xl p-4 border border-accent/30 bg-accent/5 mb-6 text-center"
+          >
+            <p className="font-display text-sm font-bold text-foreground mb-1">
+              {t("affiliateOnboarding.welcomeBack")}
+            </p>
+            <p className="font-body text-xs text-muted-foreground">
+              {t("affiliateOnboarding.resumeHint", {
+                date: progress?.started_at ? new Date(progress.started_at).toLocaleDateString() : "",
+              })}
+            </p>
+          </motion.div>
+        )}
+
         {/* Top bar */}
         {step > 0 && step < ONBOARDING_STEP_COUNT - 1 && (
           <div className="flex items-center justify-between mb-4">
@@ -83,7 +110,7 @@ const AffiliateOnboardPage = () => {
               onClick={() => setStep((s) => Math.max(0, s - 1))}
               className="font-display text-xs tracking-wider"
             >
-              <ArrowLeft className="w-3 h-3 mr-1" /> Back
+              <ArrowLeft className="w-3 h-3 mr-1" /> {t("affiliateOnboarding.back")}
             </Button>
             <span className="font-display text-[10px] tracking-widest text-muted-foreground">
               {ONBOARDING_STEP_LABELS[step]} — {step + 1}/{ONBOARDING_STEP_COUNT}
@@ -94,7 +121,7 @@ const AffiliateOnboardPage = () => {
               onClick={handleSaveAndExit}
               className="font-display text-xs tracking-wider"
             >
-              <Save className="w-3 h-3 mr-1" /> Save & Exit
+              <Save className="w-3 h-3 mr-1" /> {t("affiliateOnboarding.saveExit")}
             </Button>
           </div>
         )}
@@ -140,6 +167,7 @@ const AffiliateOnboardPage = () => {
 
             {step === 3 && (
               <StepStarterPack
+                affiliateId={affiliate.id}
                 onClaim={async (data) => {
                   await emitEvent("starter_pack_claimed", data);
                   await saveStep(3, { starter_pack_claimed: true, starter_pack_data: data });

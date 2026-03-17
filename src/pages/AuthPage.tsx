@@ -27,10 +27,14 @@ export default function AuthPage() {
   const processedReferralFor = useRef<string | null>(null);
 
   const referralCode = searchParams.get("ref") || "";
+  const isAffiliateFlow = searchParams.get("affiliate") === "true";
+  const modeParam = searchParams.get("mode");
 
   useEffect(() => {
     if (referralCode) setMode("signup");
-  }, [referralCode]);
+    else if (modeParam === "signup") setMode("signup");
+    else if (modeParam === "login") setMode("login");
+  }, [referralCode, modeParam]);
 
   const getRedirectOrigin = () => {
     if (window.location.hostname === "theperfumelab.de" || window.location.hostname === "www.theperfumelab.de") {
@@ -56,14 +60,25 @@ export default function AuthPage() {
     ]);
   };
 
+  const handlePostAuthRedirect = async (userId: string, email?: string) => {
+    await handleReferralAttribution(userId, email);
+    await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
+
+    if (isAffiliateFlow) {
+      // Check affiliate onboarding status
+      const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
+      await redirectAfterAuth(navigate);
+    } else {
+      navigate("/dashboard", { replace: true });
+    }
+  };
+
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session?.user) {
-        await handleReferralAttribution(session.user.id, session.user.email);
-        await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
-        navigate("/dashboard", { replace: true });
+        await handlePostAuthRedirect(session.user.id, session.user.email);
       }
 
       if (event === "SIGNED_OUT") {
@@ -73,13 +88,17 @@ export default function AuthPage() {
 
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
-        await handleReferralAttribution(session.user.id, session.user.email);
-        navigate("/dashboard", { replace: true });
+        if (isAffiliateFlow) {
+          const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
+          await redirectAfterAuth(navigate);
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, isAffiliateFlow]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,10 +125,8 @@ export default function AuthPage() {
         if (error) throw error;
 
         if (signupData.session?.user) {
-          await handleReferralAttribution(signupData.session.user.id, signupData.session.user.email);
-          await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
           toast.success(t("auth.signedIn"));
-          navigate("/dashboard", { replace: true });
+          await handlePostAuthRedirect(signupData.session.user.id, signupData.session.user.email);
         } else {
           toast.success(t("auth.checkEmail"));
           navigate(`/auth/confirm?email=${encodeURIComponent(email)}`, { replace: true });
@@ -118,12 +135,8 @@ export default function AuthPage() {
         const { data: loginData, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        if (loginData.user) {
-          await handleReferralAttribution(loginData.user.id, loginData.user.email);
-        }
-
         toast.success(t("auth.signedIn"));
-        navigate("/dashboard", { replace: true });
+        await handlePostAuthRedirect(loginData.user.id, loginData.user.email);
       }
     } catch (err: any) {
       const msg = err.message || "";
