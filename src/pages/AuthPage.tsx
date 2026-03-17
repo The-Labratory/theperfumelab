@@ -27,10 +27,14 @@ export default function AuthPage() {
   const processedReferralFor = useRef<string | null>(null);
 
   const referralCode = searchParams.get("ref") || "";
+  const isAffiliateFlow = searchParams.get("affiliate") === "true";
+  const modeParam = searchParams.get("mode");
 
   useEffect(() => {
     if (referralCode) setMode("signup");
-  }, [referralCode]);
+    else if (modeParam === "signup") setMode("signup");
+    else if (modeParam === "login") setMode("login");
+  }, [referralCode, modeParam]);
 
   const getRedirectOrigin = () => {
     if (window.location.hostname === "theperfumelab.de" || window.location.hostname === "www.theperfumelab.de") {
