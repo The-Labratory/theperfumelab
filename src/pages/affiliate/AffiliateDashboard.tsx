@@ -26,6 +26,11 @@ const AffiliateDashboard = () => {
     const load = async () => {
       const data = await getMyAffiliate();
       if (!data || data.slug !== slug) { navigate("/auth"); return; }
+      // Gate: redirect to onboarding if not completed
+      if (!data.onboarding_completed) {
+        navigate("/affiliate/onboard", { replace: true });
+        return;
+      }
       setAffiliate(data);
       const camps = await getCampaigns(data.id);
       setCampaigns(camps);
