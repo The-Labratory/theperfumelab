@@ -2482,6 +2482,7 @@ export type Database = {
           scent_personality: string | null
           team_id: string | null
           total_likes_received: number | null
+          training_completed: boolean
           updated_at: string
           user_id: string
         }
@@ -2500,6 +2501,7 @@ export type Database = {
           scent_personality?: string | null
           team_id?: string | null
           total_likes_received?: number | null
+          training_completed?: boolean
           updated_at?: string
           user_id: string
         }
@@ -2518,6 +2520,7 @@ export type Database = {
           scent_personality?: string | null
           team_id?: string | null
           total_likes_received?: number | null
+          training_completed?: boolean
           updated_at?: string
           user_id?: string
         }
