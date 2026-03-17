@@ -162,7 +162,13 @@ const OnboardingGate = () => {
       .select("onboarding_completed")
       .eq("user_id", user.id)
       .maybeSingle()
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) {
+          // Don't block on error — let user through
+          setOnboarded(true);
+          setChecking(false);
+          return;
+        }
         const completed = !!(data as any)?.onboarding_completed;
         setOnboarded(completed);
         setChecking(false);
