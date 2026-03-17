@@ -168,6 +168,9 @@ export default function AffiliateAdminPage() {
         ))}
       </div>
 
+      {/* Onboarding Metrics */}
+      <AdminOnboardingMetrics />
+
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
