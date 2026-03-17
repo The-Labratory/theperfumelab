@@ -24,9 +24,11 @@ import StepPayout from "@/components/onboarding/StepPayout";
 import StepCelebrate from "@/components/onboarding/StepCelebrate";
 
 const AffiliateOnboardPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { affiliate, progress, loading, saveStep, emitEvent, finishOnboarding } = useAffiliateOnboarding();
   const [step, setStep] = useState(0);
+  const isResuming = progress ? progress.current_step > 0 && !progress.completed : false;
 
   useEffect(() => {
     if (progress) {
