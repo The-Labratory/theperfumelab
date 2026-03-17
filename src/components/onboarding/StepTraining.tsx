@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { BookOpen, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const StepTraining = ({ onComplete }: Props) => {
+  const { t } = useTranslation();
   const [moduleIdx, setModuleIdx] = useState(0);
   const [questionIdx, setQuestionIdx] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
@@ -20,8 +22,6 @@ const StepTraining = ({ onComplete }: Props) => {
 
   const currentModule = TRAINING_MODULES[moduleIdx];
   const currentQuestion = currentModule?.questions[questionIdx];
-  const totalQuestions = TRAINING_MODULES.reduce((sum, m) => sum + m.questions.length, 0);
-  const answeredSoFar = Object.values(scores).reduce((sum, s) => sum + 1, 0);
 
   const handleAnswer = (idx: number) => {
     if (showResult) return;
@@ -40,7 +40,6 @@ const StepTraining = ({ onComplete }: Props) => {
     if (questionIdx < currentModule.questions.length - 1) {
       setQuestionIdx((q) => q + 1);
     } else {
-      // Module complete
       const score = moduleCorrect / currentModule.questions.length;
       const newScores = { ...scores, [currentModule.id]: score };
       setScores(newScores);
@@ -51,7 +50,6 @@ const StepTraining = ({ onComplete }: Props) => {
         setModuleIdx((m) => m + 1);
         setQuestionIdx(0);
       } else {
-        // All modules done
         const totalCorrect = Object.values(newScores).reduce((sum, s) => sum + s, 0);
         const avgScore = totalCorrect / TRAINING_MODULES.length;
         onComplete(newScores, avgScore >= QUIZ_PASS_THRESHOLD);
@@ -71,10 +69,10 @@ const StepTraining = ({ onComplete }: Props) => {
       <div className="text-center">
         <BookOpen className="w-8 h-8 text-accent mx-auto mb-3" />
         <h2 className="font-display text-xl font-black tracking-wider text-foreground mb-1">
-          Micro-Training
+          {t("training.pageTitle")}
         </h2>
         <p className="font-body text-xs text-muted-foreground">
-          Module {moduleIdx + 1}/{TRAINING_MODULES.length}: {currentModule.title}
+          {t("training.module", { current: moduleIdx + 1, total: TRAINING_MODULES.length, title: currentModule.title })}
         </p>
       </div>
 
@@ -120,10 +118,10 @@ const StepTraining = ({ onComplete }: Props) => {
         {showResult && (
           <Button onClick={handleNext} className="w-full mt-4 bg-accent text-accent-foreground font-display tracking-wider text-sm">
             {questionIdx < currentModule.questions.length - 1
-              ? "Next Question →"
+              ? t("training.nextQuestion")
               : moduleIdx < TRAINING_MODULES.length - 1
-              ? "Next Module →"
-              : "See Results →"}
+              ? t("training.nextModule")
+              : t("training.seeResults")}
           </Button>
         )}
       </div>
