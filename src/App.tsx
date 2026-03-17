@@ -21,6 +21,7 @@ import { supabase } from "@/integrations/supabase/client";
 const GatewayPage = lazy(() => import("./pages/GatewayPage"));
 const Index = lazy(() => import("./pages/Index"));
 const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
+const TrainingPage = lazy(() => import("./pages/TrainingPage"));
 const WorldsPage = lazy(() => import("./pages/WorldsPage"));
 const ScentLabPage = lazy(() => import("./pages/ScentLabPage"));
 const StorePage = lazy(() => import("./pages/StorePage"));
