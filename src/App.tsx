@@ -53,6 +53,7 @@ const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPack
 const AffiliateLanding = lazy(() => import("./pages/affiliate/AffiliateLanding"));
 const AffiliateWelcome = lazy(() => import("./pages/affiliate/AffiliateWelcome"));
 const AffiliateDashboardPage = lazy(() => import("./pages/affiliate/AffiliateDashboard"));
+const AffiliateOnboardPage = lazy(() => import("./pages/affiliate/AffiliateOnboardPage"));
 const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
@@ -214,6 +215,7 @@ const AppContent = () => {
           <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
           <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
           <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
+          <Route path="/affiliate/onboard" element={<AffiliateOnboardPage />} />
           <Route path="/r/:slug" element={<AffiliateLanding />} />
           <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
           <Route path="/creator-portal" element={<CreatorPortalPage />} />
