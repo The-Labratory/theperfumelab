@@ -24,9 +24,10 @@ export interface AffiliateProfile {
 }
 
 export async function getAffiliateBySlug(slug: string): Promise<AffiliateProfile | null> {
+  // Use the safe public view that excludes PII (email, phone, payout_details)
   const { data, error } = await supabase
-    .from("affiliate_partners")
-    .select("*")
+    .from("affiliate_partners_public" as any)
+    .select("id, display_name, bio, slug, tier, avatar_url, landing_headline, landing_tagline, company_name, social_links, badges, status")
     .eq("slug", slug)
     .maybeSingle();
   if (error || !data) return null;
