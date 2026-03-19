@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bell, Coins, Heart, ShoppingBag, Sparkles, Users, ChevronRight, Gift } from "lucide-react";
+import { Bell, Coins, Heart, ShoppingBag, Sparkles, Users, ChevronRight, Gift, FlaskConical } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,7 @@ interface DashboardState {
   favoritesCount: number;
   ordersCount: number;
   referralsCount: number;
+  blendsCount: number;
   unreadNotifications: number;
   latestNotifications: Array<{ id: string; title: string; message: string; created_at: string }>;
 }
@@ -28,6 +29,7 @@ const initialState: DashboardState = {
   favoritesCount: 0,
   ordersCount: 0,
   referralsCount: 0,
+  blendsCount: 0,
   unreadNotifications: 0,
   latestNotifications: [],
 };
@@ -47,7 +49,7 @@ export default function DashboardPage() {
       if (!session?.user) return;
 
       const userId = session.user.id;
-      const [profileRes, creditsRes, favoritesRes, ordersRes, referralsRes, notificationsRes] = await Promise.all([
+      const [profileRes, creditsRes, favoritesRes, ordersRes, referralsRes, notificationsRes, blendsRes] = await Promise.all([
         supabase.from("profiles").select("display_name, referral_code").eq("user_id", userId).maybeSingle(),
         supabase.from("growth_credits").select("amount").eq("user_id", userId),
         supabase.from("favorites").select("id", { count: "exact", head: true }).eq("user_id", userId),
@@ -59,6 +61,7 @@ export default function DashboardPage() {
           .eq("user_id", userId)
           .order("created_at", { ascending: false })
           .limit(8),
+        supabase.from("saved_blends").select("id", { count: "exact", head: true }).eq("user_id", userId),
       ]);
 
       const creditBalance = (creditsRes.data ?? []).reduce((sum, item) => sum + Number(item.amount ?? 0), 0);
@@ -75,6 +78,7 @@ export default function DashboardPage() {
         favoritesCount: favoritesRes.count ?? 0,
         ordersCount: ordersRes.count ?? 0,
         referralsCount: referralsRes.count ?? 0,
+        blendsCount: blendsRes.count ?? 0,
         unreadNotifications: unreadCount,
         latestNotifications: (notificationsRes.data ?? []).map((n) => ({
           id: n.id,
@@ -151,7 +155,13 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground">My Creations</p>
+              <p className="font-display text-2xl font-bold text-foreground">{state.blendsCount}</p>
+            </CardContent>
+          </Card>
           <Card>
             <CardContent className="p-4">
               <p className="text-xs text-muted-foreground">{t("dashboard.favorites")}</p>
@@ -178,7 +188,8 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/my-collection"><FlaskConical className="w-4 h-4" /> My Collection</Link></Button>
           <Button asChild variant="outline" className="justify-start gap-2"><Link to="/catalog"><ShoppingBag className="w-4 h-4" /> {t("dashboard.browsePerfumes")}</Link></Button>
           <Button asChild variant="outline" className="justify-start gap-2"><Link to="/favorites"><Heart className="w-4 h-4" /> {t("dashboard.myFavorites")}</Link></Button>
           <Button asChild variant="outline" className="justify-start gap-2"><Link to="/orders"><Gift className="w-4 h-4" /> {t("dashboard.myOrders")}</Link></Button>

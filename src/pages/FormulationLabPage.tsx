@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Beaker, AlertTriangle, CheckCircle, XCircle, FlaskConical, Sparkles, TrendingUp, ShieldCheck, Clock, ChevronDown, Search, Plus, Minus, Info } from "lucide-react";
+import { Beaker, AlertTriangle, CheckCircle, XCircle, FlaskConical, Sparkles, TrendingUp, ShieldCheck, Clock, ChevronDown, Search, Plus, Minus, Info, Save } from "lucide-react";
 import { molecularIngredients, type MolecularIngredient } from "@/data/molecularData";
 import { calculateCompatibility, generateStabilityReport, type FormulaIngredient, type StabilityReport, type EvaporationPoint } from "@/lib/formulationEngine";
 import { supabase } from "@/integrations/supabase/client";
@@ -61,6 +61,54 @@ const FormulationLabPage = () => {
     const r = generateStabilityReport(selectedIngredients, concType);
     setReport(r);
     toast.success("Analysis complete");
+  };
+
+  const [saving, setSaving] = useState(false);
+
+  const saveFormula = async () => {
+    if (selectedIngredients.length < 2) {
+      toast.error("Add at least 2 ingredients to save");
+      return;
+    }
+    setSaving(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to save your creation");
+        setSaving(false);
+        return;
+      }
+
+      const scentNotes = selectedIngredients.map((si) => ({
+        name: si.ingredient.name,
+        layer: si.ingredient.defaultLayer,
+        concentration: si.concentrationPct,
+        functionalGroup: si.ingredient.functionalGroup,
+        casNumber: si.ingredient.casNumber,
+      }));
+
+      const totalConc = selectedIngredients.reduce((sum, si) => sum + si.concentrationPct, 0);
+
+      const { error } = await supabase.from("saved_blends").insert({
+        user_id: user.id,
+        name: formulaName || "Untitled Formula",
+        scent_notes: scentNotes,
+        concentration: concType,
+        volume: 50,
+        harmony_score: report?.harmonyScore ?? null,
+        total_price: null,
+        story_text: aiEvolution || null,
+        is_public: false,
+      });
+
+      if (error) throw error;
+      toast.success("Formula saved to your collection!");
+    } catch (err: any) {
+      console.error(err);
+      toast.error("Failed to save formula");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const requestAiEvolution = async () => {
@@ -223,6 +271,9 @@ const FormulationLabPage = () => {
               <div className="mt-4 flex gap-2">
                 <Button onClick={runAnalysis} disabled={selectedIngredients.length < 2} className="flex-1 gap-2">
                   <Beaker className="w-4 h-4" /> Analyze Formula
+                </Button>
+                <Button variant="secondary" onClick={saveFormula} disabled={saving || selectedIngredients.length < 2} className="gap-2">
+                  <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save"}
                 </Button>
                 {report && (
                   <Button variant="outline" onClick={requestAiEvolution} disabled={aiLoading} className="gap-2">
