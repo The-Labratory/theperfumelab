@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Beaker, AlertTriangle, CheckCircle, XCircle, FlaskConical, Sparkles, TrendingUp, ShieldCheck, Clock, ChevronDown, Search, Plus, Minus, Info } from "lucide-react";
+import { Beaker, AlertTriangle, CheckCircle, XCircle, FlaskConical, Sparkles, TrendingUp, ShieldCheck, Clock, ChevronDown, Search, Plus, Minus, Info, Save } from "lucide-react";
 import { molecularIngredients, type MolecularIngredient } from "@/data/molecularData";
 import { calculateCompatibility, generateStabilityReport, type FormulaIngredient, type StabilityReport, type EvaporationPoint } from "@/lib/formulationEngine";
 import { supabase } from "@/integrations/supabase/client";
