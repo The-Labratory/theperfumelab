@@ -3684,6 +3684,10 @@ export type Database = {
         Args: { _affiliate_id: string; _points: number }
         Returns: undefined
       }
+      is_direct_pyramid_owner: {
+        Args: { _node_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       lock_formula_version: { Args: { _formula_id: string }; Returns: Json }
       log_security_event: {
