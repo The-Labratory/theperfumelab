@@ -155,7 +155,13 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground">My Creations</p>
+              <p className="font-display text-2xl font-bold text-foreground">{state.blendsCount}</p>
+            </CardContent>
+          </Card>
           <Card>
             <CardContent className="p-4">
               <p className="text-xs text-muted-foreground">{t("dashboard.favorites")}</p>
