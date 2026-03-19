@@ -29,6 +29,7 @@ const initialState: DashboardState = {
   favoritesCount: 0,
   ordersCount: 0,
   referralsCount: 0,
+  blendsCount: 0,
   unreadNotifications: 0,
   latestNotifications: [],
 };
