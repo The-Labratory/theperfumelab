@@ -272,6 +272,7 @@ const AppContent = () => {
             <Route path="/scent-quiz" element={<ScentQuizPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/orders" element={<OrderHistoryPage />} />
+            <Route path="/my-collection" element={<MyCreationsPage />} />
             <Route path="/gateway" element={<GatewayPage />} />
             <Route path="/home" element={<Index />} />
             <Route path="/worlds" element={<WorldsPage />} />
