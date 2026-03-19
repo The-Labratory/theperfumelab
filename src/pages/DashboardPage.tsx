@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bell, Coins, Heart, ShoppingBag, Sparkles, Users, ChevronRight, Gift } from "lucide-react";
+import { Bell, Coins, Heart, ShoppingBag, Sparkles, Users, ChevronRight, Gift, FlaskConical } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ParticleField from "@/components/ParticleField";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
