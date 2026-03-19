@@ -17,6 +17,7 @@ interface DashboardState {
   favoritesCount: number;
   ordersCount: number;
   referralsCount: number;
+  blendsCount: number;
   unreadNotifications: number;
   latestNotifications: Array<{ id: string; title: string; message: string; created_at: string }>;
 }
