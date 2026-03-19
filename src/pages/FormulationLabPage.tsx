@@ -272,6 +272,9 @@ const FormulationLabPage = () => {
                 <Button onClick={runAnalysis} disabled={selectedIngredients.length < 2} className="flex-1 gap-2">
                   <Beaker className="w-4 h-4" /> Analyze Formula
                 </Button>
+                <Button variant="secondary" onClick={saveFormula} disabled={saving || selectedIngredients.length < 2} className="gap-2">
+                  <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save"}
+                </Button>
                 {report && (
                   <Button variant="outline" onClick={requestAiEvolution} disabled={aiLoading} className="gap-2">
                     <Sparkles className="w-4 h-4" /> {aiLoading ? "Predicting..." : "AI Predict"}
