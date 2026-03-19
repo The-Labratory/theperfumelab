@@ -46,6 +46,7 @@ const PerfumeCatalogPage = lazy(() => import("./pages/PerfumeCatalogPage"));
 const ScentQuizPage = lazy(() => import("./pages/ScentQuizPage"));
 const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
 const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
+const MyCreationsPage = lazy(() => import("./pages/MyCreationsPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
 const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
 const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
