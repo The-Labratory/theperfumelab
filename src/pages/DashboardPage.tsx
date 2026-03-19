@@ -49,7 +49,7 @@ export default function DashboardPage() {
       if (!session?.user) return;
 
       const userId = session.user.id;
-      const [profileRes, creditsRes, favoritesRes, ordersRes, referralsRes, notificationsRes] = await Promise.all([
+      const [profileRes, creditsRes, favoritesRes, ordersRes, referralsRes, notificationsRes, blendsRes] = await Promise.all([
         supabase.from("profiles").select("display_name, referral_code").eq("user_id", userId).maybeSingle(),
         supabase.from("growth_credits").select("amount").eq("user_id", userId),
         supabase.from("favorites").select("id", { count: "exact", head: true }).eq("user_id", userId),
@@ -61,6 +61,7 @@ export default function DashboardPage() {
           .eq("user_id", userId)
           .order("created_at", { ascending: false })
           .limit(8),
+        supabase.from("saved_blends").select("id", { count: "exact", head: true }).eq("user_id", userId),
       ]);
 
       const creditBalance = (creditsRes.data ?? []).reduce((sum, item) => sum + Number(item.amount ?? 0), 0);
@@ -77,6 +78,7 @@ export default function DashboardPage() {
         favoritesCount: favoritesRes.count ?? 0,
         ordersCount: ordersRes.count ?? 0,
         referralsCount: referralsRes.count ?? 0,
+        blendsCount: blendsRes.count ?? 0,
         unreadNotifications: unreadCount,
         latestNotifications: (notificationsRes.data ?? []).map((n) => ({
           id: n.id,
