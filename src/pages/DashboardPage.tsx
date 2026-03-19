@@ -178,7 +178,8 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <Button asChild variant="outline" className="justify-start gap-2"><Link to="/my-collection"><FlaskConical className="w-4 h-4" /> My Collection</Link></Button>
           <Button asChild variant="outline" className="justify-start gap-2"><Link to="/catalog"><ShoppingBag className="w-4 h-4" /> {t("dashboard.browsePerfumes")}</Link></Button>
           <Button asChild variant="outline" className="justify-start gap-2"><Link to="/favorites"><Heart className="w-4 h-4" /> {t("dashboard.myFavorites")}</Link></Button>
           <Button asChild variant="outline" className="justify-start gap-2"><Link to="/orders"><Gift className="w-4 h-4" /> {t("dashboard.myOrders")}</Link></Button>
