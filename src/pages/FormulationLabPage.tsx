@@ -63,6 +63,54 @@ const FormulationLabPage = () => {
     toast.success("Analysis complete");
   };
 
+  const [saving, setSaving] = useState(false);
+
+  const saveFormula = async () => {
+    if (selectedIngredients.length < 2) {
+      toast.error("Add at least 2 ingredients to save");
+      return;
+    }
+    setSaving(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to save your creation");
+        setSaving(false);
+        return;
+      }
+
+      const scentNotes = selectedIngredients.map((si) => ({
+        name: si.ingredient.name,
+        layer: si.ingredient.defaultLayer,
+        concentration: si.concentrationPct,
+        functionalGroup: si.ingredient.functionalGroup,
+        casNumber: si.ingredient.casNumber,
+      }));
+
+      const totalConc = selectedIngredients.reduce((sum, si) => sum + si.concentrationPct, 0);
+
+      const { error } = await supabase.from("saved_blends").insert({
+        user_id: user.id,
+        name: formulaName || "Untitled Formula",
+        scent_notes: scentNotes,
+        concentration: concType,
+        volume: 50,
+        harmony_score: report?.harmonyScore ?? null,
+        total_price: null,
+        story_text: aiEvolution || null,
+        is_public: false,
+      });
+
+      if (error) throw error;
+      toast.success("Formula saved to your collection!");
+    } catch (err: any) {
+      console.error(err);
+      toast.error("Failed to save formula");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const requestAiEvolution = async () => {
     if (!report || selectedIngredients.length < 2) return;
     setAiLoading(true);
