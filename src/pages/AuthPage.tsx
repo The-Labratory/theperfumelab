@@ -208,7 +208,6 @@ export default function AuthPage() {
               <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} className="mt-1" />
               {mode === "signup" && <PasswordRequirements password={password} />}
             </div>
-            </div>
           )}
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">
             {loading ? "…" : mode === "login" ? t("auth.signIn") : mode === "signup" ? t("auth.signUp") : t("auth.sendResetLink")}
