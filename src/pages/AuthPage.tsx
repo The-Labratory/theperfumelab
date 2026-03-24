@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -238,11 +239,8 @@ export default function AuthPage() {
               variant="outline"
               className="w-full gap-2 font-display tracking-wider text-xs"
               onClick={async () => {
-                const { error } = await supabase.auth.signInWithOAuth({
-                  provider: "google",
-                  options: {
-                    redirectTo: `${getRedirectOrigin()}${redirectTo}`,
-                  },
+                const { error } = await lovable.auth.signInWithOAuth("google", {
+                  redirect_uri: `${getRedirectOrigin()}${redirectTo}`,
                 });
                 if (error) toast.error(error.message);
               }}
