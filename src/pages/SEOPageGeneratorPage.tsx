@@ -60,7 +60,7 @@ const SEOPageGeneratorPage = () => {
           messages: [
             {
               role: "system",
-              content: `You are an SEO content writer for a luxury perfume brand called "The Perfume Lab" (theperfumelab.de). Generate a JSON object with these fields:
+              content: `You are an SEO content writer for a luxury perfume brand called "The Perfume Lab" (theperfumelab.shop). Generate a JSON object with these fields:
               - title: SEO-optimized page title (60 chars max)
               - slug: URL-friendly slug
               - metaDescription: SEO meta description (155 chars max)
