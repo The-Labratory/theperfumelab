@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { validatePassword } from "@/lib/passwordValidation";
 
-const PRODUCTION_DOMAIN = "https://theperfumelab.de";
+const PRODUCTION_DOMAIN = "https://theperfumelab.shop";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();

@@ -13,7 +13,7 @@ import ParticleField from "@/components/ParticleField";
 import lhLogo from "@/assets/lhariri-logo.png";
 import { validatePassword } from "@/lib/passwordValidation";
 
-const PRODUCTION_ORIGIN = "https://theperfumelab.de";
+const PRODUCTION_ORIGIN = "https://theperfumelab.shop";
 
 const PasswordRequirements = ({ password }: { password: string }) => {
   const checks = [
@@ -58,7 +58,7 @@ export default function AuthPage() {
   }, [referralCode, modeParam]);
 
   const getRedirectOrigin = () => {
-    if (window.location.hostname === "theperfumelab.de" || window.location.hostname === "www.theperfumelab.de") {
+    if (window.location.hostname === "theperfumelab.shop" || window.location.hostname === "www.theperfumelab.shop") {
       return PRODUCTION_ORIGIN;
     }
     return window.location.origin;
