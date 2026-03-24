@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
           </div>
           <div>
             <Label htmlFor="confirm-password" className="text-muted-foreground text-xs">Confirm Password</Label>
-            <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required minLength={6} className="mt-1" />
+            <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required minLength={8} className="mt-1" />
           </div>
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">
             {loading ? "Updating…" : "Update Password"}
