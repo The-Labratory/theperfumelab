@@ -137,6 +137,11 @@ export default function AuthPage() {
         toast.success(t("auth.resetEmailSent"));
         setMode("login");
       } else if (mode === "signup") {
+        const pwCheck = validatePassword(password);
+        if (!pwCheck.valid) {
+          toast.error(pwCheck.errors[0]);
+          return;
+        }
         const { data: signupData, error } = await supabase.auth.signUp({
           email,
           password,
