@@ -58,7 +58,7 @@ export default function AuthPage() {
   }, [referralCode, modeParam]);
 
   const getRedirectOrigin = () => {
-    if (window.location.hostname === "theperfumelab.de" || window.location.hostname === "www.theperfumelab.de") {
+    if (window.location.hostname === "theperfumelab.shop" || window.location.hostname === "www.theperfumelab.shop") {
       return PRODUCTION_ORIGIN;
     }
     return window.location.origin;
