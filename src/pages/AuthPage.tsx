@@ -238,8 +238,11 @@ export default function AuthPage() {
               variant="outline"
               className="w-full gap-2 font-display tracking-wider text-xs"
               onClick={async () => {
-                const { error } = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: `${getRedirectOrigin()}${redirectTo}`,
+                const { error } = await supabase.auth.signInWithOAuth({
+                  provider: "google",
+                  options: {
+                    redirectTo: `${getRedirectOrigin()}${redirectTo}`,
+                  },
                 });
                 if (error) toast.error(error.message);
               }}
