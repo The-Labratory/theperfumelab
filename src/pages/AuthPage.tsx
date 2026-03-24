@@ -87,11 +87,10 @@ export default function AuthPage() {
     await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
 
     if (isAffiliateFlow) {
-      // Check affiliate onboarding status
       const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
       await redirectAfterAuth(navigate);
     } else {
-      navigate("/dashboard", { replace: true });
+      navigate(redirectTo, { replace: true });
     }
   };
 
