@@ -15,6 +15,26 @@ import { validatePassword } from "@/lib/passwordValidation";
 
 const PRODUCTION_ORIGIN = "https://theperfumelab.de";
 
+const PasswordRequirements = ({ password }: { password: string }) => {
+  const checks = [
+    { label: "8+ Zeichen / characters", ok: password.length >= 8 },
+    { label: "Großbuchstabe / Uppercase", ok: /[A-Z]/.test(password) },
+    { label: "Kleinbuchstabe / Lowercase", ok: /[a-z]/.test(password) },
+    { label: "Zahl / Number", ok: /[0-9]/.test(password) },
+    { label: "Sonderzeichen / Special", ok: /[^A-Za-z0-9]/.test(password) },
+  ];
+  if (!password) return null;
+  return (
+    <div className="mt-1 space-y-0.5">
+      {checks.map((c) => (
+        <p key={c.label} className={`text-[10px] ${c.ok ? "text-green-500" : "text-muted-foreground"}`}>
+          {c.ok ? "✓" : "○"} {c.label}
+        </p>
+      ))}
+    </div>
+  );
+};
+
 export default function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
