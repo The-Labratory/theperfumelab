@@ -13,7 +13,7 @@ import ParticleField from "@/components/ParticleField";
 import lhLogo from "@/assets/lhariri-logo.png";
 import { validatePassword } from "@/lib/passwordValidation";
 
-const PRODUCTION_ORIGIN = "https://theperfumelab.de";
+const PRODUCTION_ORIGIN = "https://theperfumelab.shop";
 
 const PasswordRequirements = ({ password }: { password: string }) => {
   const checks = [
