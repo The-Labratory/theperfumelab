@@ -113,7 +113,7 @@ export default function AuthPage() {
           const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
           await redirectAfterAuth(navigate);
         } else {
-          navigate("/dashboard", { replace: true });
+          navigate(redirectTo, { replace: true });
         }
       }
     });
