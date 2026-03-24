@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import ParticleField from "@/components/ParticleField";
 import lhLogo from "@/assets/lhariri-logo.png";
+import { validatePassword } from "@/lib/passwordValidation";
 
 const PRODUCTION_ORIGIN = "https://theperfumelab.de";
 
