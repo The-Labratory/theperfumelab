@@ -50,6 +50,7 @@ export default function AuthPage() {
   const referralCode = searchParams.get("ref") || "";
   const isAffiliateFlow = searchParams.get("affiliate") === "true";
   const modeParam = searchParams.get("mode");
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
 
   useEffect(() => {
     if (referralCode) setMode("signup");
