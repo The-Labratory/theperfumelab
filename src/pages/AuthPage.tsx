@@ -11,8 +11,29 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import ParticleField from "@/components/ParticleField";
 import lhLogo from "@/assets/lhariri-logo.png";
+import { validatePassword } from "@/lib/passwordValidation";
 
 const PRODUCTION_ORIGIN = "https://theperfumelab.de";
+
+const PasswordRequirements = ({ password }: { password: string }) => {
+  const checks = [
+    { label: "8+ Zeichen / characters", ok: password.length >= 8 },
+    { label: "Großbuchstabe / Uppercase", ok: /[A-Z]/.test(password) },
+    { label: "Kleinbuchstabe / Lowercase", ok: /[a-z]/.test(password) },
+    { label: "Zahl / Number", ok: /[0-9]/.test(password) },
+    { label: "Sonderzeichen / Special", ok: /[^A-Za-z0-9]/.test(password) },
+  ];
+  if (!password) return null;
+  return (
+    <div className="mt-1 space-y-0.5">
+      {checks.map((c) => (
+        <p key={c.label} className={`text-[10px] ${c.ok ? "text-green-500" : "text-muted-foreground"}`}>
+          {c.ok ? "✓" : "○"} {c.label}
+        </p>
+      ))}
+    </div>
+  );
+};
 
 export default function AuthPage() {
   const { t } = useTranslation();
@@ -116,6 +137,11 @@ export default function AuthPage() {
         toast.success(t("auth.resetEmailSent"));
         setMode("login");
       } else if (mode === "signup") {
+        const pwCheck = validatePassword(password);
+        if (!pwCheck.valid) {
+          toast.error(pwCheck.errors[0]);
+          return;
+        }
         const { data: signupData, error } = await supabase.auth.signUp({
           email,
           password,
@@ -179,7 +205,8 @@ export default function AuthPage() {
           {mode !== "forgot" && (
             <div>
               <Label htmlFor="password" className="text-muted-foreground text-xs">{t("auth.password")}</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} className="mt-1" />
+              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} className="mt-1" />
+              {mode === "signup" && <PasswordRequirements password={password} />}
             </div>
           )}
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { validatePassword } from "@/lib/passwordValidation";
 
 const PRODUCTION_DOMAIN = "https://theperfumelab.de";
 
@@ -37,8 +38,9 @@ export default function ResetPasswordPage() {
       toast.error("Passwords do not match");
       return;
     }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+    const pwCheck = validatePassword(password);
+    if (!pwCheck.valid) {
+      toast.error(pwCheck.errors[0]);
       return;
     }
     setLoading(true);
@@ -79,11 +81,26 @@ export default function ResetPasswordPage() {
         <form onSubmit={handleReset} className="space-y-4">
           <div>
             <Label htmlFor="new-password" className="text-muted-foreground text-xs">New Password</Label>
-            <Input id="new-password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} className="mt-1" />
+            <Input id="new-password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} className="mt-1" />
+            {password && (
+              <div className="mt-1 space-y-0.5">
+                {[
+                  { label: "8+ Zeichen", ok: password.length >= 8 },
+                  { label: "Großbuchstabe", ok: /[A-Z]/.test(password) },
+                  { label: "Kleinbuchstabe", ok: /[a-z]/.test(password) },
+                  { label: "Zahl", ok: /[0-9]/.test(password) },
+                  { label: "Sonderzeichen", ok: /[^A-Za-z0-9]/.test(password) },
+                ].map(c => (
+                  <p key={c.label} className={`text-[10px] ${c.ok ? "text-green-500" : "text-muted-foreground"}`}>
+                    {c.ok ? "✓" : "○"} {c.label}
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
           <div>
             <Label htmlFor="confirm-password" className="text-muted-foreground text-xs">Confirm Password</Label>
-            <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required minLength={6} className="mt-1" />
+            <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required minLength={8} className="mt-1" />
           </div>
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">
             {loading ? "Updating…" : "Update Password"}
