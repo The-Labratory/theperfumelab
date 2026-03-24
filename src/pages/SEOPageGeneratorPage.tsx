@@ -213,7 +213,7 @@ const SEOPageGeneratorPage = () => {
               </p>
               <div className="bg-card/50 rounded-lg p-4">
                 <p className="font-body text-sm text-primary hover:underline cursor-pointer">{generatedPage.title}</p>
-                <p className="font-body text-xs text-primary mt-0.5">theperfumelab.de/{generatedPage.slug}</p>
+                <p className="font-body text-xs text-primary mt-0.5">theperfumelab.shop/{generatedPage.slug}</p>
                 <p className="font-body text-xs text-muted-foreground mt-1">{generatedPage.metaDescription}</p>
               </div>
             </div>
