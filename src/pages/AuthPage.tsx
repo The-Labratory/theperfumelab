@@ -205,7 +205,9 @@ export default function AuthPage() {
           {mode !== "forgot" && (
             <div>
               <Label htmlFor="password" className="text-muted-foreground text-xs">{t("auth.password")}</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} className="mt-1" />
+              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} className="mt-1" />
+              {mode === "signup" && <PasswordRequirements password={password} />}
+            </div>
             </div>
           )}
           <Button type="submit" disabled={loading} className="w-full font-display tracking-wider">
