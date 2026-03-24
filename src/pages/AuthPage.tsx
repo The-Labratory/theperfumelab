@@ -50,6 +50,7 @@ export default function AuthPage() {
   const referralCode = searchParams.get("ref") || "";
   const isAffiliateFlow = searchParams.get("affiliate") === "true";
   const modeParam = searchParams.get("mode");
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
 
   useEffect(() => {
     if (referralCode) setMode("signup");
@@ -86,11 +87,10 @@ export default function AuthPage() {
     await supabase.rpc("award_growth_credit", { _credit_type: "welcome_bonus" } as any);
 
     if (isAffiliateFlow) {
-      // Check affiliate onboarding status
       const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
       await redirectAfterAuth(navigate);
     } else {
-      navigate("/dashboard", { replace: true });
+      navigate(redirectTo, { replace: true });
     }
   };
 
@@ -113,7 +113,7 @@ export default function AuthPage() {
           const { redirectAfterAuth } = await import("@/lib/affiliateRouting");
           await redirectAfterAuth(navigate);
         } else {
-          navigate("/dashboard", { replace: true });
+          navigate(redirectTo, { replace: true });
         }
       }
     });
@@ -239,7 +239,7 @@ export default function AuthPage() {
               className="w-full gap-2 font-display tracking-wider text-xs"
               onClick={async () => {
                 const { error } = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: `${getRedirectOrigin()}/dashboard`,
+                  redirect_uri: `${getRedirectOrigin()}${redirectTo}`,
                 });
                 if (error) toast.error(error.message);
               }}
