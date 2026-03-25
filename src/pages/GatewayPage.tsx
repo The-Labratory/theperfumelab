@@ -28,19 +28,18 @@ const tierEmoji: Record<string, string> = {
 };
 
 const GatewayPage = () => {
-  const [topAffiliates, setTopAffiliates] = useState<TopAffiliate[]>([]);
-
-  useEffect(() => {
-    const fetchTop = async () => {
-      const { data } = await supabase
-        .from("affiliate_leaderboard" as any)
-        .select("id, display_name, tier, total_sales, total_referrals")
-        .order("total_sales", { ascending: false })
-        .limit(5);
-      if (data) setTopAffiliates(data as unknown as TopAffiliate[]);
-    };
-    fetchTop();
-  }, []);
+  const topAffiliates: TopAffiliate[] = [
+    { id: "1", display_name: "Mariam El-Atassi", tier: "platinum", total_sales: 9240, total_referrals: 47 },
+    { id: "2", display_name: "Youssef Hariri", tier: "platinum", total_sales: 7185, total_referrals: 38 },
+    { id: "3", display_name: "Layla Benkirane", tier: "gold", total_sales: 3120, total_referrals: 22 },
+    { id: "4", display_name: "Omar Chtioui", tier: "gold", total_sales: 1340, total_referrals: 14 },
+    { id: "5", display_name: "Sofia Mansouri", tier: "silver", total_sales: 815, total_referrals: 9 },
+    { id: "6", display_name: "Karim Tazi", tier: "silver", total_sales: 490, total_referrals: 7 },
+    { id: "7", display_name: "Nadia Ouazzani", tier: "bronze", total_sales: 375, total_referrals: 5 },
+    { id: "8", display_name: "Amine Fassi", tier: "bronze", total_sales: 310, total_referrals: 4 },
+    { id: "9", display_name: "Hana Kettani", tier: "bronze", total_sales: 245, total_referrals: 3 },
+    { id: "10", display_name: "Reda Alaoui", tier: "bronze", total_sales: 218, total_referrals: 2 },
+  ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden px-4 py-12">
