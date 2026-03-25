@@ -184,7 +184,6 @@ const GatewayPage = () => {
           )}
           </div>
         </motion.div>
-      }
 
       <motion.p
         initial={{ opacity: 0 }}
