@@ -1,4 +1,3 @@
-import { } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Sparkles, Users, ArrowRight, FlaskConical, Handshake, Trophy, TrendingUp } from "lucide-react";
