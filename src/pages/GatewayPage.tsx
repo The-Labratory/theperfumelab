@@ -145,8 +145,7 @@ const GatewayPage = () => {
         </motion.div>
       </div>
 
-      {/* Top 5 Affiliate Networks */}
-      {topAffiliates.length > 0 &&
+      {/* Top 10 Affiliate Networks */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -155,10 +154,10 @@ const GatewayPage = () => {
         
           <div className="flex items-center gap-2 mb-5 justify-center">
             <Trophy className="w-4 h-4 text-accent" />
-            <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 5 Affiliate Networks</h3>
+            <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 10 Partners</h3>
             <Trophy className="w-4 h-4 text-accent" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {topAffiliates.map((a, i) =>
           <motion.div
             key={a.id}
