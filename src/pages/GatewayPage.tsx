@@ -5,7 +5,7 @@ import { Sparkles, Users, ArrowRight, FlaskConical, Handshake, Trophy, TrendingU
 import ParticleField from "@/components/ParticleField";
 import lhaririLogo from "@/assets/lhariri-logo.png";
 import WalkingAlchemist from "@/components/WalkingAlchemist";
-import { supabase } from "@/integrations/supabase/client";
+
 
 interface TopAffiliate {
   id: string;
