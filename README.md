@@ -88,6 +88,32 @@ Changes made via Lovable will be committed automatically to this repo.
 - Select the "Codespaces" tab
 - Click on "New codespace" to launch a new Codespace environment
 
+## 🤖 Claude Code Integration
+
+This project includes MCP (Model Context Protocol) server configuration for enhanced AI development workflows.
+
+### Supabase MCP Server
+
+The project is configured with the Supabase MCP server, which provides AI-powered database operations and query assistance.
+
+**Configuration:** `.claude.json`
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=xxslrzwtovhteueipsix"
+    }
+  }
+}
+```
+
+To use this configuration with Claude Code:
+1. Ensure you have Claude Code installed
+2. Open this project in Claude Code
+3. The Supabase MCP server will be automatically available
+
+For more information about MCP servers, see the [Claude Code documentation](https://docs.anthropic.com/en/docs/model-context-protocol).
+
 ## 🧪 Technologies
 
 This project is built with:
