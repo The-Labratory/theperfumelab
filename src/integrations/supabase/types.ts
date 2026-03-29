@@ -126,13 +126,6 @@ export type Database = {
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "affiliate_campaigns_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       affiliate_compliance: {
@@ -188,159 +181,6 @@ export type Database = {
             columns: ["affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_compliance_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      affiliate_onboarding_events: {
-        Row: {
-          affiliate_id: string
-          created_at: string
-          event_data: Json | null
-          event_type: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          affiliate_id: string
-          created_at?: string
-          event_data?: Json | null
-          event_type: string
-          id?: string
-          user_id: string
-        }
-        Update: {
-          affiliate_id?: string
-          created_at?: string
-          event_data?: Json | null
-          event_type?: string
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "affiliate_onboarding_events_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_leaderboard"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_onboarding_events_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_onboarding_events_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      affiliate_onboarding_progress: {
-        Row: {
-          affiliate_id: string
-          buyback_terms_accepted: boolean
-          chosen_partner_level: string | null
-          completed: boolean
-          completed_at: string | null
-          created_at: string
-          current_step: number
-          id: string
-          microtasks: Json
-          payout_details_saved: boolean
-          pledge_signed: boolean
-          pledge_text: string | null
-          quiz_passed: boolean
-          quiz_scores: Json
-          roleplay_passed: boolean
-          started_at: string | null
-          starter_pack_claimed: boolean
-          starter_pack_data: Json | null
-          steps_completed: Json
-          terms_accepted: boolean
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          affiliate_id: string
-          buyback_terms_accepted?: boolean
-          chosen_partner_level?: string | null
-          completed?: boolean
-          completed_at?: string | null
-          created_at?: string
-          current_step?: number
-          id?: string
-          microtasks?: Json
-          payout_details_saved?: boolean
-          pledge_signed?: boolean
-          pledge_text?: string | null
-          quiz_passed?: boolean
-          quiz_scores?: Json
-          roleplay_passed?: boolean
-          started_at?: string | null
-          starter_pack_claimed?: boolean
-          starter_pack_data?: Json | null
-          steps_completed?: Json
-          terms_accepted?: boolean
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          affiliate_id?: string
-          buyback_terms_accepted?: boolean
-          chosen_partner_level?: string | null
-          completed?: boolean
-          completed_at?: string | null
-          created_at?: string
-          current_step?: number
-          id?: string
-          microtasks?: Json
-          payout_details_saved?: boolean
-          pledge_signed?: boolean
-          pledge_text?: string | null
-          quiz_passed?: boolean
-          quiz_scores?: Json
-          roleplay_passed?: boolean
-          started_at?: string | null
-          starter_pack_claimed?: boolean
-          starter_pack_data?: Json | null
-          steps_completed?: Json
-          terms_accepted?: boolean
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "affiliate_onboarding_progress_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: true
-            referencedRelation: "affiliate_leaderboard"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_onboarding_progress_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: true
-            referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_onboarding_progress_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: true
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
         ]
@@ -499,13 +339,6 @@ export type Database = {
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "affiliate_payouts_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       affiliate_point_events: {
@@ -549,13 +382,6 @@ export type Database = {
             columns: ["affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_point_events_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
         ]
@@ -622,13 +448,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "affiliate_pyramid_affiliate_partner_id_fkey"
-            columns: ["affiliate_partner_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "affiliate_pyramid_parent_id_fkey"
             columns: ["parent_id"]
             isOneToOne: false
@@ -690,13 +509,6 @@ export type Database = {
             columns: ["affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
           {
@@ -934,13 +746,6 @@ export type Database = {
             columns: ["original_affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "client_connections_original_affiliate_id_fkey"
-            columns: ["original_affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
         ]
@@ -2099,13 +1904,6 @@ export type Database = {
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "partner_customers_affiliate_partner_id_fkey"
-            columns: ["affiliate_partner_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       partner_goals: {
@@ -2169,13 +1967,6 @@ export type Database = {
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "partner_goals_affiliate_partner_id_fkey"
-            columns: ["affiliate_partner_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       partner_inventory: {
@@ -2237,13 +2028,6 @@ export type Database = {
             columns: ["affiliate_partner_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "partner_inventory_affiliate_partner_id_fkey"
-            columns: ["affiliate_partner_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
         ]
@@ -2380,13 +2164,6 @@ export type Database = {
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "partner_sales_reports_affiliate_partner_id_fkey"
-            columns: ["affiliate_partner_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       platinum_rewards: {
@@ -2457,13 +2234,6 @@ export type Database = {
             columns: ["source_affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "portfolio_auctions_source_affiliate_id_fkey"
-            columns: ["source_affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
         ]
@@ -2575,12 +2345,10 @@ export type Database = {
           favorite_families: string[] | null
           id: string
           is_public: boolean | null
-          onboarding_completed: boolean
           referral_code: string | null
           scent_personality: string | null
           team_id: string | null
           total_likes_received: number | null
-          training_completed: boolean
           updated_at: string
           user_id: string
         }
@@ -2594,12 +2362,10 @@ export type Database = {
           favorite_families?: string[] | null
           id?: string
           is_public?: boolean | null
-          onboarding_completed?: boolean
           referral_code?: string | null
           scent_personality?: string | null
           team_id?: string | null
           total_likes_received?: number | null
-          training_completed?: boolean
           updated_at?: string
           user_id: string
         }
@@ -2613,12 +2379,10 @@ export type Database = {
           favorite_families?: string[] | null
           id?: string
           is_public?: boolean | null
-          onboarding_completed?: boolean
           referral_code?: string | null
           scent_personality?: string | null
           team_id?: string | null
           total_likes_received?: number | null
-          training_completed?: boolean
           updated_at?: string
           user_id?: string
         }
@@ -3016,13 +2780,6 @@ export type Database = {
             referencedRelation: "affiliate_partners"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "scent_stations_affiliate_id_fkey"
-            columns: ["affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       security_events: {
@@ -3135,13 +2892,6 @@ export type Database = {
             columns: ["sub_affiliate_id"]
             isOneToOne: false
             referencedRelation: "affiliate_partners"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "sub_affiliate_margins_sub_affiliate_id_fkey"
-            columns: ["sub_affiliate_id"]
-            isOneToOne: false
-            referencedRelation: "affiliate_partners_public"
             referencedColumns: ["id"]
           },
         ]
@@ -3388,51 +3138,6 @@ export type Database = {
           tier?: string | null
           total_referrals?: number | null
           total_sales?: number | null
-        }
-        Relationships: []
-      }
-      affiliate_partners_public: {
-        Row: {
-          avatar_url: string | null
-          badges: Json | null
-          bio: string | null
-          company_name: string | null
-          display_name: string | null
-          id: string | null
-          landing_headline: string | null
-          landing_tagline: string | null
-          slug: string | null
-          social_links: Json | null
-          status: string | null
-          tier: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          badges?: Json | null
-          bio?: string | null
-          company_name?: string | null
-          display_name?: string | null
-          id?: string | null
-          landing_headline?: string | null
-          landing_tagline?: string | null
-          slug?: string | null
-          social_links?: Json | null
-          status?: string | null
-          tier?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          badges?: Json | null
-          bio?: string | null
-          company_name?: string | null
-          display_name?: string | null
-          id?: string | null
-          landing_headline?: string | null
-          landing_tagline?: string | null
-          slug?: string | null
-          social_links?: Json | null
-          status?: string | null
-          tier?: string | null
         }
         Relationships: []
       }
@@ -3683,10 +3388,6 @@ export type Database = {
       increment_affiliate_points: {
         Args: { _affiliate_id: string; _points: number }
         Returns: undefined
-      }
-      is_direct_pyramid_owner: {
-        Args: { _node_id: string; _user_id: string }
-        Returns: boolean
       }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       lock_formula_version: { Args: { _formula_id: string }; Returns: Json }

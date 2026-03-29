@@ -1,1 +1,0 @@
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS training_completed boolean NOT NULL DEFAULT false;

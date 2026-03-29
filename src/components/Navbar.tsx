@@ -64,20 +64,20 @@ export default function Navbar() {
   const navGroups: NavGroup[] = [
     { label: t("nav.home"), path: "/home" },
     {
-      label: t("nav.create"),
+      label: "Create",
       icon: <FlaskConical className="w-4 h-4" />,
       children: [
-        { path: "/lab", label: t("nav.lab"), description: t("nav.labDesc") },
-        { path: "/formulation", label: t("nav.formulation"), description: t("nav.formulationDesc") },
-        { path: "/dna", label: t("nav.dna"), description: t("nav.dnaDesc") },
+        { path: "/lab", label: t("nav.lab"), description: "AI-guided scent composition" },
+        { path: "/formulation", label: t("nav.formulation"), description: "Professional formula builder" },
+        { path: "/dna", label: t("nav.dna"), description: "Discover your scent profile" },
       ],
     },
     {
-      label: t("nav.explore"),
+      label: "Explore",
       icon: <Compass className="w-4 h-4" />,
       children: [
-        { path: "/worlds", label: t("nav.worlds"), description: t("nav.worldsDesc") },
-        { path: "/game", label: t("nav.game"), description: t("nav.gameDesc") },
+        { path: "/worlds", label: t("nav.worlds"), description: "Six fragrance realms" },
+        { path: "/game", label: t("nav.game"), description: "Interactive learning path" },
       ],
     },
     { label: t("nav.collection"), path: "/collection" },
@@ -85,20 +85,19 @@ export default function Navbar() {
       label: t("nav.store"),
       icon: <ShoppingBag className="w-4 h-4" />,
       children: [
-        { path: "/store", label: t("nav.shop"), description: t("nav.shopDesc") },
-        { path: "/gifting", label: t("nav.gifting"), description: t("nav.giftingDesc") },
+        { path: "/store", label: "Shop", description: "Browse our catalogue" },
+        { path: "/gifting", label: t("nav.gifting"), description: "Send a scent gift" },
       ],
     },
     {
-      label: t("nav.community"),
+      label: "Community",
       icon: <Users className="w-4 h-4" />,
       children: [
-        { path: "/affiliate", label: t("nav.affiliate"), description: t("nav.affiliateDesc") },
-        { path: "/team", label: t("nav.team"), description: t("nav.teamDesc") },
+        { path: "/affiliate", label: t("nav.affiliate"), description: "Partner network" },
+        { path: "/team", label: "Team", description: "Meet the makers" },
       ],
     },
-    ...(user ? [{ label: t("nav.myBusiness"), path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
-    ...(user ? [{ label: "Training", path: "/training" }] : []),
+    ...(user ? [{ label: "My Business", path: "/my-business", icon: <Briefcase className="w-4 h-4" /> }] : []),
     ...(isAdmin ? [{ label: t("nav.backOffice"), path: "/admin" }] : []),
   ];
 
@@ -270,7 +269,7 @@ export default function Navbar() {
                         setSearchQuery("");
                       }
                     }}
-                    placeholder={t("nav.searchPlaceholder")}
+                    placeholder="Discover scents…"
                     className="w-full h-9 px-3 text-sm font-body bg-muted/50 border border-border/50 rounded-md text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
                   />
                 </motion.div>
@@ -283,26 +282,14 @@ export default function Navbar() {
           <CartDrawer />
 
           {user ? (
-            <div className="flex items-center gap-0.5">
-              <Button
-                asChild
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 text-muted-foreground hover:text-foreground"
-              >
-                <Link to="/profile">
-                  <User className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleSignOut}
-                className="h-9 w-9 text-muted-foreground hover:text-foreground"
-              >
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSignOut}
+              className="h-9 w-9 text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="w-4 h-4" />
+            </Button>
           ) : (
             <Button
               asChild
@@ -330,14 +317,9 @@ export default function Navbar() {
           <LanguageSwitcher />
           <CartDrawer />
           {user ? (
-            <>
-              <Button asChild variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground">
-                <Link to="/profile"><User className="w-4 h-4" /></Link>
-              </Button>
-              <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground" onClick={handleSignOut}>
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </>
+            <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground" onClick={handleSignOut}>
+              <LogOut className="w-4 h-4" />
+            </Button>
           ) : (
             <Button asChild variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground">
               <Link to="/auth"><User className="w-4 h-4" /></Link>
@@ -363,7 +345,7 @@ export default function Navbar() {
                 autoFocus
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t("nav.searchPlaceholderLong")}
+                placeholder="Discover scents, ingredients, formulas…"
                 className="w-full h-10 px-4 text-sm font-body bg-muted/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
               />
             </div>

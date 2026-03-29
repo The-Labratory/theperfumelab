@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,7 +21,6 @@ import { supabase } from "@/integrations/supabase/client";
 const GatewayPage = lazy(() => import("./pages/GatewayPage"));
 const Index = lazy(() => import("./pages/Index"));
 const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
-const TrainingPage = lazy(() => import("./pages/TrainingPage"));
 const WorldsPage = lazy(() => import("./pages/WorldsPage"));
 const ScentLabPage = lazy(() => import("./pages/ScentLabPage"));
 const StorePage = lazy(() => import("./pages/StorePage"));
@@ -41,12 +40,10 @@ const FormulationLabPage = lazy(() => import("./pages/FormulationLabPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AuthEmailConfirmationPage = lazy(() => import("./pages/AuthEmailConfirmationPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const PerfumeCatalogPage = lazy(() => import("./pages/PerfumeCatalogPage"));
 const ScentQuizPage = lazy(() => import("./pages/ScentQuizPage"));
 const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
 const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
-const MyCreationsPage = lazy(() => import("./pages/MyCreationsPage"));
 const AffiliatePage = lazy(() => import("./pages/AffiliatePage"));
 const PerfumerGamePage = lazy(() => import("./pages/PerfumerGamePage"));
 const ReferralNetworkPage = lazy(() => import("./pages/ReferralNetworkPage"));
@@ -56,8 +53,6 @@ const AffiliateStarterPackPage = lazy(() => import("./pages/AffiliateStarterPack
 const AffiliateLanding = lazy(() => import("./pages/affiliate/AffiliateLanding"));
 const AffiliateWelcome = lazy(() => import("./pages/affiliate/AffiliateWelcome"));
 const AffiliateDashboardPage = lazy(() => import("./pages/affiliate/AffiliateDashboard"));
-const AffiliateOnboardPage = lazy(() => import("./pages/affiliate/AffiliateOnboardPage"));
-const AffiliatePortalPage = lazy(() => import("./pages/affiliate/AffiliatePortalPage"));
 const CreatorPortalPage = lazy(() => import("./pages/CreatorPortalPage"));
 const SEOPageGeneratorPage = lazy(() => import("./pages/SEOPageGeneratorPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
@@ -128,7 +123,7 @@ const Loader = () => (
 );
 
 const isPublicPath = (pathname: string) => {
-  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password" || pathname === "/affiliate-portal";
+  return pathname === "/auth" || pathname === "/auth/confirm" || pathname === "/landing" || pathname === "/reset-password";
 };
 
 const AuthRouteGuard = () => {
@@ -149,85 +144,14 @@ const AuthRouteGuard = () => {
   return <Outlet />;
 };
 
-/** Gates all child routes behind onboarding completion */
-const OnboardingGate = () => {
-  const { user, loading } = useAuth();
-  const navigate = useNavigate();
-  const [checking, setChecking] = useState(true);
-  const [onboarded, setOnboarded] = useState(false);
-
-  useEffect(() => {
-    if (loading || !user) return;
-    supabase
-      .from("profiles")
-      .select("onboarding_completed")
-      .eq("user_id", user.id)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (error) {
-          setOnboarded(true);
-          setChecking(false);
-          return;
-        }
-        const completed = !!(data as any)?.onboarding_completed;
-        setOnboarded(completed);
-        setChecking(false);
-        if (!completed) {
-          navigate("/onboarding", { replace: true });
-        }
-      });
-  }, [user, loading, navigate]);
-
-  if (loading || checking) return <Loader />;
-  if (!onboarded) return null;
-  return <Outlet />;
-};
-
-/** Gates child routes behind training completion */
-const TrainingGate = () => {
-  const { user, loading } = useAuth();
-  const navigate = useNavigate();
-  const [checking, setChecking] = useState(true);
-  const [trained, setTrained] = useState(false);
-
-  useEffect(() => {
-    if (loading || !user) return;
-    supabase
-      .from("profiles")
-      .select("training_completed")
-      .eq("user_id", user.id)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (error) {
-          setTrained(true);
-          setChecking(false);
-          return;
-        }
-        const completed = !!(data as any)?.training_completed;
-        setTrained(completed);
-        setChecking(false);
-        if (!completed) {
-          navigate("/training", { replace: true });
-        }
-      });
-  }, [user, loading, navigate]);
-
-  if (loading || checking) return <Loader />;
-  if (!trained) return null;
-  return <Outlet />;
-};
-
 const AuthStateRedirectHandler = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
-        // Don't redirect away from reset-password during recovery flow
-        if (window.location.pathname === "/reset-password" || location.pathname === "/reset-password") return;
         navigate("/dashboard", { replace: true });
       }
 
@@ -237,7 +161,7 @@ const AuthStateRedirectHandler = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, location.pathname]);
+  }, [navigate]);
 
   return null;
 };
@@ -254,116 +178,105 @@ const AppContent = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/auth/confirm" element={<AuthEmailConfirmationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/affiliate-portal" element={<AffiliatePortalPage />} />
 
         <Route element={<AuthRouteGuard />}>
-          {/* Accessible without onboarding/training completion */}
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/catalog" element={<PerfumeCatalogPage />} />
+          <Route path="/scent-quiz" element={<ScentQuizPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/orders" element={<OrderHistoryPage />} />
+
+          <Route path="/gateway" element={<GatewayPage />} />
+          <Route path="/home" element={<Index />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/training" element={<TrainingPage />} />
-          <Route path="/affiliate/onboard" element={<AffiliateOnboardPage />} />
+          <Route path="/worlds" element={<WorldsPage />} />
+          <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
+          <Route path="/lab" element={<ScentLabPage />} />
+          <Route path="/formulation" element={<FormulationLabPage />} />
+          <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/dna" element={<ScentDNAPage />} />
+          <Route path="/gifting" element={<GiftingPage />} />
+          <Route path="/gift/:shareCode" element={<GiftRevealPage />} />
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/product/:handle" element={<ProductPage />} />
+          <Route path="/install" element={<InstallPage />} />
+          <Route path="/access" element={<ExclusiveAccessPage />} />
+          <Route path="/launch" element={<LaunchPage />} />
+          <Route path="/share" element={<SharePage />} />
+          <Route path="/partner" element={<PartnerPage />} />
+          <Route path="/milestones" element={<MilestonesPage />} />
+          <Route path="/affiliate" element={<AffiliatePage />} />
+          <Route path="/game" element={<PerfumerGamePage />} />
+          <Route path="/network" element={<ReferralNetworkPage />} />
+          <Route path="/partner-program" element={<PartnerProgramPage />} />
           <Route path="/affiliate-signup" element={<AffiliateSignupPage />} />
+          <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
+          <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
+          <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
+          <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
+          <Route path="/r/:slug" element={<AffiliateLanding />} />
+          <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
+          <Route path="/creator-portal" element={<CreatorPortalPage />} />
+          <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/ai" element={<AIPage />} />
 
-          {/* All other routes require onboarding + training completion */}
-          <Route element={<OnboardingGate />}>
-           <Route element={<TrainingGate />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/catalog" element={<PerfumeCatalogPage />} />
-            <Route path="/scent-quiz" element={<ScentQuizPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="/orders" element={<OrderHistoryPage />} />
-            <Route path="/my-collection" element={<MyCreationsPage />} />
-            <Route path="/gateway" element={<GatewayPage />} />
-            <Route path="/home" element={<Index />} />
-            <Route path="/worlds" element={<WorldsPage />} />
-            <Route path="/worlds/:worldId" element={<WorldDetailPage />} />
-            <Route path="/lab" element={<ScentLabPage />} />
-            <Route path="/formulation" element={<FormulationLabPage />} />
-            <Route path="/collection" element={<CollectionPage />} />
-            <Route path="/dna" element={<ScentDNAPage />} />
-            <Route path="/gifting" element={<GiftingPage />} />
-            <Route path="/gift/:shareCode" element={<GiftRevealPage />} />
-            <Route path="/store" element={<StorePage />} />
-            <Route path="/product/:handle" element={<ProductPage />} />
-            <Route path="/install" element={<InstallPage />} />
-            <Route path="/access" element={<ExclusiveAccessPage />} />
-            <Route path="/launch" element={<LaunchPage />} />
-            <Route path="/share" element={<SharePage />} />
-            <Route path="/partner" element={<PartnerPage />} />
-            <Route path="/milestones" element={<MilestonesPage />} />
-            <Route path="/affiliate" element={<AffiliatePage />} />
-            <Route path="/game" element={<PerfumerGamePage />} />
-            <Route path="/network" element={<ReferralNetworkPage />} />
-            <Route path="/partner-program" element={<PartnerProgramPage />} />
-            <Route path="/affiliate-starter-pack" element={<AffiliateStarterPackPage />} />
-            <Route path="/affiliate/:slug" element={<AffiliateLanding />} />
-            <Route path="/affiliate/:slug/welcome" element={<AffiliateWelcome />} />
-            <Route path="/affiliate/:slug/dashboard" element={<AffiliateDashboardPage />} />
-            <Route path="/r/:slug" element={<AffiliateLanding />} />
-            <Route path="/r/:slug/:campaign" element={<AffiliateLanding />} />
-            <Route path="/creator-portal" element={<CreatorPortalPage />} />
-            <Route path="/seo-generator" element={<SEOPageGeneratorPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/ai" element={<AIPage />} />
+          {/* Admin Back Office */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="ingredients" element={<IngredientsManager />} />
+            <Route path="interactions" element={<InteractionsManager />} />
+            <Route path="formulas" element={<FormulasManager />} />
+            <Route path="ifra" element={<IFRARulesManager />} />
+            <Route path="audit" element={<AuditLogPage />} />
+            <Route path="partners" element={<PartnerManager />} />
+            <Route path="employees" element={<EmployeeManager />} />
+            <Route path="pyramid" element={<PyramidManager />} />
+            <Route path="affiliates" element={<AffiliateAdminPage />} />
+            <Route path="onboarding" element={<EmployeeOnboardingPage />} />
+          </Route>
 
-            {/* Admin Back Office */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="ingredients" element={<IngredientsManager />} />
-              <Route path="interactions" element={<InteractionsManager />} />
-              <Route path="formulas" element={<FormulasManager />} />
-              <Route path="ifra" element={<IFRARulesManager />} />
-              <Route path="audit" element={<AuditLogPage />} />
-              <Route path="partners" element={<PartnerManager />} />
-              <Route path="employees" element={<EmployeeManager />} />
-              <Route path="pyramid" element={<PyramidManager />} />
-              <Route path="affiliates" element={<AffiliateAdminPage />} />
-              <Route path="onboarding" element={<EmployeeOnboardingPage />} />
-            </Route>
+          {/* Super Admin */}
+          <Route path="/superadmin" element={<SuperAdminLayout />}>
+            <Route index element={<SuperAdminDashboard />} />
+            <Route path="customers" element={<SACustomersPage />} />
+            <Route path="agents" element={<SAAgentsPage />} />
+            <Route path="audit-logs" element={<SAAuditLogsPage />} />
+            <Route path="security-events" element={<SASecurityEventsPage />} />
+            <Route path="system-settings" element={<SASystemSettingsPage />} />
+            <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
+            <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
+            <Route path="database" element={<SADatabaseExplorerPage />} />
+            <Route path="storage" element={<SAStorageManagerPage />} />
+            <Route path="permissions" element={<SAPermissionsPage />} />
+            <Route path="referrals" element={<SAReferralManagementPage />} />
+            <Route path="auction" element={<InactivityAuctionPage />} />
+          </Route>
 
-            {/* Super Admin */}
-            <Route path="/superadmin" element={<SuperAdminLayout />}>
-              <Route index element={<SuperAdminDashboard />} />
-              <Route path="customers" element={<SACustomersPage />} />
-              <Route path="agents" element={<SAAgentsPage />} />
-              <Route path="audit-logs" element={<SAAuditLogsPage />} />
-              <Route path="security-events" element={<SASecurityEventsPage />} />
-              <Route path="system-settings" element={<SASystemSettingsPage />} />
-              <Route path="analytics/pyramid-builder" element={<SAPyramidBuilderPage />} />
-              <Route path="employee-requests" element={<SAEmployeeRequestsPage />} />
-              <Route path="database" element={<SADatabaseExplorerPage />} />
-              <Route path="storage" element={<SAStorageManagerPage />} />
-              <Route path="permissions" element={<SAPermissionsPage />} />
-              <Route path="referrals" element={<SAReferralManagementPage />} />
-              <Route path="auction" element={<InactivityAuctionPage />} />
-            </Route>
+          {/* Business Portal */}
+          <Route path="/my-business" element={<BusinessLayout />}>
+            <Route index element={<BusinessDashboard />} />
+            <Route path="crm" element={<BusinessCRM />} />
+            <Route path="sales" element={<BusinessSales />} />
+            <Route path="inventory" element={<BusinessInventory />} />
+            <Route path="customers" element={<BusinessCustomers />} />
+            <Route path="network" element={<BusinessNetwork />} />
+            <Route path="marketing" element={<BusinessMarketing />} />
+            <Route path="goals" element={<BusinessGoals />} />
+            <Route path="reports" element={<BusinessReports />} />
+            <Route path="expansion" element={<BusinessExpansionHub />} />
+            <Route path="qr-engine" element={<BusinessQREngine />} />
+            <Route path="pitch-builder" element={<BusinessPitchBuilder />} />
+            <Route path="team" element={<BusinessTeam />} />
+          </Route>
 
-            {/* Business Portal */}
-            <Route path="/my-business" element={<BusinessLayout />}>
-              <Route index element={<BusinessDashboard />} />
-              <Route path="crm" element={<BusinessCRM />} />
-              <Route path="sales" element={<BusinessSales />} />
-              <Route path="inventory" element={<BusinessInventory />} />
-              <Route path="customers" element={<BusinessCustomers />} />
-              <Route path="network" element={<BusinessNetwork />} />
-              <Route path="marketing" element={<BusinessMarketing />} />
-              <Route path="goals" element={<BusinessGoals />} />
-              <Route path="reports" element={<BusinessReports />} />
-              <Route path="expansion" element={<BusinessExpansionHub />} />
-              <Route path="qr-engine" element={<BusinessQREngine />} />
-              <Route path="pitch-builder" element={<BusinessPitchBuilder />} />
-              <Route path="team" element={<BusinessTeam />} />
-            </Route>
-
-            {/* Sovereign Manager Portal */}
-            <Route path="/sovereign" element={<SovereignLayout />}>
-              <Route index element={<SovereignManagerPage />} />
-              <Route path="vault" element={<GrowthVaultPage />} />
-              <Route path="stations" element={<ScentStationPage />} />
-              <Route path="tree" element={<NetworkTreePage />} />
-              <Route path="ai" element={<AIConsiglierePage />} />
-            </Route>
-           </Route>
+          {/* Sovereign Manager Portal */}
+          <Route path="/sovereign" element={<SovereignLayout />}>
+            <Route index element={<SovereignManagerPage />} />
+            <Route path="vault" element={<GrowthVaultPage />} />
+            <Route path="stations" element={<ScentStationPage />} />
+            <Route path="tree" element={<NetworkTreePage />} />
+            <Route path="ai" element={<AIConsiglierePage />} />
           </Route>
         </Route>
 

@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import AdminOnboardingMetrics from "@/components/admin/AdminOnboardingMetrics";
 import { motion } from "framer-motion";
 import {
   Users, Search, Filter, Download, Mail, Crown, Award,
@@ -167,9 +166,6 @@ export default function AffiliateAdminPage() {
           </div>
         ))}
       </div>
-
-      {/* Onboarding Metrics */}
-      <AdminOnboardingMetrics />
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">

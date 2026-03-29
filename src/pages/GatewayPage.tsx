@@ -1,10 +1,11 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Sparkles, Users, ArrowRight, FlaskConical, Handshake, Trophy, TrendingUp } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
 import lhaririLogo from "@/assets/lhariri-logo.png";
 import WalkingAlchemist from "@/components/WalkingAlchemist";
-
+import { supabase } from "@/integrations/supabase/client";
 
 interface TopAffiliate {
   id: string;
@@ -27,18 +28,19 @@ const tierEmoji: Record<string, string> = {
 };
 
 const GatewayPage = () => {
-  const topAffiliates: TopAffiliate[] = [
-    { id: "1", display_name: "Mariam El-Atassi", tier: "platinum", total_sales: 9240, total_referrals: 47 },
-    { id: "2", display_name: "Youssef Hariri", tier: "platinum", total_sales: 7185, total_referrals: 38 },
-    { id: "3", display_name: "Layla Benkirane", tier: "gold", total_sales: 3120, total_referrals: 22 },
-    { id: "4", display_name: "Omar Chtioui", tier: "gold", total_sales: 1340, total_referrals: 14 },
-    { id: "5", display_name: "Sofia Mansouri", tier: "silver", total_sales: 815, total_referrals: 9 },
-    { id: "6", display_name: "Karim Tazi", tier: "silver", total_sales: 490, total_referrals: 7 },
-    { id: "7", display_name: "Nadia Ouazzani", tier: "bronze", total_sales: 375, total_referrals: 5 },
-    { id: "8", display_name: "Amine Fassi", tier: "bronze", total_sales: 310, total_referrals: 4 },
-    { id: "9", display_name: "Hana Kettani", tier: "bronze", total_sales: 245, total_referrals: 3 },
-    { id: "10", display_name: "Reda Alaoui", tier: "bronze", total_sales: 218, total_referrals: 2 },
-  ];
+  const [topAffiliates, setTopAffiliates] = useState<TopAffiliate[]>([]);
+
+  useEffect(() => {
+    const fetchTop = async () => {
+      const { data } = await supabase
+        .from("affiliate_leaderboard" as any)
+        .select("id, display_name, tier, total_sales, total_referrals")
+        .order("total_sales", { ascending: false })
+        .limit(5);
+      if (data) setTopAffiliates(data as unknown as TopAffiliate[]);
+    };
+    fetchTop();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden px-4 py-12">
@@ -144,7 +146,8 @@ const GatewayPage = () => {
         </motion.div>
       </div>
 
-      {/* Top 10 Affiliate Networks */}
+      {/* Top 5 Affiliate Networks */}
+      {topAffiliates.length > 0 &&
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -153,10 +156,10 @@ const GatewayPage = () => {
         
           <div className="flex items-center gap-2 mb-5 justify-center">
             <Trophy className="w-4 h-4 text-accent" />
-            <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 10 Partners</h3>
+            <h3 className="font-display text-sm tracking-[0.2em] uppercase text-foreground font-bold">Top 5 Affiliate Networks</h3>
             <Trophy className="w-4 h-4 text-accent" />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
             {topAffiliates.map((a, i) =>
           <motion.div
             key={a.id}
@@ -183,6 +186,7 @@ const GatewayPage = () => {
           )}
           </div>
         </motion.div>
+      }
 
       <motion.p
         initial={{ opacity: 0 }}
